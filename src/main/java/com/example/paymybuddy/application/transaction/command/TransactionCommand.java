@@ -5,5 +5,5 @@ import org.springframework.validation.annotation.Validated;
 
 public interface TransactionCommand {
 
-    Id createTransaction(@Validated CreateTransactionCommand createTransactionCommand);
+    Id createTransaction(CreateTransactionCommand createTransactionCommand);
 }

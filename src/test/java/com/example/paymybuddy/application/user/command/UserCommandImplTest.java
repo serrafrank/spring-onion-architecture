@@ -7,16 +7,17 @@ import com.example.paymybuddy.core.user.valueobject.UserId;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-
 
 @ExtendWith(SpringExtension.class)
 class UserCommandImplTest {
@@ -40,6 +41,35 @@ class UserCommandImplTest {
         assertEquals(userId, id);
 
         verify(userService, times(1)).createUser(anyString(), anyString(), anyString(), anyString());
+    }
+
+    private static String[] shouldThrowExceptionWhenNameIsNullParameters() {
+        return new String[]{null, "", " ", "  "};
+    }
+
+
+    @ParameterizedTest
+    @MethodSource("shouldThrowExceptionWhenNameIsNullParameters")
+    void shouldThrowExceptionWhenLastNameIsNull(String lastname) {
+        CreateUserCommand createUserCommand = new CreateUserCommand("email@email.com", "Password1!", "John", lastname);
+        assertThrows(IllegalArgumentException.class, () -> userCommand.createUser(createUserCommand));
+    }
+
+
+    @ParameterizedTest
+    @MethodSource("shouldThrowExceptionWhenNameIsNullParameters")
+    void shouldThrowExceptionWhenFirstNameIsNull(String firstName) {
+        CreateUserCommand createUserCommand = new CreateUserCommand("email@email.com", "Password1!", firstName, "Doe");
+        assertThrows(IllegalArgumentException.class, () -> userCommand.createUser(createUserCommand));
+    }
+
+
+
+    @ParameterizedTest
+    @ValueSource(strings = {"", "test", "test@", "test@example", "test@example."})
+    void shouldThrowExceptionWhenEmailIsInvalid(String email) {
+        CreateUserCommand createUserCommand = new CreateUserCommand(email, "Password1!", "John", "Doe");
+        assertThrows(IllegalArgumentException.class, () -> userCommand.createUser(createUserCommand));
     }
 
     @ParameterizedTest

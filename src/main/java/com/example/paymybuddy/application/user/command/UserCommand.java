@@ -5,10 +5,10 @@ import org.springframework.validation.annotation.Validated;
 
 public interface UserCommand {
 
-    UserId createUser(@Validated CreateUserCommand command);
+    UserId createUser(CreateUserCommand command);
 
-    void debitUser(@Validated DebitUserCommand command);
+    void debitUser(DebitUserCommand command);
 
-    void creditUser(@Validated CreditUserCommand command);
+    void creditUser(CreditUserCommand command);
 
 }

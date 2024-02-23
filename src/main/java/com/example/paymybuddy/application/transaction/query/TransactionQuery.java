@@ -7,6 +7,6 @@ import java.util.Optional;
 
 public interface TransactionQuery {
 
-    Optional<TransactionAggregate> findTransaction(@Validated FindTransactionByIdQuery findTransactionByIdQuery);
+    Optional<TransactionAggregate> findTransaction(FindTransactionByIdQuery findTransactionByIdQuery);
 
 }

@@ -7,12 +7,12 @@ import java.util.Optional;
 
 public interface UserQuery {
 
-    Optional<UserAggregate> findUser(@Validated FindUserByIdQuery findUserByIdQuery);
+    Optional<UserAggregate> findUser(FindUserByIdQuery findUserByIdQuery);
 
-    boolean existsUser(@Validated ExistsUserByIdQuery existsUserByIdQuery);
+    boolean existsUser(ExistsUserByIdQuery existsUserByIdQuery);
 
-    boolean existsUser(@Validated ExistsUserByEmailQuery existsUserByEmailQuery);
+    boolean existsUser(ExistsUserByEmailQuery existsUserByEmailQuery);
 
-    boolean areFriends(@Validated AreFriendsQuery areFriendsQuery);
+    boolean areFriends(AreFriendsQuery areFriendsQuery);
 
 }
