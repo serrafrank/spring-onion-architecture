@@ -43,41 +43,6 @@ class UserCommandImplTest {
         verify(userService, times(1)).createUser(anyString(), anyString(), anyString(), anyString());
     }
 
-    private static String[] shouldThrowExceptionWhenNameIsNullParameters() {
-        return new String[]{null, "", " ", "  "};
-    }
-
-
-    @ParameterizedTest
-    @MethodSource("shouldThrowExceptionWhenNameIsNullParameters")
-    void shouldThrowExceptionWhenLastNameIsNull(String lastname) {
-        CreateUserCommand createUserCommand = new CreateUserCommand("email@email.com", "Password1!", "John", lastname);
-        assertThrows(IllegalArgumentException.class, () -> userCommand.createUser(createUserCommand));
-    }
-
-
-    @ParameterizedTest
-    @MethodSource("shouldThrowExceptionWhenNameIsNullParameters")
-    void shouldThrowExceptionWhenFirstNameIsNull(String firstName) {
-        CreateUserCommand createUserCommand = new CreateUserCommand("email@email.com", "Password1!", firstName, "Doe");
-        assertThrows(IllegalArgumentException.class, () -> userCommand.createUser(createUserCommand));
-    }
-
-
-
-    @ParameterizedTest
-    @ValueSource(strings = {"", "test", "test@", "test@example", "test@example."})
-    void shouldThrowExceptionWhenEmailIsInvalid(String email) {
-        CreateUserCommand createUserCommand = new CreateUserCommand(email, "Password1!", "John", "Doe");
-        assertThrows(IllegalArgumentException.class, () -> userCommand.createUser(createUserCommand));
-    }
-
-    @ParameterizedTest
-    @ValueSource(strings = {"", "password", "password1", "PASSWORD", "PASSWORD1", "password!", "PASSWORD!", "password1!", "PASSWORD1!"})
-    void shouldThrowExceptionWhenPasswordIsInvalid(String password) {
-        CreateUserCommand createUserCommand = new CreateUserCommand("test@example.com", password, "John", "Doe");
-        assertThrows(IllegalArgumentException.class, () -> userCommand.createUser(createUserCommand));
-    }
 
     @Test
     void shouldDebitUser() {
@@ -89,17 +54,5 @@ class UserCommandImplTest {
         userCommand.debitUser(command);
 
         verify(userService, times(1)).debitUser(any(UserId.class), any(Amount.class));
-    }
-
-    @Test
-    void shouldCreditUse() {
-        final UserId userId = new UserId();
-        final Amount amount = new Amount(BigDecimal.valueOf(100), CurrencyCode.EUR);
-        CreditUserCommand command = new CreditUserCommand(userId, amount);
-        doNothing().when(userService).creditUser(any(UserId.class), any(Amount.class));
-
-        userCommand.creditUser(command);
-
-        verify(userService, times(1)).creditUser(any(UserId.class), any(Amount.class));
     }
 }

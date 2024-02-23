@@ -1,5 +1,7 @@
 package com.example.paymybuddy.core.common.entity.id;
 
+import lombok.NonNull;
+
 import java.util.UUID;
 
 /**
@@ -9,7 +11,7 @@ import java.util.UUID;
  */
 public class GenericUUID extends AbstractId<UUID> {
 
-    protected GenericUUID(Id id) {
+    protected GenericUUID(@NonNull Id id) {
         super(UUID.fromString(id.value().toString()));
     }
 

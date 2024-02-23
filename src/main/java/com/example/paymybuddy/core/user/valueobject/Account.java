@@ -1,6 +1,7 @@
 package com.example.paymybuddy.core.user.valueobject;
 
 import com.example.paymybuddy.core.common.valueobject.Amount;
+import com.example.paymybuddy.core.validator.Constraint;
 import lombok.Value;
 
 import java.io.Serializable;

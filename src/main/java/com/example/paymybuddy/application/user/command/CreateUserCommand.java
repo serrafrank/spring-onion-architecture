@@ -1,5 +1,6 @@
 package com.example.paymybuddy.application.user.command;
 
+import com.example.paymybuddy.core.validator.Constraint;
 import io.micrometer.common.util.StringUtils;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -20,21 +21,9 @@ public record CreateUserCommand(
     private static final String PASSWORD_ERROR_MESSAGE = "Password must contain at least 8 characters, including 1 digit, 1 lowercase letter, 1 uppercase letter, and 1 special character";
 
     public CreateUserCommand {
-
-        if (!email.matches(EMAIL_PATTERN)) {
-            throw new IllegalArgumentException(EMAIL_ERROR_MESSAGE);
-        }
-
-        if (!password.matches(PASSWORD_PATTERN)) {
-            throw new IllegalArgumentException(PASSWORD_ERROR_MESSAGE);
-        }
-
-        if (StringUtils.isBlank(firstName)) {
-            throw new IllegalArgumentException("First name cannot be null or empty");
-        }
-
-        if (StringUtils.isBlank(lastName)) {
-            throw new IllegalArgumentException("Last name cannot be null or empty");
-        }
+        Constraint.of(email).notBlank().matches(EMAIL_PATTERN, EMAIL_ERROR_MESSAGE).validate();
+        Constraint.of(password).notBlank().matches(PASSWORD_PATTERN, PASSWORD_ERROR_MESSAGE).validate();
+        Constraint.of(firstName).notBlank("First name cannot be null or empty").validate();
+        Constraint.of(lastName).notBlank("Last name cannot be null or empty").validate();
     }
 }

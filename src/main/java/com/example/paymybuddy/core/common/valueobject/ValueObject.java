@@ -6,14 +6,13 @@ import java.util.Set;
 
 public class ValueObject {
 
-    protected void validate() {
+    protected static <T> void validate(T target) {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
-        Set<ConstraintViolation<ValueObject>> violations = validator.validate(this);
+        Set<ConstraintViolation<T>> violations = validator.validate(target);
 
         if (!violations.isEmpty()) {
             throw new ConstraintViolationException(violations);
         }
-
     }
 }
