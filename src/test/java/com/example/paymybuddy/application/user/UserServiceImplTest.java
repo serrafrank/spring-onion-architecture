@@ -1,11 +1,9 @@
 package com.example.paymybuddy.application.user;
 
 import com.example.paymybuddy.core.common.entity.CurrencyCode;
-import com.example.paymybuddy.core.common.entity.id.Id;
 import com.example.paymybuddy.core.common.valueobject.Amount;
 import com.example.paymybuddy.core.user.UserAggregate;
 import com.example.paymybuddy.core.user.valueobject.UserId;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.function.Executable;
@@ -28,14 +26,9 @@ class UserServiceImplTest {
     @Mock
     private UserRepository userRepository;
 
-    private Id id;
-    private UserAggregate userAggregate;
+    private final UserId id = new UserId();
+    private final UserAggregate userAggregate  = new UserAggregate("John", "Doe", "john.doe@example.com", "password123");
 
-    @BeforeEach
-    void setUp() {
-        id = new UserId();
-        userAggregate = new UserAggregate("John", "Doe", "john.doe@example.com", "password123");
-    }
 
     @Test
     void shouldFindUser() {

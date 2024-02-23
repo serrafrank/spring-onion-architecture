@@ -12,14 +12,14 @@ public interface UserService {
 
     UserId createUser(String firstName, String lastName, String email, String password);
 
-    void debitUser(Id id, Amount amount);
+    void debitUser(UserId id, Amount amount);
 
-    void creditUser(Id id, Amount amount);
+    void creditUser(UserId id, Amount amount);
 
 
-    boolean existsUser(Id id);
+    boolean existsUser(UserId id);
 
     boolean existsUser(String email);
 
-    boolean areFriends(Id user1, Id user2);
+    boolean areFriends(UserId user1, UserId user2);
 }

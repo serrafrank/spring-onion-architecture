@@ -9,6 +9,14 @@ import java.util.UUID;
  */
 public class GenericUUID extends AbstractId<UUID> {
 
+    protected GenericUUID(Id id) {
+        super(UUID.fromString(id.value().toString()));
+    }
+
+    protected GenericUUID() {
+        super();
+    }
+
     /**
      * This method overrides the generateUniqueId() method of the AbstractId class.
      * It generates a random UUID.

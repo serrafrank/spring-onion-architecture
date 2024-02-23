@@ -39,14 +39,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void debitUser(Id id, Amount amount) {
+    public void debitUser(UserId id, Amount amount) {
         UserAggregate debtor = this.getUser(id);
         debtor.getAccount().debit(amount);
         saveUser(debtor);
     }
 
     @Override
-    public void creditUser(Id id, Amount amount) {
+    public void creditUser(UserId id, Amount amount) {
         UserAggregate creditor = this.getUser(id);
         creditor.getAccount().credit(amount);
         saveUser(creditor);
@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean existsUser(Id id) {
+    public boolean existsUser(UserId id) {
         return userRepository.existsById(id);
     }
 
@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean areFriends(Id user1, Id user2) {
+    public boolean areFriends(UserId user1, UserId user2) {
         return this.getUser(user1).isFriend(user2);
     }
 
