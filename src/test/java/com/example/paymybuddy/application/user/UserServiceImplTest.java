@@ -1,9 +1,9 @@
 package com.example.paymybuddy.application.user;
 
+import com.example.paymybuddy.application.user.domain.UserAggregate;
+import com.example.paymybuddy.application.user.domain.UserId;
 import com.example.paymybuddy.core.common.entity.CurrencyCode;
-import com.example.paymybuddy.core.common.valueobject.Amount;
-import com.example.paymybuddy.core.user.UserAggregate;
-import com.example.paymybuddy.core.user.valueobject.UserId;
+import com.example.paymybuddy.core.common.value_object.Amount;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.function.Executable;
@@ -61,7 +61,7 @@ class UserServiceImplTest {
 
     @Test
     void shouldDebitUser() {
-        userAggregate.getAccount().credit(new Amount(BigDecimal.valueOf(100), CurrencyCode.EUR));
+        userAggregate.getAccountAggregate().credit(new Amount(BigDecimal.valueOf(100), CurrencyCode.EUR));
 
         when(userRepository.findUser(id)).thenReturn(Optional.of(userAggregate));
         userService.debitUser(id, new Amount(BigDecimal.valueOf(100), CurrencyCode.EUR));

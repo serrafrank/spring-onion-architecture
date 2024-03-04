@@ -1,9 +1,9 @@
 package com.example.paymybuddy.application.user;
 
+import com.example.paymybuddy.application.user.domain.UserAggregate;
+import com.example.paymybuddy.application.user.domain.UserId;
 import com.example.paymybuddy.core.common.entity.id.Id;
-import com.example.paymybuddy.core.common.valueobject.Amount;
-import com.example.paymybuddy.core.user.UserAggregate;
-import com.example.paymybuddy.core.user.valueobject.UserId;
+import com.example.paymybuddy.core.common.value_object.Amount;
 
 import java.util.Optional;
 

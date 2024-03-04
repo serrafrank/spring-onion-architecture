@@ -1,9 +1,9 @@
 package com.example.paymybuddy.application.user;
 
+import com.example.paymybuddy.application.user.domain.UserAggregate;
+import com.example.paymybuddy.application.user.domain.UserId;
 import com.example.paymybuddy.core.common.entity.id.Id;
-import com.example.paymybuddy.core.common.valueobject.Amount;
-import com.example.paymybuddy.core.user.UserAggregate;
-import com.example.paymybuddy.core.user.valueobject.UserId;
+import com.example.paymybuddy.core.common.value_object.Amount;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -41,14 +41,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public void debitUser(UserId id, Amount amount) {
         UserAggregate debtor = this.getUser(id);
-        debtor.getAccount().debit(amount);
+        debtor.getAccountAggregate().debit(amount);
         saveUser(debtor);
     }
 
     @Override
     public void creditUser(UserId id, Amount amount) {
         UserAggregate creditor = this.getUser(id);
-        creditor.getAccount().credit(amount);
+        creditor.getAccountAggregate().credit(amount);
         saveUser(creditor);
 
     }

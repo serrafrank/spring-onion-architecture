@@ -1,6 +1,7 @@
 package com.example.paymybuddy.core.user;
 
-import com.example.paymybuddy.core.user.valueobject.UserId;
+import com.example.paymybuddy.application.user.domain.UserAggregate;
+import com.example.paymybuddy.application.user.domain.UserId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

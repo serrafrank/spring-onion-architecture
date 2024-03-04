@@ -2,8 +2,8 @@ package com.example.paymybuddy.infrastructure;
 
 import com.example.paymybuddy.application.user.UserRepository;
 import com.example.paymybuddy.core.common.entity.id.Id;
-import com.example.paymybuddy.core.user.UserAggregate;
-import com.example.paymybuddy.core.user.valueobject.UserId;
+import com.example.paymybuddy.application.user.domain.UserAggregate;
+import com.example.paymybuddy.application.user.domain.UserId;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;

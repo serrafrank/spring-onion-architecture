@@ -1,7 +1,7 @@
 package com.example.paymybuddy.core.common.entity.aggregate;
 
 import com.example.paymybuddy.core.common.entity.id.AbstractId;
-import com.example.paymybuddy.core.user.valueobject.UserId;
+import com.example.paymybuddy.application.user.domain.UserId;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
