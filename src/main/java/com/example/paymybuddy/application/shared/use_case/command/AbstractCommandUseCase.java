@@ -2,7 +2,7 @@ package com.example.paymybuddy.application.shared.use_case.command;
 
 import java.lang.reflect.ParameterizedType;
 
-public abstract class AbstractCommandUseCase<T> implements CommandUseCase<T> {
+public abstract class AbstractCommandUseCase<T extends Command> implements CommandUseCase<T> {
 
     public Class<T> getRequestType() {
         return (Class<T>)
