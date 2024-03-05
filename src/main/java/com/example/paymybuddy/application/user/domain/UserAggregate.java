@@ -1,7 +1,7 @@
 package com.example.paymybuddy.application.user.domain;
 
-import com.example.paymybuddy.core.common.entity.aggregate.AbstractAggregateEntity;
-import com.example.paymybuddy.core.common.entity.id.Id;
+import com.example.paymybuddy.application.shared.entity.aggregate.AbstractAggregateEntity;
+import com.example.paymybuddy.application.shared.entity.id.Id;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.Value;

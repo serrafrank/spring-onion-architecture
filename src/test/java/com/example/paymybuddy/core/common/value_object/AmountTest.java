@@ -1,6 +1,7 @@
 package com.example.paymybuddy.core.common.value_object;
 
-import com.example.paymybuddy.core.common.entity.CurrencyCode;
+import com.example.paymybuddy.application.shared.entity.CurrencyCode;
+import com.example.paymybuddy.application.shared.value_object.Amount;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -1,19 +1,15 @@
 package com.example.paymybuddy.application.user.use_case.create_user;
 
-import com.example.paymybuddy.application.EventBus;
-import com.example.paymybuddy.application.CommandUseCase;
-import com.example.paymybuddy.application.QueryBus;
-import com.example.paymybuddy.application.user.spi.UserRepository;
-import com.example.paymybuddy.application.user.query.ExistsUserByEmailQuery;
+import com.example.paymybuddy.application.shared.use_case.command.AbstractCommandUseCase;
 import com.example.paymybuddy.application.user.domain.UserAggregate;
+import com.example.paymybuddy.application.user.spi.UserRepository;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class CreateUserUseCase implements CommandUseCase<CreateUserCommand> {
+public class CreateUserUseCase extends AbstractCommandUseCase<CreateUserCommand> {
 
     private final UserRepository userRepository;
-    private final QueryBus queryBus;
-    private final EventBus eventBus;
+//    private final QueryBus queryBus;
 
     public void execute(CreateUserCommand command){
 
@@ -22,9 +18,9 @@ public class CreateUserUseCase implements CommandUseCase<CreateUserCommand> {
         final String email = command.email();
         final String password = command.password();
 
-        if (queryBus.ask(new ExistsUserByEmailQuery(email))) {
-            throw new IllegalArgumentException("User with email " + email + " already exists");
-        }
+//        if (queryBus.ask(new ExistsUserByEmailQuery(email))) {
+//            throw new IllegalArgumentException("User with email " + email + " already exists");
+//        }
 
         final UserAggregate user = new UserAggregate(
                 firstName,
@@ -35,8 +31,6 @@ public class CreateUserUseCase implements CommandUseCase<CreateUserCommand> {
 
         this.userRepository.save(user);
 
-        final UserCreatedEvent event = new UserCreatedEvent(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail());
-        eventBus.publish(event);
     }
 
 }

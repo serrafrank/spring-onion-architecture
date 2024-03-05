@@ -1,7 +1,7 @@
 package com.example.paymybuddy.application.account.domain;
 
-import com.example.paymybuddy.core.common.entity.id.GenericUUID;
-import com.example.paymybuddy.core.common.entity.id.Id;
+import com.example.paymybuddy.application.shared.entity.id.GenericId;
+import com.example.paymybuddy.application.shared.entity.id.Id;
 
 /**
  * UserId is a class that represents a unique identifier for a user in the system.
@@ -12,7 +12,7 @@ import com.example.paymybuddy.core.common.entity.id.Id;
  * @version 1.0
  * @since 2023.3.3
  */
-public class AccountId extends GenericUUID {
+public class AccountId extends GenericId {
     public AccountId(Id id) {
         super(id);
     }

@@ -1,8 +1,8 @@
 package com.example.paymybuddy.application.account.domain;
 
-import com.example.paymybuddy.core.common.entity.aggregate.AbstractAggregateEntity;
-import com.example.paymybuddy.core.common.entity.id.Id;
-import com.example.paymybuddy.core.common.value_object.Amount;
+import com.example.paymybuddy.application.shared.entity.aggregate.AbstractAggregateEntity;
+import com.example.paymybuddy.application.shared.entity.id.Id;
+import com.example.paymybuddy.application.shared.value_object.Amount;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 

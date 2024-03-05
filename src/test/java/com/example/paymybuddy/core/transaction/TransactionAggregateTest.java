@@ -1,9 +1,9 @@
 package com.example.paymybuddy.core.transaction;
 
 import com.example.paymybuddy.application.transaction.domain.TransactionAggregate;
-import com.example.paymybuddy.core.common.entity.CurrencyCode;
-import com.example.paymybuddy.core.common.entity.id.Id;
-import com.example.paymybuddy.core.common.value_object.Amount;
+import com.example.paymybuddy.application.shared.entity.CurrencyCode;
+import com.example.paymybuddy.application.shared.entity.id.Id;
+import com.example.paymybuddy.application.shared.value_object.Amount;
 import com.example.paymybuddy.application.user.domain.UserId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

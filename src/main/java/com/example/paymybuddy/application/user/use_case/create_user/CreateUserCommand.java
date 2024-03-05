@@ -1,6 +1,6 @@
 package com.example.paymybuddy.application.user.use_case.create_user;
 
-import com.example.paymybuddy.application.Command;
+import com.example.paymybuddy.application.shared.use_case.command.Command;
 import io.micrometer.common.util.StringUtils;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -21,7 +21,6 @@ public record CreateUserCommand(
     private static final String PASSWORD_ERROR_MESSAGE = "Password must contain at least 8 characters, including 1 digit, 1 lowercase letter, 1 uppercase letter, and 1 special character";
 
     public CreateUserCommand {
-
         if (!email.matches(EMAIL_PATTERN)) {
             throw new IllegalArgumentException(EMAIL_ERROR_MESSAGE);
         }

@@ -2,7 +2,7 @@ package com.example.paymybuddy.application.user.spi;
 
 import com.example.paymybuddy.application.user.domain.UserAggregate;
 import com.example.paymybuddy.application.user.domain.UserId;
-import com.example.paymybuddy.core.common.entity.id.Id;
+import com.example.paymybuddy.application.shared.entity.id.Id;
 
 import java.util.Optional;
 
