@@ -2,7 +2,6 @@ package com.example.paymybuddy.infrastructure.account;
 
 import com.example.paymybuddy.application.account.domain.AccountAggregate;
 import com.example.paymybuddy.application.account.spi.AccountRepository;
-
 import com.example.paymybuddy.application.shared.entity.id.Id;
 import org.springframework.stereotype.Repository;
 

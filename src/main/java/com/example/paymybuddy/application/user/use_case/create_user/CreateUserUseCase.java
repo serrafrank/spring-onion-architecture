@@ -1,17 +1,17 @@
 package com.example.paymybuddy.application.user.use_case.create_user;
 
-import com.example.paymybuddy.application.shared.use_case.command.AbstractCommandUseCase;
+import com.example.paymybuddy.application.shared.message_handler.CommandHandler;
 import com.example.paymybuddy.application.user.domain.UserAggregate;
 import com.example.paymybuddy.application.user.spi.UserRepository;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class CreateUserUseCase extends AbstractCommandUseCase<CreateUserCommand> {
+public class CreateUserUseCase implements CommandHandler<CreateUserCommand> {
 
     private final UserRepository userRepository;
 //    private final QueryBus queryBus;
 
-    public void execute(CreateUserCommand command){
+    public void execute(CreateUserCommand command) {
 
         final String firstName = command.firstName();
         final String lastName = command.lastName();

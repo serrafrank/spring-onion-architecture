@@ -2,13 +2,13 @@ package com.example.paymybuddy.application.account.use_case.debit_account;
 
 import com.example.paymybuddy.application.account.domain.AccountAggregate;
 import com.example.paymybuddy.application.account.spi.AccountRepository;
-import com.example.paymybuddy.application.shared.use_case.command.AbstractCommandUseCase;
 import com.example.paymybuddy.application.configuration.DomainService;
+import com.example.paymybuddy.application.shared.message_handler.CommandHandler;
 import lombok.RequiredArgsConstructor;
 
 @DomainService
 @RequiredArgsConstructor
-public class DebitAccountUseCase extends AbstractCommandUseCase<DebitAccountCommand>{
+public class DebitAccountUseCase implements CommandHandler<DebitAccountCommand> {
 
     private final AccountRepository accountRepository;
 

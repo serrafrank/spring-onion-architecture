@@ -1,7 +1,7 @@
 package com.example.paymybuddy.infrastructure;
 
-import com.example.paymybuddy.application.shared.use_case.command.CommandUseCase;
 import com.example.paymybuddy.application.configuration.DomainService;
+import com.example.paymybuddy.application.shared.message_handler.CommandHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -20,15 +20,4 @@ import static org.springframework.context.annotation.FilterType.ANNOTATION;
 )
 @Slf4j
 public class DomainConfiguration {
-
-        private final List<CommandUseCase<?>> commandUseCases;
-
-        public DomainConfiguration(List<CommandUseCase<?>> commandUseCases) {
-                this.commandUseCases = commandUseCases;
-
-                log.info("DomainConfiguration initialized with {} command use cases", commandUseCases.size());
-
-                commandUseCases.forEach(c -> log.info("CommandUseCase: {} -> {}",c.getRequestType().getTypeName(), c.getClass().getSimpleName()));
-        }
-
 }

@@ -1,7 +1,7 @@
 package com.example.paymybuddy.application.transaction.domain;
 
-import com.example.paymybuddy.application.shared.entity.id.Id;
 import com.example.paymybuddy.application.shared.entity.aggregate.AbstractAggregateEntity;
+import com.example.paymybuddy.application.shared.entity.id.Id;
 import com.example.paymybuddy.application.shared.value_object.Amount;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
@@ -42,9 +42,10 @@ public class TransactionAggregate extends AbstractAggregateEntity<TransactionId>
 
     /**
      * Constructor that accepts the ID of the transaction, the ID of the debtor, the ID of the creditor, and the amount of the transaction.
-     * @param debtorId The ID of the debtor.
+     *
+     * @param debtorId   The ID of the debtor.
      * @param creditorId The ID of the creditor.
-     * @param amount The amount of the transaction.
+     * @param amount     The amount of the transaction.
      */
     public TransactionAggregate(@NonNull Id debtorId, @NonNull Id creditorId, @NonNull Amount amount) {
         this.debtorId = debtorId;

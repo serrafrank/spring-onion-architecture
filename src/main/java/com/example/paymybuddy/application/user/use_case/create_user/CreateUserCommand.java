@@ -1,6 +1,6 @@
 package com.example.paymybuddy.application.user.use_case.create_user;
 
-import com.example.paymybuddy.application.shared.use_case.command.Command;
+import com.example.paymybuddy.application.shared.message_handler.Command;
 import io.micrometer.common.util.StringUtils;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -10,7 +10,7 @@ public record CreateUserCommand(
         @Email String email,
         @NotBlank @Pattern(regexp = PASSWORD_PATTERN, message = PASSWORD_ERROR_MESSAGE) String password,
         @NotBlank String firstName,
-        @NotBlank String lastName) implements Command  {
+        @NotBlank String lastName) implements Command {
 
 
     private static final String EMAIL_PATTERN = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
