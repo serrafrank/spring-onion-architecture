@@ -28,7 +28,7 @@ public class ErrorResponse {
 
     /**
      * -- GETTER --
-     *  Returns the request URL.
+     * Returns the request URL.
      *
      * @return The request URL.
      */
@@ -39,7 +39,8 @@ public class ErrorResponse {
 
     /**
      * Constructor for ErrorResponse.
-     * @param request The HttpServletRequest that caused the exception.
+     *
+     * @param request   The HttpServletRequest that caused the exception.
      * @param exception The exception that was thrown.
      */
     public ErrorResponse(HttpServletRequest request, Exception exception) {
@@ -49,7 +50,8 @@ public class ErrorResponse {
 
     /**
      * Constructor for ErrorResponse.
-     * @param request The WebRequest that caused the exception.
+     *
+     * @param request   The WebRequest that caused the exception.
      * @param exception The exception that was thrown.
      */
     public ErrorResponse(WebRequest request, Exception exception) {
@@ -60,9 +62,10 @@ public class ErrorResponse {
 
     /**
      * Constructor for ErrorResponse.
-     * @param request The WebRequest that caused the exception.
+     *
+     * @param request   The WebRequest that caused the exception.
      * @param exception The exception that was thrown.
-     * @param status The HTTP status.
+     * @param status    The HTTP status.
      */
     public ErrorResponse(WebRequest request, Exception exception, HttpStatusCode status) {
         this.exception = exception;
@@ -73,6 +76,7 @@ public class ErrorResponse {
 
     /**
      * Returns the current time.
+     *
      * @return The current date and time.
      */
     public OffsetDateTime getTimestamp() {
@@ -81,6 +85,7 @@ public class ErrorResponse {
 
     /**
      * Returns the status of the response.
+     *
      * @return The status code of the response.
      */
     public int getStatus() {
@@ -89,6 +94,7 @@ public class ErrorResponse {
 
     /**
      * Returns the error message associated with a given HTTP status code.
+     *
      * @return The status code and the reason phrase.
      */
     public String getError() {
@@ -97,6 +103,7 @@ public class ErrorResponse {
 
     /**
      * Returns the exception that was thrown.
+     *
      * @return The name of the exception class.
      */
     public String getException() {
@@ -105,6 +112,7 @@ public class ErrorResponse {
 
     /**
      * Returns the message of the exception.
+     *
      * @return The message of the exception that was thrown.
      */
     public String getMessage() {
@@ -114,6 +122,7 @@ public class ErrorResponse {
     /**
      * Returns a map of field errors.
      * If the exception is an instance of MethodArgumentNotValidException, it collects all the FieldErrors from the BindingResult and converts them into a Map.
+     *
      * @return A map of field names to error messages.
      */
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -135,6 +144,7 @@ public class ErrorResponse {
      * If the exception is an instance of MethodArgumentNotValidException, it returns BAD_REQUEST.
      * If the exception is an instance of GenericApiRequestException, it returns the status of the exception.
      * Otherwise, it returns INTERNAL_SERVER_ERROR.
+     *
      * @return The HTTP status.
      */
     private HttpStatus getHttpStatus() {

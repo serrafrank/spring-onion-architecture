@@ -32,8 +32,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
      * @return a ResponseEntity containing an ErrorResponse
      */
 
-    @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<Object> handleBadRequestException(WebRequest request, BadRequestException exception) {
+    @ExceptionHandler(IllegalRequestException.class)
+    public ResponseEntity<Object> handleBadRequestException(WebRequest request, IllegalRequestException exception) {
         return handleExceptionInternal(exception, null, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
