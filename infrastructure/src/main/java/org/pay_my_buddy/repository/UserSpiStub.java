@@ -1,15 +1,15 @@
-package org.pay_my_buddy.infrastructure.repository;
+package org.pay_my_buddy.repository;
 
 import org.pay_my_buddy.entity.commun.entity.Id;
 import org.pay_my_buddy.entity.user.User;
 import org.pay_my_buddy.entity.user.UserId;
-import org.pay_my_buddy.entity.user.UserRepository;
+import org.pay_my_buddy.entity.user.spi.UserSpi;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public class UserRepositoryStub implements UserRepository {
+public class UserSpiStub implements UserSpi {
     @Override
     public Optional<User> findUser(Id id) {
         return Optional.empty();

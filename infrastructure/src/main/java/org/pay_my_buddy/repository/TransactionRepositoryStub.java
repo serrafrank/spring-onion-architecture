@@ -2,7 +2,7 @@ package org.pay_my_buddy.repository;
 
 import org.pay_my_buddy.entity.transaction.Transaction;
 import org.pay_my_buddy.entity.transaction.TransactionId;
-import org.pay_my_buddy.entity.transaction.TransactionRepository;
+import org.pay_my_buddy.entity.transaction.spi.TransactionRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
