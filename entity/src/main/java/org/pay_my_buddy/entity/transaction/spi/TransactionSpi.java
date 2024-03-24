@@ -5,10 +5,10 @@ import org.pay_my_buddy.entity.transaction.TransactionId;
 
 import java.util.Optional;
 
-public interface TransactionRepository {
+public interface TransactionSpi {
 
-    Optional<Transaction> findTransaction(TransactionId id);
+    Optional<Transaction> findById(TransactionId id);
 
-    TransactionId save(Transaction transaction);
+    void save(Transaction transaction);
 
 }
