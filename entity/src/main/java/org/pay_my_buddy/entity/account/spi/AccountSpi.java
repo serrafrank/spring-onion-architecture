@@ -11,6 +11,6 @@ public interface AccountSpi {
 
     Optional<Account> findByUserId(Id userId);
 
-    Account save(Account accountEntity);
+    void save(Account accountEntity);
 
 }

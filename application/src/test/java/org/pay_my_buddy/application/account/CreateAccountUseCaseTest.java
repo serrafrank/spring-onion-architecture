@@ -5,7 +5,6 @@ import com.tngtech.jgiven.junit5.SimpleScenarioTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.pay_my_buddy.entity.account.AccountAlreadyExistsException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith({JGivenExtension.class, SpringExtension.class})
