@@ -2,29 +2,31 @@ package org.pay_my_buddy.application.user;
 
 import lombok.RequiredArgsConstructor;
 import org.pay_my_buddy.entity.commun.api.command.CommandHandler;
-import org.pay_my_buddy.entity.commun.api.query.QueryBus;
+import org.pay_my_buddy.entity.commun.api.query.QueryApi;
 import org.pay_my_buddy.entity.commun.ApplicationService;
-import org.pay_my_buddy.entity.user.CreateUserCommand;
-import org.pay_my_buddy.entity.user.ExistsUserByEmailQuery;
+import org.pay_my_buddy.entity.user.PasswordEncoderTool;
+import org.pay_my_buddy.entity.user.api.CreateUserCommand;
+import org.pay_my_buddy.entity.user.api.ExistsUserByEmailQuery;
 import org.pay_my_buddy.entity.user.User;
-import org.pay_my_buddy.entity.user.UserRepository;
+import org.pay_my_buddy.entity.user.spi.UserSpi;
 
 @ApplicationService
 @RequiredArgsConstructor
 public class CreateUserUseCase implements CommandHandler<CreateUserCommand> {
 
-    private final UserRepository userRepository;
-    private final QueryBus queryApi;
+    private final UserSpi userSpi;
+    private final QueryApi queryApi;
+    private final PasswordEncoderTool passwordEncoder;
 
     public void handle(CreateUserCommand command) {
 
         final String firstName = command.firstName();
         final String lastName = command.lastName();
         final String email = command.email();
-        final String password = command.password();
+        final String password = passwordEncoder.encode(command.password());
 
         if (userAlreadyExists(email)) {
-            throw new IllegalArgumentException("User with email " + email + " already exists");
+            throw new EmailAlreadyExistsException(email);
         }
 
         final User user = new User(
@@ -34,12 +36,12 @@ public class CreateUserUseCase implements CommandHandler<CreateUserCommand> {
                 password
         );
 
-        this.userRepository.save(user);
+        this.userSpi.save(user);
 
     }
 
     private Boolean userAlreadyExists(String email) {
-        return queryApi.execute(new ExistsUserByEmailQuery(email));
+        return queryApi.request(new ExistsUserByEmailQuery(email));
     }
 
 }

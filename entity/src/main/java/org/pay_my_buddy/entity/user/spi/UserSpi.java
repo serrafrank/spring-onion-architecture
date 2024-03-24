@@ -12,11 +12,9 @@ public interface UserSpi {
 
     Optional<User> findUser(Id id);
 
-    UserId saveUser(User user);
-
     boolean existsById(Id id);
 
     boolean existsByEmail(String email);
 
-    User save(User user);
+    void save(User user);
 }
