@@ -2,25 +2,23 @@ package org.pay_my_buddy.application.transaction;
 
 import lombok.RequiredArgsConstructor;
 import org.pay_my_buddy.entity.account.Amount;
-import org.pay_my_buddy.entity.account.CreditAccountCommand;
-import org.pay_my_buddy.entity.account.DebitAccountCommand;
-import org.pay_my_buddy.entity.commun.api.command.CommandBus;
+import org.pay_my_buddy.entity.account.api.CreditAccountCommand;
+import org.pay_my_buddy.entity.account.api.DebitAccountCommand;
+import org.pay_my_buddy.entity.commun.api.ApiProvider;
 import org.pay_my_buddy.entity.commun.api.command.CommandHandler;
-import org.pay_my_buddy.entity.commun.api.query.QueryBus;
 import org.pay_my_buddy.entity.commun.entity.Id;
 import org.pay_my_buddy.entity.commun.ApplicationService;
-import org.pay_my_buddy.entity.transaction.CreateTransactionCommand;
+import org.pay_my_buddy.entity.transaction.api.CreateTransactionCommand;
 import org.pay_my_buddy.entity.transaction.Transaction;
-import org.pay_my_buddy.entity.transaction.TransactionRepository;
-import org.pay_my_buddy.entity.user.AreFriendsQuery;
+import org.pay_my_buddy.entity.transaction.spi.TransactionSpi;
+import org.pay_my_buddy.entity.user.api.AreFriendsQuery;
 
 @ApplicationService
 @RequiredArgsConstructor
 public class CreateTransactionUseCase implements CommandHandler<CreateTransactionCommand> {
 
-    private final TransactionRepository transactionRepository;
-    private final QueryBus queryApi;
-    private final CommandBus commandApi;
+    private final TransactionSpi transactionSpi;
+    private final ApiProvider apiProvider;
 
     @Override
     public void handle(CreateTransactionCommand createTransactionCommand) {
@@ -38,18 +36,18 @@ public class CreateTransactionUseCase implements CommandHandler<CreateTransactio
             throw new IllegalArgumentException("Debtor and creditor are not friends");
         }
 
-        commandApi.execute(new DebitAccountCommand(debtorId, amount));
-        commandApi.execute(new CreditAccountCommand(creditorId, amount));
+        apiProvider.execute(new DebitAccountCommand(debtorId, amount));
+        apiProvider.execute(new CreditAccountCommand(creditorId, amount));
 
         Transaction transaction = new Transaction(debtorId, creditorId, amount);
 
-        transactionRepository.save(transaction);
+        transactionSpi.save(transaction);
 
     }
 
     private Boolean areFriends(Id debtorId, Id creditorId) {
         final var query = new AreFriendsQuery(debtorId, creditorId);
-        return queryApi.execute(query);
+        return apiProvider.request(query);
     }
 
 
