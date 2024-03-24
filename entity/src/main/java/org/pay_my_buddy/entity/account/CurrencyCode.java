@@ -3,8 +3,6 @@ package org.pay_my_buddy.entity.account;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.stream.Stream;
-
 /**
  * CurrencyCode is an enum that represents the different types of currencies.
  * It contains the currency codes for Euro (EUR), British Pound (GBP), Japanese Yen (JPY), and US Dollar (USD).

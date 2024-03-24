@@ -17,26 +17,26 @@ public class InMemoryTransactionSpi implements TransactionSpi {
     @Override
     public Optional<Transaction> findById(TransactionId id) {
         return
-            transactions.stream()
-                .filter(transaction -> transaction.getId().equals(id))
-                    .reduce((a, b) -> {
-                        throw new IllegalStateException("Multiple transactions found for id: " + id);
-                    });
+                transactions.stream()
+                        .filter(transaction -> transaction.getId().equals(id))
+                        .reduce((a, b) -> {
+                            throw new IllegalStateException("Multiple transactions found for id: " + id);
+                        });
     }
 
     @Override
     public void save(Transaction transaction) {
-       transactions.stream()
+        transactions.stream()
                 .filter(t -> t.getId().equals(transaction.getId()))
                 .reduce((a, b) -> {
                     throw new IllegalStateException("Multiple transactions found for id: " + transaction.getId());
                 })
                 .ifPresentOrElse(
-                    t -> {
-                        transactions.remove(t);
-                        transactions.add(transaction);
-                    },
-                    () -> transactions.add(transaction)
+                        t -> {
+                            transactions.remove(t);
+                            transactions.add(transaction);
+                        },
+                        () -> transactions.add(transaction)
                 );
     }
 }

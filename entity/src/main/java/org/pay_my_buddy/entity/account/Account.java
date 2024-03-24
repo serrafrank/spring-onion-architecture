@@ -2,7 +2,6 @@ package org.pay_my_buddy.entity.account;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.Value;
 import lombok.experimental.SuperBuilder;
 import org.pay_my_buddy.entity.account.exception.CurrencyMismatchException;
 import org.pay_my_buddy.entity.account.exception.InsufficientFundsException;
@@ -39,7 +38,6 @@ public class Account extends AbstractModel<AccountId> {
     public static Account of(Id userId) {
         return new Account(AccountId.of(), userId, Amount.of());
     }
-
 
 
     public static Account of(Id userId, Amount balance) {

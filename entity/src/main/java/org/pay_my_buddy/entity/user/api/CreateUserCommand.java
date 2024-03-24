@@ -17,7 +17,7 @@ public record CreateUserCommand(
     private static final String PASSWORD_ERROR_MESSAGE = "Password must contain at least 8 characters, including 1 digit, 1 lowercase letter, 1 uppercase letter, and 1 special character";
 
     public CreateUserCommand {
-        if(!emailValidator.isValid(email)) {
+        if (!emailValidator.isValid(email)) {
             throw new IllegalArgumentException("Invalid email");
         }
 

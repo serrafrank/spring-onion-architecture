@@ -66,14 +66,14 @@ public class MovementAccountStage extends Stage<MovementAccountStage> {
         this.command = new DebitAccountCommand(this.userId, Amount.of(value, currency));
         return self();
     }
+
     public MovementAccountStage a_command_to_credit_account_of_$_EUR(Integer amount) {
         final BigDecimal value = BigDecimal.valueOf(amount);
         final CurrencyCode currency = CurrencyCode.EUR;
         this.command = new CreditAccountCommand(this.userId, Amount.of(value, currency));
         return self();
     }
-    
-    
+
 
     public MovementAccountStage the_account_is_debited() {
         Assertions.assertNotNull(this.command);

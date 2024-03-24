@@ -10,7 +10,7 @@ import org.pay_my_buddy.entity.commun.api.Handler;
  * @param <Q> The type of the query, which extends Query.
  * @param <R> The type of the result of the query.
  */
-public interface QueryHandler<Q extends Query<R>, R>  extends Handler<Q> {
+public interface QueryHandler<Q extends Query<R>, R> extends Handler<Q> {
 
     R handle(Q query);
 }

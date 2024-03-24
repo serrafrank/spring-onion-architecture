@@ -17,40 +17,40 @@ public class InMemoryUserSpi implements UserSpi {
     @Override
     public Optional<User> findUser(Id id) {
         return
-            users.stream()
-                .filter(user -> user.getId().equals(id))
-                    .reduce((a, b) -> {
-                        throw new IllegalStateException("Multiple users found for id: " + id);
-                    });
+                users.stream()
+                        .filter(user -> user.getId().equals(id))
+                        .reduce((a, b) -> {
+                            throw new IllegalStateException("Multiple users found for id: " + id);
+                        });
     }
 
     @Override
     public boolean existsById(Id id) {
         return
-            users.stream()
-                .anyMatch(user -> user.getId().equals(id));
+                users.stream()
+                        .anyMatch(user -> user.getId().equals(id));
     }
 
     @Override
     public boolean existsByEmail(String email) {
         return
-            users.stream()
-                .anyMatch(user -> user.getEmail().equals(email));
+                users.stream()
+                        .anyMatch(user -> user.getEmail().equals(email));
     }
 
     @Override
     public void save(User user) {
-       users.stream()
+        users.stream()
                 .filter(u -> u.getId().equals(user.getId()))
-               .reduce((a, b) -> {
-                   throw new IllegalStateException("Multiple users found for id: " + user.getId());
-               })
+                .reduce((a, b) -> {
+                    throw new IllegalStateException("Multiple users found for id: " + user.getId());
+                })
                 .ifPresentOrElse(
-                     u -> {
-                          users.remove(u);
-                          users.add(user);
-                     },
-                     () -> users.add(user)
+                        u -> {
+                            users.remove(u);
+                            users.add(user);
+                        },
+                        () -> users.add(user)
                 );
     }
 }

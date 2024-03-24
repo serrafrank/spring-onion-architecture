@@ -20,7 +20,7 @@ public interface ApiProvider {
 
     QueryApi getQueryApi();
 
-/**
+    /**
      * This method is responsible for dispatching a command to its respective handler.
      *
      * @param command The command to execute.

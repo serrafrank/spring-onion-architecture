@@ -61,7 +61,7 @@ public class Amount {
     /**
      * Static factory method to create an amount with a specified value and currency.
      *
-     * @param amount         The value of the amount.
+     * @param amount       The value of the amount.
      * @param currencyCode The currency of the amount.
      */
     public static Amount of(BigDecimal amount, CurrencyCode currencyCode) {

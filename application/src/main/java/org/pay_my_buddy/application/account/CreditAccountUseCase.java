@@ -2,10 +2,10 @@ package org.pay_my_buddy.application.account;
 
 import lombok.RequiredArgsConstructor;
 import org.pay_my_buddy.entity.account.Account;
-import org.pay_my_buddy.entity.account.spi.AccountSpi;
 import org.pay_my_buddy.entity.account.api.CreditAccountCommand;
-import org.pay_my_buddy.entity.commun.api.command.CommandHandler;
+import org.pay_my_buddy.entity.account.spi.AccountSpi;
 import org.pay_my_buddy.entity.commun.ApplicationService;
+import org.pay_my_buddy.entity.commun.api.command.CommandHandler;
 
 @ApplicationService
 @RequiredArgsConstructor

@@ -4,9 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.pay_my_buddy.entity.commun.api.DuplicateHandlerFoundException;
 import org.pay_my_buddy.entity.commun.api.command.Command;
 import org.pay_my_buddy.entity.commun.api.command.CommandHandler;
-import org.pay_my_buddy.entity.commun.api.query.QueryHandler;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.core.GenericTypeResolver;
 import org.springframework.stereotype.Component;
 

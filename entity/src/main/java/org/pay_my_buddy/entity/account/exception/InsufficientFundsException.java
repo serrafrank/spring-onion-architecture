@@ -8,7 +8,7 @@ import org.pay_my_buddy.entity.exception.IllegalRequestException;
  */
 public class InsufficientFundsException extends IllegalRequestException {
 
-            public InsufficientFundsException() {
-                super("Insufficient funds");
-            }
+    public InsufficientFundsException() {
+        super("Insufficient funds");
+    }
 }

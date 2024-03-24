@@ -8,7 +8,9 @@ import org.pay_my_buddy.entity.commun.api.query.QueryHandler;
 import org.springframework.core.GenericTypeResolver;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**

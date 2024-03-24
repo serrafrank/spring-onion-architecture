@@ -7,8 +7,8 @@ import org.junit.jupiter.api.Assertions;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.pay_my_buddy.entity.account.Account;
-import org.pay_my_buddy.entity.account.spi.AccountSpi;
 import org.pay_my_buddy.entity.account.api.CreateAccountCommand;
+import org.pay_my_buddy.entity.account.spi.AccountSpi;
 import org.pay_my_buddy.entity.commun.entity.GenericId;
 import org.pay_my_buddy.entity.commun.entity.Id;
 
