@@ -15,7 +15,7 @@ public class AccountTestStages extends Stage<AccountTestStages> {
     private final Id userId = GenericId.of();
 
 
-    private Account account = new Account(GenericId.of());
+    private Account account = Account.of(GenericId.of());
     private BigDecimal initialBalance = BigDecimal.TEN;
     private CurrencyCode currency = CurrencyCode.EUR;
 
@@ -30,7 +30,7 @@ public class AccountTestStages extends Stage<AccountTestStages> {
     }
 
     public AccountTestStages the_account_is_debited_of_$_$(int amount, CurrencyCode currency) {
-        final Amount amountToDebit = new Amount(BigDecimal.valueOf(amount), currency);
+        final Amount amountToDebit = Amount.of(BigDecimal.valueOf(amount), currency);
         try {
             this.account.debit(amountToDebit);
         } catch (Exception e) {
@@ -40,7 +40,7 @@ public class AccountTestStages extends Stage<AccountTestStages> {
     }
 
     public AccountTestStages the_account_is_credited_of_$_$(int amount, CurrencyCode currency) {
-        final Amount amountToCredit = new Amount(BigDecimal.valueOf(amount), currency);
+        final Amount amountToCredit = Amount.of(BigDecimal.valueOf(amount), currency);
         try {
             this.account.credit(amountToCredit);
         } catch (Exception e) {
@@ -71,7 +71,7 @@ public class AccountTestStages extends Stage<AccountTestStages> {
         return Account.builder()
                 .id(accountId)
                 .userId(userId)
-                .balance(new Amount(initialBalance, currency))
+                .balance(Amount.of(initialBalance, currency))
                 .build();
     }
 }

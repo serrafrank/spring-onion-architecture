@@ -16,7 +16,7 @@ public class DebitAccountUseCase implements CommandHandler<DebitAccountCommand> 
     @Override
     public void handle(DebitAccountCommand debitAccountCommand) {
         final Account account = accountSpi.findByUserId(debitAccountCommand.userId())
-                .orElseThrow(() -> new RuntimeException("Account not found"))
+                .orElseThrow(() -> new AccountNotExistsException(debitAccountCommand.userId()))
                 .debit(debitAccountCommand.amount());
         accountSpi.save(account);
     }

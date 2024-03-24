@@ -29,14 +29,25 @@ public class Account extends AbstractModel<AccountId> {
      */
     private Amount balance;
 
-    public Account(Id userId) {
-        this(userId, new Amount());
-    }
 
-    public Account(Id userId, Amount balance) {
-        super(AccountId.of());
+    private Account(AccountId id, Id userId, Amount balance) {
+        super(id);
         this.userId = userId;
         this.balance = balance;
+    }
+
+    public static Account of(Id userId) {
+        return new Account(AccountId.of(), userId, Amount.of());
+    }
+
+
+
+    public static Account of(Id userId, Amount balance) {
+        return new Account(AccountId.of(), userId, balance);
+    }
+
+    public static Account of(AccountId id, Id userId, Amount balance) {
+        return new Account(id, userId, balance);
     }
 
     /**

@@ -14,12 +14,12 @@ class AmountTestStages extends Stage<AmountTestStages> {
     private Exception exception;
 
     public AmountTestStages an_amount_of_$_$(int value, CurrencyCode currency) {
-        this.amount = new Amount(BigDecimal.valueOf(value), currency);
+        this.amount = Amount.of(BigDecimal.valueOf(value), currency);
         return self();
     }
 
     public AmountTestStages the_amount_is_debited_of_$_$(int value, CurrencyCode currency) {
-        final var amountToDebit = new Amount(BigDecimal.valueOf(value), currency);
+        final var amountToDebit = Amount.of(BigDecimal.valueOf(value), currency);
         try {
             this.amount = this.amount.subtract(amountToDebit);
         } catch (Exception e) {
@@ -30,7 +30,7 @@ class AmountTestStages extends Stage<AmountTestStages> {
 
     public AmountTestStages the_amount_is_credited_of_$_$(int value, CurrencyCode currency) {
         try {
-            this.amount = this.amount.add(new Amount(BigDecimal.valueOf(value), currency));
+            this.amount = this.amount.add(Amount.of(BigDecimal.valueOf(value), currency));
         } catch (Exception e) {
             this.exception = e;
         }

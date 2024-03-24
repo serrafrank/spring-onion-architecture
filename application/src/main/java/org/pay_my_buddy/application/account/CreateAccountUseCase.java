@@ -21,7 +21,7 @@ public class CreateAccountUseCase implements CommandHandler<CreateAccountCommand
             throw new AccountAlreadyExistsException(createAccountCommand.userId());
         }
 
-        Account account = new Account(createAccountCommand.userId());
+        Account account = Account.of(createAccountCommand.userId());
         accountSpi.save(account);
     }
 }

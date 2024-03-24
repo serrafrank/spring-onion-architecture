@@ -17,7 +17,7 @@ public class CreditAccountUseCase implements CommandHandler<CreditAccountCommand
     @Override
     public void handle(CreditAccountCommand creditAccountCommand) {
         final Account account = accountSpi.findByUserId(creditAccountCommand.userId())
-                .orElseThrow(() -> new RuntimeException("Account not found"))
+                .orElseThrow(() -> new AccountNotExistsException(creditAccountCommand.userId()))
                 .credit(creditAccountCommand.amount());
         accountSpi.save(account);
     }

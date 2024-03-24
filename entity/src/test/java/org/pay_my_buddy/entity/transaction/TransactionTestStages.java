@@ -31,7 +31,7 @@ class TransactionTestStages extends Stage<TransactionTestStages> {
     }
 
     public TransactionTestStages an_amount_of_$_$(int value, CurrencyCode currency) {
-        this.amount = new Amount(BigDecimal.valueOf(value), currency);
+        this.amount = Amount.of(BigDecimal.valueOf(value), currency);
         return self();
     }
 

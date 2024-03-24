@@ -40,22 +40,32 @@ public class Amount {
     }
 
     /**
-     * Default constructor that initializes the amount to zero and the currency to the default currency.
-     * The default currency is EUR.
-     * The default amount is zero.
-     */
-    public Amount() {
-        this(BigDecimal.ZERO, Currency.getInstance(DEFAULT_CURRENCY.getCode()));
-    }
-
-    /**
      * Constructor that accepts a BigDecimal value for the amount and a CurrencyCode.
      *
      * @param value    The BigDecimal value of the amount.
      * @param currency The CurrencyCode of the amount.
      */
-    public Amount(BigDecimal value, CurrencyCode currency) {
+    private Amount(BigDecimal value, CurrencyCode currency) {
         this(value, Currency.getInstance(currency.getCode()));
+    }
+
+    /**
+     * Default constructor that initializes the amount to zero and the currency to the default currency.
+     * The default currency is EUR.
+     * The default amount is zero.
+     */
+    public static Amount of() {
+        return new Amount(BigDecimal.ZERO, DEFAULT_CURRENCY);
+    }
+
+    /**
+     * Static factory method to create an amount with a specified value and currency.
+     *
+     * @param amount         The value of the amount.
+     * @param currencyCode The currency of the amount.
+     */
+    public static Amount of(BigDecimal amount, CurrencyCode currencyCode) {
+        return new Amount(amount, Currency.getInstance(currencyCode.getCode()));
     }
 
     /**
