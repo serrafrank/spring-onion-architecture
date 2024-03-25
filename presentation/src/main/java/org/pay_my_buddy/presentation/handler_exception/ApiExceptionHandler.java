@@ -32,36 +32,39 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
      * @return a ResponseEntity containing an ErrorResponse
      */
 
-    @ExceptionHandler(IllegalRequestException.class)
-    public ResponseEntity<Object> handleBadRequestException(WebRequest request, IllegalRequestException exception) {
-        return handleExceptionInternal(exception, null, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    @ExceptionHandler({IllegalRequestException.class, IllegalArgumentException.class})
+    public ResponseEntity<Object> handleBadRequestException(WebRequest request, Exception exception) {
+        return handle(exception, HttpStatus.BAD_REQUEST, request);
     }
 
     @ExceptionHandler(ConflictException.class)
     public ResponseEntity<Object> handleConflictException(WebRequest request, ConflictException exception) {
-        return handleExceptionInternal(exception, null, new HttpHeaders(), HttpStatus.CONFLICT, request);
+        return handle(exception, HttpStatus.CONFLICT, request);
     }
 
     @ExceptionHandler(ForbiddenException.class)
     public ResponseEntity<Object> handleForbiddenException(WebRequest request, ForbiddenException exception) {
-        return handleExceptionInternal(exception, null, new HttpHeaders(), HttpStatus.FORBIDDEN, request);
+        return handle(exception, HttpStatus.FORBIDDEN, request);
     }
 
     @ExceptionHandler(InternalErrorException.class)
     public ResponseEntity<Object> handleInternalErrorException(WebRequest request, InternalErrorException exception) {
-        return handleExceptionInternal(exception, null, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
+        return handle(exception, HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<Object> handleNotFoundException(WebRequest request, NotFoundException exception) {
-        return handleExceptionInternal(exception, null, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+        return handle(exception, HttpStatus.NOT_FOUND, request);
     }
 
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<Object> handleUnauthorizedException(WebRequest request, UnauthorizedException exception) {
-        return handleExceptionInternal(exception, null, new HttpHeaders(), HttpStatus.UNAUTHORIZED, request);
+        return handle(exception, HttpStatus.UNAUTHORIZED, request);
     }
-
+    
+    private ResponseEntity<Object> handle(Exception exception, HttpStatus status, WebRequest request) {
+        return super.handleExceptionInternal(exception,null, new HttpHeaders(), status, request);
+    }
 
     @Override
     @Nullable
