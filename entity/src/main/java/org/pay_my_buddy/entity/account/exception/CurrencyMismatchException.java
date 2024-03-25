@@ -1,6 +1,6 @@
 package org.pay_my_buddy.entity.account.exception;
 
-import org.pay_my_buddy.entity.exception.IllegalRequestException;
+import org.pay_my_buddy.entity.commun.exception.generic.IllegalRequestException;
 
 /**
  * InsufficientFundsException is an exception that is thrown when the account has insufficient funds to perform a transaction.

@@ -1,4 +1,4 @@
-package org.pay_my_buddy.entity.account;
+package org.pay_my_buddy.entity.commun.value_object;
 
 import lombok.Getter;
 import org.pay_my_buddy.entity.account.exception.CurrencyMismatchException;

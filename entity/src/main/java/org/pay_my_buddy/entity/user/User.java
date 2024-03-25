@@ -6,6 +6,8 @@ import lombok.Value;
 import lombok.experimental.SuperBuilder;
 import org.pay_my_buddy.entity.commun.entity.AbstractModel;
 import org.pay_my_buddy.entity.commun.entity.Id;
+import org.pay_my_buddy.entity.commun.value_object.Email;
+import org.pay_my_buddy.entity.commun.value_object.EncodedPassword;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -33,12 +35,12 @@ public class User extends AbstractModel<UserId> {
     /**
      * The email of the user.
      */
-    String email;
+    Email email;
 
     /**
      * The password of the user.
      */
-    String password;
+    EncodedPassword password;
 
     /**
      * The friends of the user.
@@ -53,7 +55,7 @@ public class User extends AbstractModel<UserId> {
      * @param email     The email of the user.
      * @param password  The password of the user.
      */
-    public User(@NonNull String firstName, @NonNull String lastName, @NonNull String email, @NonNull String password) {
+    public User(@NonNull String firstName, @NonNull String lastName, @NonNull Email email, @NonNull EncodedPassword password) {
         super(UserId.of());
         this.firstName = firstName;
         this.lastName = lastName;
@@ -71,7 +73,7 @@ public class User extends AbstractModel<UserId> {
      * @param password  The password of the user.
      * @param friends   The friends of the user.
      */
-    public User(UserId id, String firstName, String lastName, String email, String password, Set<Id> friends) {
+    public User(UserId id, String firstName, String lastName, Email email, EncodedPassword password, Set<Id> friends) {
         super(id);
         this.firstName = firstName;
         this.lastName = lastName;
@@ -137,7 +139,7 @@ public class User extends AbstractModel<UserId> {
      *
      * @param email The new email of the user.
      */
-    public User updateEmail(@NonNull String email) {
+    public User updateEmail(@NonNull Email email) {
         return new User(getId(), getFirstName(), getLastName(), email, getPassword(), getFriends());
     }
 
@@ -146,7 +148,7 @@ public class User extends AbstractModel<UserId> {
      *
      * @param password The new password of the user.
      */
-    public User updatePassword(@NonNull String password) {
+    public User updatePassword(@NonNull EncodedPassword password) {
         return new User(getId(), getFirstName(), getLastName(), getEmail(), password, getFriends());
     }
 

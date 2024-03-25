@@ -5,6 +5,8 @@ import com.tngtech.jgiven.annotation.Quoted;
 import com.tngtech.jgiven.integration.spring.JGivenStage;
 import org.pay_my_buddy.entity.commun.entity.GenericId;
 import org.pay_my_buddy.entity.commun.entity.Id;
+import org.pay_my_buddy.entity.commun.value_object.Email;
+import org.pay_my_buddy.entity.commun.value_object.EncodedPassword;
 
 import java.util.Set;
 
@@ -25,31 +27,31 @@ class UserTestStages extends Stage<UserTestStages> {
     private Exception exception;
 
     public UserTestStages a_user() {
-        this.user = new User(userId, firstName, lastName, email, password, Set.of(friendId));
+        createUser();
         return self();
     }
 
     public UserTestStages the_user_update_his_first_name_to_$(@Quoted String firstName) {
         this.firstName = firstName;
-        a_user();
+        createUser();
         return self();
     }
 
     public UserTestStages the_user_update_his_last_name_to_$(@Quoted String lastName) {
         this.lastName = lastName;
-        a_user();
+        createUser();
         return self();
     }
 
     public UserTestStages the_user_update_his_email_to_$(@Quoted String email) {
         this.email = email;
-        a_user();
+        createUser();
         return self();
     }
 
     public UserTestStages the_user_update_his_password_to_$(@Quoted String password) {
         this.password = password;
-        a_user();
+        createUser();
         return self();
     }
 
@@ -84,8 +86,8 @@ class UserTestStages extends Stage<UserTestStages> {
         assertThat(this.user.getId()).isEqualTo(this.userId);
         assertThat(this.user.getFirstName()).isEqualTo(this.firstName);
         assertThat(this.user.getLastName()).isEqualTo(this.lastName);
-        assertThat(this.user.getEmail()).isEqualTo(this.email);
-        assertThat(this.user.getPassword()).isEqualTo(this.password);
+        assertThat(this.user.getEmail().value()).isEqualTo(this.email);
+        assertThat(this.user.getPassword().value()).isEqualTo(this.password);
         return self();
     }
 
@@ -103,5 +105,10 @@ class UserTestStages extends Stage<UserTestStages> {
     public UserTestStages no_exception_is_thrown() {
         assertThat(this.exception).isNull();
         return self();
+    }
+
+    private void createUser() {
+
+        this.user = new User(userId, firstName, lastName, Email.of(email), EncodedPassword.of(password), Set.of(friendId));
     }
 }

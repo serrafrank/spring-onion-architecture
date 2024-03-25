@@ -1,7 +1,7 @@
 package org.pay_my_buddy.application.account;
 
 import org.pay_my_buddy.entity.commun.entity.Id;
-import org.pay_my_buddy.entity.exception.ConflictException;
+import org.pay_my_buddy.entity.commun.exception.generic.ConflictException;
 
 public class AccountAlreadyExistsException extends ConflictException {
     public AccountAlreadyExistsException(Id id) {

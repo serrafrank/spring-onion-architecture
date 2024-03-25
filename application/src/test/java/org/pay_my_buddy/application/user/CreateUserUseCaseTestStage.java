@@ -9,6 +9,9 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.pay_my_buddy.entity.commun.api.query.QueryApi;
+import org.pay_my_buddy.entity.commun.value_object.Email;
+import org.pay_my_buddy.entity.commun.value_object.EncodedPassword;
+import org.pay_my_buddy.entity.commun.value_object.RawPassword;
 import org.pay_my_buddy.entity.user.PasswordEncoderTool;
 import org.pay_my_buddy.entity.user.User;
 import org.pay_my_buddy.entity.user.api.CreateUserCommand;
@@ -52,7 +55,7 @@ class CreateUserUseCaseTestStage extends Stage<CreateUserUseCaseTestStage> {
 
     @BeforeScenario
     void setUp() {
-        lenient().when(passwordEncoder.encode(any())).thenAnswer(i -> i.getArguments()[0] + passwordSuffix);
+        lenient().when(passwordEncoder.encode(any(RawPassword.class))).thenAnswer(i -> encodePassword(i.getArguments()[0]));
     }
 
     public CreateUserUseCaseTestStage a_new_user() {
@@ -86,15 +89,15 @@ class CreateUserUseCaseTestStage extends Stage<CreateUserUseCaseTestStage> {
 
 
     public CreateUserUseCaseTestStage the_email_is_not_used() {
-        final ExistsUserByEmailQuery existsUserByEmailQuery = new ExistsUserByEmailQuery(email);
-        Mockito.when(queryApi.request(new ExistsUserByEmailQuery(email))).thenReturn(false);
+        final ExistsUserByEmailQuery existsUserByEmailQuery = new ExistsUserByEmailQuery(Email.of(email));
+        Mockito.when(queryApi.request(existsUserByEmailQuery)).thenReturn(false);
         return self();
     }
 
 
     public CreateUserUseCaseTestStage the_email_is_already_used() {
-        final ExistsUserByEmailQuery existsUserByEmailQuery = new ExistsUserByEmailQuery(email);
-        Mockito.when(queryApi.request(new ExistsUserByEmailQuery(email))).thenReturn(true);
+        final ExistsUserByEmailQuery existsUserByEmailQuery = new ExistsUserByEmailQuery(Email.of(email));
+        Mockito.when(queryApi.request(existsUserByEmailQuery)).thenReturn(true);
         return self();
     }
 
@@ -113,8 +116,8 @@ class CreateUserUseCaseTestStage extends Stage<CreateUserUseCaseTestStage> {
         final User user = userArgumentCaptor.getValue();
         assertEquals(firstName, user.getFirstName());
         assertEquals(lastName, user.getLastName());
-        assertEquals(email, user.getEmail());
-        assertEquals(password + passwordSuffix, user.getPassword());
+        assertEquals(email, user.getEmail().value());
+        assertEquals(encodePassword(password), user.getPassword());
         return self();
     }
 
@@ -131,8 +134,19 @@ class CreateUserUseCaseTestStage extends Stage<CreateUserUseCaseTestStage> {
 
 
     private void createCommand() {
-        this.command = new CreateUserCommand(email, password, firstName, lastName);
+        this.command = new CreateUserCommand(Email.of(email), RawPassword.of(password), firstName, lastName);
     }
 
+    private EncodedPassword encodePassword(Object password) {
+        switch (password) {
+            case RawPassword rawPassword -> {
+                return encodePassword(rawPassword.value());
+            }
+            case String string -> {
+                return encodePassword(string);
+            }
+            default -> throw new IllegalArgumentException("Unsupported password type: " + password.getClass());
+        }
+    }
 
 }

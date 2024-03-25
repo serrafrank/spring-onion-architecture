@@ -1,13 +1,13 @@
 package org.pay_my_buddy.application.transaction;
 
 import lombok.RequiredArgsConstructor;
-import org.pay_my_buddy.entity.account.Amount;
 import org.pay_my_buddy.entity.account.api.CreditAccountCommand;
 import org.pay_my_buddy.entity.account.api.DebitAccountCommand;
 import org.pay_my_buddy.entity.commun.ApplicationService;
 import org.pay_my_buddy.entity.commun.api.ApiProvider;
 import org.pay_my_buddy.entity.commun.api.command.CommandHandler;
 import org.pay_my_buddy.entity.commun.entity.Id;
+import org.pay_my_buddy.entity.commun.value_object.Amount;
 import org.pay_my_buddy.entity.transaction.Transaction;
 import org.pay_my_buddy.entity.transaction.api.CreateTransactionCommand;
 import org.pay_my_buddy.entity.transaction.spi.TransactionSpi;

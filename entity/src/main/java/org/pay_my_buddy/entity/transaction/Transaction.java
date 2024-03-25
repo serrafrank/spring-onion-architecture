@@ -4,9 +4,9 @@ import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.Value;
 import lombok.experimental.SuperBuilder;
-import org.pay_my_buddy.entity.account.Amount;
 import org.pay_my_buddy.entity.commun.entity.AbstractModel;
 import org.pay_my_buddy.entity.commun.entity.Id;
+import org.pay_my_buddy.entity.commun.value_object.Amount;
 
 import java.time.OffsetDateTime;
 

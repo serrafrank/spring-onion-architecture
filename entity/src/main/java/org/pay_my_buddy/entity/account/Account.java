@@ -7,6 +7,7 @@ import org.pay_my_buddy.entity.account.exception.CurrencyMismatchException;
 import org.pay_my_buddy.entity.account.exception.InsufficientFundsException;
 import org.pay_my_buddy.entity.commun.entity.AbstractModel;
 import org.pay_my_buddy.entity.commun.entity.Id;
+import org.pay_my_buddy.entity.commun.value_object.Amount;
 
 /**
  * Account is a class that represents a user's account in the system.

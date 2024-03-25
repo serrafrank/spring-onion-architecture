@@ -1,4 +1,4 @@
-package org.pay_my_buddy.entity.exception;
+package org.pay_my_buddy.entity.commun.exception.generic;
 
 /**
  * This class represents an UnauthorizedException.

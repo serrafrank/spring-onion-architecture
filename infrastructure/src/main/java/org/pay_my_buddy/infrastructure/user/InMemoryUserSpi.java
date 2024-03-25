@@ -1,6 +1,7 @@
 package org.pay_my_buddy.infrastructure.user;
 
 import org.pay_my_buddy.entity.commun.entity.Id;
+import org.pay_my_buddy.entity.commun.value_object.Email;
 import org.pay_my_buddy.entity.user.User;
 import org.pay_my_buddy.entity.user.spi.UserSpi;
 import org.springframework.stereotype.Repository;
@@ -32,7 +33,7 @@ public class InMemoryUserSpi implements UserSpi {
     }
 
     @Override
-    public boolean existsByEmail(String email) {
+    public boolean existsByEmail(Email email) {
         return
                 users.stream()
                         .anyMatch(user -> user.getEmail().equals(email));

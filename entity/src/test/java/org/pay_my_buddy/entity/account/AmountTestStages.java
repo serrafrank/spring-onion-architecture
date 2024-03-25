@@ -2,6 +2,8 @@ package org.pay_my_buddy.entity.account;
 
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.integration.spring.JGivenStage;
+import org.pay_my_buddy.entity.commun.value_object.Amount;
+import org.pay_my_buddy.entity.commun.value_object.CurrencyCode;
 
 import java.math.BigDecimal;
 

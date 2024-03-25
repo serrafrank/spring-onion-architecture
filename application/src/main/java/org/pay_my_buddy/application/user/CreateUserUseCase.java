@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.pay_my_buddy.entity.commun.ApplicationService;
 import org.pay_my_buddy.entity.commun.api.command.CommandHandler;
 import org.pay_my_buddy.entity.commun.api.query.QueryApi;
+import org.pay_my_buddy.entity.commun.value_object.Email;
+import org.pay_my_buddy.entity.commun.value_object.EncodedPassword;
 import org.pay_my_buddy.entity.user.PasswordEncoderTool;
 import org.pay_my_buddy.entity.user.User;
 import org.pay_my_buddy.entity.user.api.CreateUserCommand;
@@ -22,8 +24,8 @@ public class CreateUserUseCase implements CommandHandler<CreateUserCommand> {
 
         final String firstName = command.firstName();
         final String lastName = command.lastName();
-        final String email = command.email();
-        final String password = passwordEncoder.encode(command.password());
+        final Email email = command.email();
+        final EncodedPassword password = passwordEncoder.encode(command.password());
 
         if (userAlreadyExists(email)) {
             throw new EmailAlreadyExistsException(email);
@@ -40,7 +42,7 @@ public class CreateUserUseCase implements CommandHandler<CreateUserCommand> {
 
     }
 
-    private Boolean userAlreadyExists(String email) {
+    private boolean userAlreadyExists(Email email) {
         return queryApi.request(new ExistsUserByEmailQuery(email));
     }
 

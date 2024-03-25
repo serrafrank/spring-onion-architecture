@@ -2,10 +2,10 @@ package org.pay_my_buddy.entity.transaction;
 
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.integration.spring.JGivenStage;
-import org.pay_my_buddy.entity.account.Amount;
-import org.pay_my_buddy.entity.account.CurrencyCode;
 import org.pay_my_buddy.entity.commun.entity.GenericId;
 import org.pay_my_buddy.entity.commun.entity.Id;
+import org.pay_my_buddy.entity.commun.value_object.Amount;
+import org.pay_my_buddy.entity.commun.value_object.CurrencyCode;
 
 import java.math.BigDecimal;
 
