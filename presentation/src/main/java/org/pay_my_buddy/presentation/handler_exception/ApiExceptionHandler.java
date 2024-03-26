@@ -61,9 +61,9 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleUnauthorizedException(WebRequest request, UnauthorizedException exception) {
         return handle(exception, HttpStatus.UNAUTHORIZED, request);
     }
-    
+
     private ResponseEntity<Object> handle(Exception exception, HttpStatus status, WebRequest request) {
-        return super.handleExceptionInternal(exception,null, new HttpHeaders(), status, request);
+        return super.handleExceptionInternal(exception, null, new HttpHeaders(), status, request);
     }
 
     @Override

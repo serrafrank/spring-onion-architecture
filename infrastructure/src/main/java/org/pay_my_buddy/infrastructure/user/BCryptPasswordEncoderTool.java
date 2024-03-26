@@ -8,7 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("passwordEncoderTool")
 @RequiredArgsConstructor
 public class BCryptPasswordEncoderTool implements PasswordEncoderTool, PasswordEncoder {
 
@@ -17,7 +17,7 @@ public class BCryptPasswordEncoderTool implements PasswordEncoderTool, PasswordE
     @Override
     public EncodedPassword encode(RawPassword rawPassword) {
         final String encodedPassword = bCryptPasswordEncoder.encode(rawPassword.value());
-        return EncodedPassword(encodedPassword);
+        return EncodedPassword.of(encodedPassword);
     }
 
     @Override

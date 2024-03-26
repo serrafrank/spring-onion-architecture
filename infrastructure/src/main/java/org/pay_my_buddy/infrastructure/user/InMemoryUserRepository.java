@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class InMemoryUserSpi implements UserSpi {
+public class InMemoryUserRepository implements UserSpi {
 
     private final List<User> users = new ArrayList<>();
 

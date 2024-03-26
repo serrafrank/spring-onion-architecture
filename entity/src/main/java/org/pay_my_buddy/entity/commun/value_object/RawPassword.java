@@ -11,7 +11,7 @@ public record RawPassword(String value) {
             throw new IllegalArgumentException("Password cannot be null or empty");
         }
         if (!value.matches(PASSWORD_PATTERN)) {
-            throw new IllegalArgumentException(PASSWORD_ERROR_MESSAGE);
+            throw new IllegalArgumentException("Invalid password format : " + value + ". " + PASSWORD_ERROR_MESSAGE);
         }
     }
 

@@ -21,11 +21,11 @@ public class AddFriendUseCase implements CommandHandler<AddFriendCommand> {
         final User user = userSpi.findUser(command.userId())
                 .orElseThrow(() -> new ForbiddenException("User does not exist"));
 
-        if(!userSpi.existsById(command.friendId())) {
+        if (!userSpi.existsById(command.friendId())) {
             throw new ForbiddenException("Friend does not exist");
         }
 
-        if(user.isFriend(command.friendId())) {
+        if (user.isFriend(command.friendId())) {
             throw new IllegalRequestException("User is already a friend");
         }
 

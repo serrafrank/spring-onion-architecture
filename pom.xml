@@ -80,14 +80,7 @@
 
         <dependency>
             <groupId>com.tngtech.jgiven</groupId>
-            <artifactId>jgiven-junit5</artifactId>
-            <version>${jgiven.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.tngtech.jgiven</groupId>
-            <artifactId>jgiven-spring</artifactId>
+            <artifactId>jgiven-spring-junit5</artifactId>
             <version>${jgiven.version}</version>
             <scope>test</scope>
         </dependency>

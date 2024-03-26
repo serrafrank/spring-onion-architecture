@@ -9,8 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+
 @Repository
-public class InMemoryTransactionSpi implements TransactionSpi {
+public class InMemoryTransactionRepository implements TransactionSpi {
 
     private final List<Transaction> transactions = new ArrayList<>();
 

@@ -21,4 +21,8 @@ public record CreateUserCommand(
             throw new IllegalArgumentException("Last name cannot be null or empty");
         }
     }
+
+    public CreateUserCommand(String email, String password, String firstName, String lastName) {
+        this(new Email(email), new RawPassword(password), firstName, lastName);
+    }
 }
