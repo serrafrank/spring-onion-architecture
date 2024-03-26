@@ -1,10 +1,10 @@
 package org.pay_my_buddy.presentation.api.command;
 
-import com.tngtech.jgiven.junit5.SimpleScenarioTest;
+import com.tngtech.jgiven.integration.spring.junit5.SimpleSpringScenarioTest;
 import org.junit.jupiter.api.Test;
 
 
-class DefaultCommandApiTest extends SimpleScenarioTest<CommandApiStage> {
+class DefaultCommandApiTest extends SimpleSpringScenarioTest<CommandApiStage> {
 
     @Test
     void execute_a_supported_command_succeed() {

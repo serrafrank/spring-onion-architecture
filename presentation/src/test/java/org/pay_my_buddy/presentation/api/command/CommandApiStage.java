@@ -4,13 +4,17 @@ import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.BeforeStage;
 import com.tngtech.jgiven.integration.spring.JGivenStage;
 import lombok.Getter;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.pay_my_buddy.entity.commun.api.command.Command;
 import org.pay_my_buddy.entity.commun.api.command.CommandHandler;
 import org.pay_my_buddy.presentation.api.DefaultCommandApi;
 import org.pay_my_buddy.presentation.api.providers.CommandHandlerProvider;
+import org.springframework.context.ApplicationContext;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -23,6 +27,9 @@ public class CommandApiStage extends Stage<CommandApiStage> {
 
     private FirstCommandHandlerImpl firstCommandHandler = new FirstCommandHandlerImpl();
     private SecondCommandHandlerImpl secondCommandHandler = new SecondCommandHandlerImpl();
+
+    @Mock
+    ApplicationContext applicationContext;
 
 
     private Command command = null;
@@ -38,6 +45,9 @@ public class CommandApiStage extends Stage<CommandApiStage> {
         secondCommandHandler = new SecondCommandHandlerImpl();
         command = null;
         exception = null;
+
+        Mockito.when(applicationContext.getBeansOfType(CommandHandler.class))
+                .thenReturn(Map.of("firstCommandHandler", firstCommandHandler, "secondCommandHandler", secondCommandHandler));
     }
 
     public CommandApiStage a_command() {
@@ -80,7 +90,7 @@ public class CommandApiStage extends Stage<CommandApiStage> {
 
     private void resetBean() {
         try {
-            final CommandHandlerProvider commandHandlerProvider = new CommandHandlerProvider(commandHandlers);
+            final CommandHandlerProvider commandHandlerProvider = new CommandHandlerProvider(applicationContext);
             defaultCommandBus = new DefaultCommandApi(commandHandlerProvider);
         } catch (Exception e) {
             this.exception = e;

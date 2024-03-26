@@ -1,12 +1,12 @@
 package org.pay_my_buddy.entity.account;
 
-import com.tngtech.jgiven.junit5.SimpleScenarioTest;
+import com.tngtech.jgiven.integration.spring.junit5.SimpleSpringScenarioTest;
 import org.junit.jupiter.api.Test;
 import org.pay_my_buddy.entity.account.exception.CurrencyMismatchException;
 import org.pay_my_buddy.entity.account.exception.InsufficientFundsException;
 import org.pay_my_buddy.entity.commun.value_object.CurrencyCode;
 
-class AccountTest extends SimpleScenarioTest<AccountTestStages> {
+class AccountTest extends SimpleSpringScenarioTest<AccountTestStages> {
 
 
     @Test

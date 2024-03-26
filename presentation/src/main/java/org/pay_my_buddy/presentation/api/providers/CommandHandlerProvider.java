@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.pay_my_buddy.entity.commun.api.DuplicateHandlerFoundException;
 import org.pay_my_buddy.entity.commun.api.command.Command;
 import org.pay_my_buddy.entity.commun.api.command.CommandHandler;
+import org.springframework.context.ApplicationContext;
 import org.springframework.core.GenericTypeResolver;
 import org.springframework.stereotype.Component;
 
@@ -31,9 +32,14 @@ public class CommandHandlerProvider {
      * Constructor for the CommandHandlerProvider.
      * It takes a list of CommandHandler instances, and maps each Command class to its respective handler.
      *
-     * @param handlers the list of CommandHandler instances
+     * @param applicationContext  the application context
      */
-    public CommandHandlerProvider(List<CommandHandler<?>> handlers) {
+    public CommandHandlerProvider(ApplicationContext applicationContext) {
+        List<? extends CommandHandler<?>> handlers = applicationContext.getBeansOfType(CommandHandler.class)
+                .values()
+                .stream()
+                .map(handler -> (CommandHandler<?>) handler)
+                .toList();
         try {
 
             this.commandHandlers = handlers

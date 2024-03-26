@@ -1,10 +1,10 @@
 package org.pay_my_buddy.entity.transaction;
 
-import com.tngtech.jgiven.junit5.SimpleScenarioTest;
+import com.tngtech.jgiven.integration.spring.junit5.SimpleSpringScenarioTest;
 import org.junit.jupiter.api.Test;
 import org.pay_my_buddy.entity.commun.value_object.CurrencyCode;
 
-class TransactionTest extends SimpleScenarioTest<TransactionTestStages> {
+class TransactionTest extends SimpleSpringScenarioTest<TransactionTestStages> {
 
     @Test
     void a_transaction_is_created() {

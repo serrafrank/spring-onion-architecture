@@ -1,11 +1,11 @@
 package org.pay_my_buddy.entity.user;
 
-import com.tngtech.jgiven.junit5.SimpleScenarioTest;
+import com.tngtech.jgiven.integration.spring.junit5.SimpleSpringScenarioTest;
 import org.junit.jupiter.api.Test;
 import org.pay_my_buddy.entity.commun.entity.GenericId;
 import org.pay_my_buddy.entity.commun.entity.Id;
 
-class UserTest extends SimpleScenarioTest<UserTestStages> {
+class UserTest extends SimpleSpringScenarioTest<UserTestStages> {
 
     public Id newFriendId = GenericId.of();
 

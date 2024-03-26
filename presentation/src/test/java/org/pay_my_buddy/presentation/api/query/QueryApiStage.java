@@ -80,7 +80,7 @@ public class QueryApiStage extends Stage<QueryApiStage> {
 
     private void resetBean() {
         try {
-            final QueryHandlerProvider queryHandlerProvider = new QueryHandlerProvider(queryHandlers);
+            final QueryHandlerProvider queryHandlerProvider = new QueryHandlerProvider(null);
             defaultQueryBus = new DefaultQueryApi(queryHandlerProvider);
         } catch (Exception e) {
             this.exception = e;

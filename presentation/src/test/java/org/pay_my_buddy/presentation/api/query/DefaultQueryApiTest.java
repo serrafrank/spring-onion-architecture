@@ -1,10 +1,10 @@
 package org.pay_my_buddy.presentation.api.query;
 
-import com.tngtech.jgiven.junit5.SimpleScenarioTest;
+import com.tngtech.jgiven.integration.spring.junit5.SimpleSpringScenarioTest;
 import org.junit.jupiter.api.Test;
 
 
-class DefaultQueryApiTest extends SimpleScenarioTest<QueryApiStage> {
+class DefaultQueryApiTest extends SimpleSpringScenarioTest<QueryApiStage> {
 
     @Test
     void execute_a_supported_query_succeed() {

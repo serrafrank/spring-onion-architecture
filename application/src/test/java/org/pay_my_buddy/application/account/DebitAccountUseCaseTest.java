@@ -1,14 +1,14 @@
 package org.pay_my_buddy.application.account;
 
+import com.tngtech.jgiven.integration.spring.junit5.SimpleSpringScenarioTest;
 import com.tngtech.jgiven.junit5.JGivenExtension;
-import com.tngtech.jgiven.junit5.SimpleScenarioTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.pay_my_buddy.entity.account.exception.InsufficientFundsException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith({JGivenExtension.class, SpringExtension.class})
-public class DebitAccountUseCaseTest extends SimpleScenarioTest<MovementAccountStage> {
+public class DebitAccountUseCaseTest extends SimpleSpringScenarioTest<MovementAccountStage> {
 
     @Test
     void debit_account_when_account_exists() {

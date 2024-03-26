@@ -1,8 +1,10 @@
 package org.pay_my_buddy.presentation.api.providers;
 
 import lombok.extern.slf4j.Slf4j;
+import org.pay_my_buddy.entity.commun.api.command.CommandHandler;
 import org.pay_my_buddy.entity.commun.api.event.Event;
 import org.pay_my_buddy.entity.commun.api.event.EventHandler;
+import org.springframework.context.ApplicationContext;
 import org.springframework.core.GenericTypeResolver;
 import org.springframework.stereotype.Component;
 
@@ -32,9 +34,12 @@ public class EventHandlerProvider {
      *
      * @param handlers the list of EventHandler instances
      */
-    public EventHandlerProvider(List<EventHandler<?>> handlers) {
-        this.eventHandlers = handlers
+    public EventHandlerProvider(
+    ApplicationContext applicationContext) {
+        this.eventHandlers =  applicationContext.getBeansOfType(EventHandler.class)
+                .values()
                 .stream()
+                .map(handler -> (EventHandler<?>) handler)
                 .map(handler -> Map.entry(resolve(handler), handler))
                 .collect(Collectors.groupingBy(Map.Entry::getKey, Collectors.mapping(Map.Entry::getValue, Collectors.toSet())));
 

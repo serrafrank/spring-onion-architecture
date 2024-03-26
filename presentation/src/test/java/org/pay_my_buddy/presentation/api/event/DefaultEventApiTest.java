@@ -1,9 +1,9 @@
 package org.pay_my_buddy.presentation.api.event;
 
-import com.tngtech.jgiven.junit5.SimpleScenarioTest;
+import com.tngtech.jgiven.integration.spring.junit5.SimpleSpringScenarioTest;
 import org.junit.jupiter.api.Test;
 
-class DefaultEventApiTest extends SimpleScenarioTest<EventApiStage> {
+class DefaultEventApiTest extends SimpleSpringScenarioTest<EventApiStage> {
 
     @Test
     void execute_a_supported_event_succeed() {

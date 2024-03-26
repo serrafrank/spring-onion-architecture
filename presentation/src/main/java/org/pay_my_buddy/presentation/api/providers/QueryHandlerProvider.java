@@ -3,8 +3,10 @@ package org.pay_my_buddy.presentation.api.providers;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.pay_my_buddy.entity.commun.api.WrongHandlerImplementationException;
+import org.pay_my_buddy.entity.commun.api.command.CommandHandler;
 import org.pay_my_buddy.entity.commun.api.query.Query;
 import org.pay_my_buddy.entity.commun.api.query.QueryHandler;
+import org.springframework.context.ApplicationContext;
 import org.springframework.core.GenericTypeResolver;
 import org.springframework.stereotype.Component;
 
@@ -35,8 +37,11 @@ public class QueryHandlerProvider {
      *
      * @param handlers the list of QueryHandler instances
      */
-    public QueryHandlerProvider(List<QueryHandler<?, ?>> handlers) {
-        queryHandlers = handlers.stream()
+    public QueryHandlerProvider(ApplicationContext applicationContext) {
+        queryHandlers = applicationContext.getBeansOfType(QueryHandler.class)
+                .values()
+                .stream()
+                .map(handler -> ( QueryHandler<?, ?>) handler)
                 .map(handler -> Map.entry(resolve(handler), handler))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
