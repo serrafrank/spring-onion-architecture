@@ -3,14 +3,12 @@ package org.pay_my_buddy.presentation.api.providers;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.pay_my_buddy.entity.commun.api.WrongHandlerImplementationException;
-import org.pay_my_buddy.entity.commun.api.command.CommandHandler;
 import org.pay_my_buddy.entity.commun.api.query.Query;
 import org.pay_my_buddy.entity.commun.api.query.QueryHandler;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.GenericTypeResolver;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -57,6 +55,9 @@ public class QueryHandlerProvider {
      */
     @SuppressWarnings("unchecked")
     public <Q extends Query<R>, R> Optional<QueryHandler<Q, R>> getHandler(Q query) {
+        if (query == null) {
+            throw new NullPointerException("Query cannot be null");
+        }
         return Optional.ofNullable(queryHandlers.get(query.getClass()))
                 .map(handler -> (QueryHandler<Q, R>) handler);
     }

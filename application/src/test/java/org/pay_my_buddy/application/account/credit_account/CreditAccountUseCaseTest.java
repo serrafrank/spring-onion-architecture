@@ -1,13 +1,16 @@
-package org.pay_my_buddy.application.account;
+package org.pay_my_buddy.application.account.credit_account;
 
+import com.tngtech.jgiven.integration.spring.EnableJGiven;
 import com.tngtech.jgiven.integration.spring.junit5.SimpleSpringScenarioTest;
 import com.tngtech.jgiven.junit5.JGivenExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.pay_my_buddy.application.account.AccountNotExistsException;
+import org.pay_my_buddy.application.account.MovementAccountStage;
 
-@ExtendWith({JGivenExtension.class, SpringExtension.class})
-public class CreditAccountUseCaseTest extends SimpleSpringScenarioTest<MovementAccountStage> {
+@EnableJGiven
+@ExtendWith(JGivenExtension.class)
+class CreditAccountUseCaseTest extends SimpleSpringScenarioTest<MovementAccountStage> {
 
     @Test
     void credit_account_when_account_exists() {

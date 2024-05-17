@@ -57,8 +57,8 @@ public class Account extends AbstractModel<AccountId> {
      * @throws CurrencyMismatchException If the currency of the balance is different from the currency of the account.
      */
     public Account credit(Amount amount) {
-        if (!this.balance.getCurrency().equals(amount.getCurrency())) {
-            throw new CurrencyMismatchException(balance.getCurrency().getCurrencyCode(), amount.getCurrency().getCurrencyCode());
+        if (!this.balance.currency().equals(amount.currency())) {
+            throw new CurrencyMismatchException(balance.currency().getCurrencyCode(), amount.currency().getCurrencyCode());
         }
 
         this.balance = this.balance.add(amount);
@@ -74,8 +74,8 @@ public class Account extends AbstractModel<AccountId> {
      * @throws InsufficientFundsException If the balance is less than the amount to be debited.
      */
     public Account debit(Amount amount) {
-        if (!this.balance.getCurrency().equals(amount.getCurrency())) {
-            throw new CurrencyMismatchException(balance.getCurrency().getCurrencyCode(), amount.getCurrency().getCurrencyCode());
+        if (!this.balance.currency().equals(amount.currency())) {
+            throw new CurrencyMismatchException(balance.currency().getCurrencyCode(), amount.currency().getCurrencyCode());
         }
 
         if (this.balance.isLessThan(amount)) {

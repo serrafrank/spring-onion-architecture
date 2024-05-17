@@ -52,8 +52,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return handle(exception, HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<Object> handleNotFoundException(WebRequest request, NotFoundException exception) {
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<Object> handleNotFoundException(WebRequest request, ResourceNotFoundException exception) {
         return handle(exception, HttpStatus.NOT_FOUND, request);
     }
 

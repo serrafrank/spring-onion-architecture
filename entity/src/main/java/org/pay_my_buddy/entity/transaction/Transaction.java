@@ -3,7 +3,7 @@ package org.pay_my_buddy.entity.transaction;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.Value;
-import lombok.experimental.SuperBuilder;
+import lombok.experimental.Accessors;
 import org.pay_my_buddy.entity.commun.entity.AbstractModel;
 import org.pay_my_buddy.entity.commun.entity.Id;
 import org.pay_my_buddy.entity.commun.value_object.Amount;
@@ -16,7 +16,7 @@ import java.time.OffsetDateTime;
  * It is annotated with @Value and @EqualsAndHashCode(callSuper = true) from the Lombok library to automatically generate getters, setters, equals, and hashCode methods.
  */
 @Value
-@SuperBuilder
+@Accessors(fluent = true, chain = true)
 @EqualsAndHashCode(callSuper = true)
 public class Transaction extends AbstractModel<TransactionId> {
 

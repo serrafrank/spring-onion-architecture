@@ -59,4 +59,5 @@ public class GenericId extends AbstractId<UUID> {
     public static GenericId of(UUID uuid) {
         return new GenericId(uuid);
     }
+
 }

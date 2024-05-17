@@ -68,6 +68,9 @@ public class CommandHandlerProvider {
      */
     @SuppressWarnings("unchecked")
     public <C extends Command> Optional<CommandHandler<C>> getHandler(C command) {
+        if (command == null) {
+            throw new NullPointerException("Command cannot be null");
+        }
         return Optional.ofNullable(commandHandlers.get(command.getClass()))
                 .map(handler -> (CommandHandler<C>) handler);
     }

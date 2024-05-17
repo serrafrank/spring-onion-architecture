@@ -18,9 +18,9 @@
     <name>root</name>
 
     <properties>
-        <java.version>21</java.version>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
+        <java.version>22</java.version>
+        <maven.compiler.source>22</maven.compiler.source>
+        <maven.compiler.target>22</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jgiven.version>1.3.1</jgiven.version>
         <datafaker.version>2.1.0</datafaker.version>
@@ -90,30 +90,19 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
+                <configuration>
+                    <systemPropertyVariables>
+                        <jgiven.report.dir>${project.parent.build.directory}/jgiven-reports/json</jgiven.report.dir>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
                 <executions>
-                    <execution>
-                        <id>copy-jgiven-reports</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>
-                                ${project.parent.basedir}/target/jgiven-reports/
-                            </outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>
-                                        ${basedir}/target/jgiven-reports/
-                                    </directory>
-                                    <includes>
-                                        <include>**/*.json</include>
-                                    </includes>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
                     <execution>
                         <id>copy-jar</id>
                         <phase>verify</phase>
@@ -121,14 +110,10 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>
-                                ${project.parent.basedir}/target/
-                            </outputDirectory>
+                            <outputDirectory>${project.parent.build.directory}</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>
-                                        ${basedir}/target/
-                                    </directory>
+                                    <directory>${project.build.directory}</directory>
                                     <includes>
                                         <include>**/bootloader*.jar</include>
                                     </includes>
@@ -151,7 +136,8 @@
                 </executions>
                 <configuration>
                     <format>html</format>
-                    <sourceDirectory>${project.parent.basedir}/target/jgiven-reports/</sourceDirectory>
+                    <outputDirectory>${project.parent.build.directory}/jgiven-reports/html</outputDirectory>
+                    <sourceDirectory>${project.parent.build.directory}/jgiven-reports/json</sourceDirectory>
                 </configuration>
             </plugin>
         </plugins>

@@ -1,17 +1,21 @@
 package org.pay_my_buddy.entity.commun.exception.generic;
 
-/**
+import org.pay_my_buddy.entity.commun.entity.Id; /**
  * This class represents a NotFoundException.
  * It extends the RuntimeException class and sets the HTTP status to NOT_FOUND.
  */
-public class NotFoundException extends RuntimeException {
+public class ResourceNotFoundException extends RuntimeException {
 
     /**
      * Default constructor for NotFoundException.
      * Sets the HTTP status to NOT_FOUND.
      */
-    public NotFoundException() {
-        this("Not found");
+    public ResourceNotFoundException() {
+        this("Resource Not found");
+    }
+
+    public ResourceNotFoundException(Id id) {
+        this("Resource with id %s not found", id);
     }
 
     /**
@@ -19,7 +23,7 @@ public class NotFoundException extends RuntimeException {
      *
      * @param message The custom message for this exception.
      */
-    public NotFoundException(String message) {
+    public ResourceNotFoundException(String message) {
         super(message);
     }
 
@@ -29,7 +33,7 @@ public class NotFoundException extends RuntimeException {
      * @param message The custom message for this exception.
      * @param cause   The cause of this exception.
      */
-    public NotFoundException(String message, Throwable cause) {
+    public ResourceNotFoundException(String message, Throwable cause) {
         super(message, cause);
     }
 
@@ -39,7 +43,7 @@ public class NotFoundException extends RuntimeException {
      * @param message The custom message for this exception.
      * @param args    The arguments for formatting the message.
      */
-    public NotFoundException(String message, Object... args) {
+    public ResourceNotFoundException(String message, Object... args) {
         super(String.format(message, args));
     }
 }

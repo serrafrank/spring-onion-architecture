@@ -1,12 +1,14 @@
-package org.pay_my_buddy.application.user;
+package org.pay_my_buddy.application.user.create_user;
 
+import com.tngtech.jgiven.integration.spring.EnableJGiven;
 import com.tngtech.jgiven.integration.spring.junit5.SimpleSpringScenarioTest;
 import com.tngtech.jgiven.junit5.JGivenExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+@EnableJGiven
 @ExtendWith(JGivenExtension.class)
-class CreateUserUseCaseTest extends SimpleSpringScenarioTest<CreateUserUseCaseTestStage> {
+class CreateUserUseCaseTest extends SimpleSpringScenarioTest<CreateUserStage> {
 
     @Test
     void create_user() {

@@ -1,13 +1,13 @@
-package org.pay_my_buddy.application.user;
+package org.pay_my_buddy.application.user.create_user;
 
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.BeforeScenario;
 import com.tngtech.jgiven.annotation.Quoted;
 import com.tngtech.jgiven.integration.spring.JGivenStage;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.pay_my_buddy.application.user.CreateUserUseCase;
+import org.pay_my_buddy.application.user.EmailAlreadyExistsException;
 import org.pay_my_buddy.entity.commun.api.query.QueryApi;
 import org.pay_my_buddy.entity.commun.value_object.Email;
 import org.pay_my_buddy.entity.commun.value_object.EncodedPassword;
@@ -24,8 +24,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @JGivenStage
-@ExtendWith({MockitoExtension.class})
-class CreateUserUseCaseTestStage extends Stage<CreateUserUseCaseTestStage> {
+class CreateUserStage extends Stage<CreateUserStage> {
 
 
     private final UserSpi userSpi = Mockito.mock(UserSpi.class);
@@ -58,50 +57,50 @@ class CreateUserUseCaseTestStage extends Stage<CreateUserUseCaseTestStage> {
         lenient().when(passwordEncoder.encode(any(RawPassword.class))).thenAnswer(i -> encodePassword(i.getArguments()[0]));
     }
 
-    public CreateUserUseCaseTestStage a_new_user() {
+    public CreateUserStage a_new_user() {
         createCommand();
         return self();
     }
 
-    public CreateUserUseCaseTestStage firstName(@Quoted String firstName) {
+    public CreateUserStage firstName(@Quoted String firstName) {
         this.firstName = firstName;
         createCommand();
         return self();
     }
 
-    public CreateUserUseCaseTestStage lastName(@Quoted String lastName) {
+    public CreateUserStage lastName(@Quoted String lastName) {
         this.lastName = lastName;
         createCommand();
         return self();
     }
 
-    public CreateUserUseCaseTestStage email(@Quoted String email) {
+    public CreateUserStage email(@Quoted String email) {
         this.email = email;
         createCommand();
         return self();
     }
 
-    public CreateUserUseCaseTestStage password(@Quoted String password) {
+    public CreateUserStage password(@Quoted String password) {
         this.password = password;
         createCommand();
         return self();
     }
 
 
-    public CreateUserUseCaseTestStage the_email_is_not_used() {
+    public CreateUserStage the_email_is_not_used() {
         final ExistsUserByEmailQuery existsUserByEmailQuery = new ExistsUserByEmailQuery(Email.of(email));
         Mockito.when(queryApi.request(existsUserByEmailQuery)).thenReturn(false);
         return self();
     }
 
 
-    public CreateUserUseCaseTestStage the_email_is_already_used() {
+    public CreateUserStage the_email_is_already_used() {
         final ExistsUserByEmailQuery existsUserByEmailQuery = new ExistsUserByEmailQuery(Email.of(email));
         Mockito.when(queryApi.request(existsUserByEmailQuery)).thenReturn(true);
         return self();
     }
 
-    public CreateUserUseCaseTestStage the_user_try_to_create_an_account() {
+    public CreateUserStage the_user_try_to_create_an_account() {
         try {
             createUserUseCase.handle(command);
         } catch (Exception e) {
@@ -111,23 +110,23 @@ class CreateUserUseCaseTestStage extends Stage<CreateUserUseCaseTestStage> {
         return self();
     }
 
-    public CreateUserUseCaseTestStage the_user_is_created() {
+    public CreateUserStage the_user_is_created() {
         verify(userSpi).save(userArgumentCaptor.capture());
         final User user = userArgumentCaptor.getValue();
-        assertEquals(firstName, user.getFirstName());
-        assertEquals(lastName, user.getLastName());
-        assertEquals(email, user.getEmail().value());
-        assertEquals(encodePassword(password), user.getPassword());
+        assertEquals(firstName, user.firstName());
+        assertEquals(lastName, user.lastName());
+        assertEquals(email, user.email().value());
+        assertEquals(encodePassword(password), user.password());
         return self();
     }
 
-    public CreateUserUseCaseTestStage an_email_already_exists_exception_is_thrown() {
+    public CreateUserStage an_email_already_exists_exception_is_thrown() {
         assertNotNull(exception);
         assertEquals(EmailAlreadyExistsException.class, exception.getClass());
         return self();
     }
 
-    public CreateUserUseCaseTestStage the_user_creation_fails() {
+    public CreateUserStage the_user_creation_fails() {
         verify(userSpi, never()).save(any());
         return self();
     }
@@ -138,15 +137,8 @@ class CreateUserUseCaseTestStage extends Stage<CreateUserUseCaseTestStage> {
     }
 
     private EncodedPassword encodePassword(Object password) {
-        switch (password) {
-            case RawPassword rawPassword -> {
-                return encodePassword(rawPassword.value());
-            }
-            case String string -> {
-                return encodePassword(string);
-            }
-            default -> throw new IllegalArgumentException("Unsupported password type: " + password.getClass());
-        }
+        String passwordString = password.toString();
+        return EncodedPassword.of(passwordString + passwordSuffix);
     }
 
 }

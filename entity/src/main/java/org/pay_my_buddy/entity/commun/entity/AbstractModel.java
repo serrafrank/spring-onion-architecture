@@ -17,7 +17,7 @@ public abstract class AbstractModel<U extends AbstractId<?>> implements Model<U>
     /**
      * The id of the entity.
      */
-    private final U id;
+    protected final U id;
 
     /**
      * Constructor for the AbstractModel class.

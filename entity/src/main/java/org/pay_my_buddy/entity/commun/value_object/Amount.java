@@ -1,6 +1,9 @@
 package org.pay_my_buddy.entity.commun.value_object;
 
-import lombok.Getter;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import lombok.Value;
+import lombok.experimental.Accessors;
 import org.pay_my_buddy.entity.account.exception.CurrencyMismatchException;
 
 import java.math.BigDecimal;
@@ -12,16 +15,16 @@ import java.util.Currency;
  * It provides methods to perform operations on the amount such as add, subtract, and compare.
  * It also provides methods to check the sign of the amount and to get the value of the amount.
  */
-@Getter
-public class Amount {
+@Value
+@EqualsAndHashCode(callSuper = true)
+@Accessors(fluent = true)
+@ToString(callSuper = true)
+public class Amount extends AbstractValueObject<BigDecimal> implements Comparable<Amount> {
 
     private static final CurrencyCode DEFAULT_CURRENCY = CurrencyCode.EUR;
 
-    // The value of the amount.
-    private final BigDecimal value;
-
     // The currency
-    private final Currency currency;
+    Currency currency;
 
 
     /**
@@ -65,7 +68,11 @@ public class Amount {
      * @param currencyCode The currency of the amount.
      */
     public static Amount of(BigDecimal amount, CurrencyCode currencyCode) {
-        return new Amount(amount, Currency.getInstance(currencyCode.getCode()));
+        return new Amount(amount, currencyCode);
+    }
+
+    public static  Amount of(Number amount, CurrencyCode currencyCode) {
+        return new Amount(BigDecimal.valueOf(amount.doubleValue()), currencyCode);
     }
 
     /**
@@ -75,7 +82,7 @@ public class Amount {
      */
     public Amount add(Amount amount) {
         this.validateCurrency(amount);
-        return new Amount(this.value.add(amount.getValue()), this.currency);
+        return new Amount(this.value.add(amount.value()), this.currency);
     }
 
     /**
@@ -85,7 +92,7 @@ public class Amount {
      */
     public Amount subtract(Amount amount) {
         this.validateCurrency(amount);
-        return new Amount(this.value.subtract(amount.getValue()), this.currency);
+        return new Amount(this.value.subtract(amount.value()), this.currency);
     }
 
 
@@ -97,7 +104,12 @@ public class Amount {
      */
     public boolean isLessThan(Amount amount) {
         this.validateCurrency(amount);
-        return this.value.compareTo(amount.getValue()) < 0;
+        return this.value.compareTo(amount.value()) < 0;
+    }
+
+    @Override
+    public int compareTo(Amount other) {
+        return this.value.compareTo(other.value());
     }
 
     /**
@@ -107,8 +119,8 @@ public class Amount {
      * @param amount The amount to compare with.
      */
     private void validateCurrency(Amount amount) {
-        if (!this.currency.equals(amount.getCurrency())) {
-            throw new CurrencyMismatchException(this.currency.getCurrencyCode(), amount.getCurrency().getCurrencyCode());
+        if (!this.currency.equals(amount.currency())) {
+            throw new CurrencyMismatchException(this.currency.getCurrencyCode(), amount.currency().getCurrencyCode());
         }
     }
 

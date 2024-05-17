@@ -3,7 +3,8 @@ package org.pay_my_buddy.entity.user;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.Value;
-import lombok.experimental.SuperBuilder;
+import lombok.With;
+import lombok.experimental.Accessors;
 import org.pay_my_buddy.entity.commun.entity.AbstractModel;
 import org.pay_my_buddy.entity.commun.entity.Id;
 import org.pay_my_buddy.entity.commun.value_object.Email;
@@ -18,7 +19,8 @@ import java.util.Set;
  * It contains information about the user such as first name, last name, email, password, and account.
  */
 @Value
-@SuperBuilder
+@With
+@Accessors(fluent = true)
 @EqualsAndHashCode(callSuper = true)
 public class User extends AbstractModel<UserId> {
 
@@ -122,7 +124,7 @@ public class User extends AbstractModel<UserId> {
      * @param firstName The new first name of the user.
      */
     public User updateFirstName(@NonNull String firstName) {
-        return new User(getId(), firstName, getLastName(), getEmail(), getPassword(), getFriends());
+        return new User(getId(), firstName, lastName(), email(), password(), friends());
     }
 
     /**
@@ -131,7 +133,7 @@ public class User extends AbstractModel<UserId> {
      * @param lastName The new last name of the user.
      */
     public User updateLastName(@NonNull String lastName) {
-        return new User(getId(), getFirstName(), lastName, getEmail(), getPassword(), getFriends());
+        return new User(getId(), firstName(), lastName, email(), password(), friends());
     }
 
     /**
@@ -140,7 +142,7 @@ public class User extends AbstractModel<UserId> {
      * @param email The new email of the user.
      */
     public User updateEmail(@NonNull Email email) {
-        return new User(getId(), getFirstName(), getLastName(), email, getPassword(), getFriends());
+        return new User(getId(), firstName(), lastName(), email, password(), friends());
     }
 
     /**
@@ -149,7 +151,7 @@ public class User extends AbstractModel<UserId> {
      * @param password The new password of the user.
      */
     public User updatePassword(@NonNull EncodedPassword password) {
-        return new User(getId(), getFirstName(), getLastName(), getEmail(), password, getFriends());
+        return new User(getId(), firstName(), lastName(), email(), password, friends());
     }
 
 }

@@ -32,13 +32,6 @@
         </dependency>
 
         <dependency>
-            <groupId>net.datafaker</groupId>
-            <artifactId>datafaker</artifactId>
-            <version>${datafaker.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
             <groupId>org.pay_my_buddy</groupId>
             <artifactId>infrastructure</artifactId>
             <version>${project.parent.version}</version>

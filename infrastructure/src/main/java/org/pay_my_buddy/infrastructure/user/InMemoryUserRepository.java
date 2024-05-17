@@ -36,7 +36,7 @@ public class InMemoryUserRepository implements UserSpi {
     public boolean existsByEmail(Email email) {
         return
                 users.stream()
-                        .anyMatch(user -> user.getEmail().equals(email));
+                        .anyMatch(user -> user.email().equals(email));
     }
 
     @Override

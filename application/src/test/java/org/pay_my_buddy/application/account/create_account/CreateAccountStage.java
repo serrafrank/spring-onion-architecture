@@ -1,4 +1,4 @@
-package org.pay_my_buddy.application.account;
+package org.pay_my_buddy.application.account.create_account;
 
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.BeforeScenario;
@@ -6,6 +6,7 @@ import com.tngtech.jgiven.integration.spring.JGivenStage;
 import org.junit.jupiter.api.Assertions;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+import org.pay_my_buddy.application.account.CreateAccountUseCase;
 import org.pay_my_buddy.entity.account.Account;
 import org.pay_my_buddy.entity.account.api.CreateAccountCommand;
 import org.pay_my_buddy.entity.account.spi.AccountSpi;
@@ -75,7 +76,7 @@ public class CreateAccountStage extends Stage<CreateAccountStage> {
         this.account = accountCaptor.getValue();
         Assertions.assertNotNull(this.account);
         Assertions.assertEquals(this.userId, this.account.getUserId());
-        Assertions.assertEquals(BigDecimal.ZERO, this.account.getBalance().getValue());
+        Assertions.assertEquals(BigDecimal.ZERO, this.account.getBalance().value());
 
         Mockito.verify(accountSpi).save(eq(this.account));
         return self();

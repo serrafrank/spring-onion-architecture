@@ -2,7 +2,6 @@ package org.pay_my_buddy.entity.commun.entity;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.ToString;
 
 /**
  * This is an abstract class that represents a unique identifier (ID) for an entity.
@@ -10,7 +9,6 @@ import lombok.ToString;
  */
 @Getter
 @EqualsAndHashCode
-@ToString
 public abstract class AbstractId<U> implements Id {
 
     // The value of the ID.
@@ -51,7 +49,10 @@ public abstract class AbstractId<U> implements Id {
      *
      * @return A unique ID.
      */
-    @Override
     public abstract U generateUniqueId();
 
+    @Override
+    public String toString() {
+        return value().toString();
+    }
 }

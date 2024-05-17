@@ -1,18 +1,27 @@
 package org.pay_my_buddy.entity.commun.value_object;
 
-public record RawPassword(String value) {
+import lombok.EqualsAndHashCode;
+import lombok.Value;
+import org.passay.*;
 
-    private static final String PASSWORD_PATTERN = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$";
-    private static final String PASSWORD_ERROR_MESSAGE = "Password must contain at least 8 characters, including 1 digit, 1 lowercase letter, 1 uppercase letter, and 1 special character";
+import java.util.Arrays;
+import java.util.List;
 
+@Value
+@EqualsAndHashCode(callSuper = true)
+public class RawPassword extends AbstractValueObject<String> {
 
-    public RawPassword {
+    public RawPassword(String value) {
         if (value == null || value.isBlank()) {
             throw new IllegalArgumentException("Password cannot be null or empty");
         }
-        if (!value.matches(PASSWORD_PATTERN)) {
-            throw new IllegalArgumentException("Invalid password format : " + value + ". " + PASSWORD_ERROR_MESSAGE);
+
+        if (!isValid(value)) {
+            throw new IllegalArgumentException("Invalid format for password: " + value + ". \n" +
+                    String.join("\n", messages(value)));
         }
+
+        this.value = value;
     }
 
     public static RawPassword of(String password) {
@@ -21,6 +30,27 @@ public record RawPassword(String value) {
 
     @Override
     public String toString() {
-        return value;
+        return super.toString();
+    }
+
+    private boolean isValid(String password) {
+        return this.result(password).isValid();
+    }
+
+    private PasswordValidator validator() {
+        return new PasswordValidator(Arrays.asList(
+                new LengthRule(8, 30), // length between 8 and 30 characters
+                new UppercaseCharacterRule(1), // at least one upper-case character
+                new DigitCharacterRule(1), // at least one digit character
+                new SpecialCharacterRule(1), // at least one special character
+                new WhitespaceRule())); // no whitespace
+    }
+
+    private List<String> messages(String password) {
+        return this.validator().getMessages(this.result(password));
+    }
+
+    private RuleResult result(String password) {
+        return this.validator().validate(new PasswordData(password));
     }
 }

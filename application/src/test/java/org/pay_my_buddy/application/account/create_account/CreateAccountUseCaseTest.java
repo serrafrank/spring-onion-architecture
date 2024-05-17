@@ -1,13 +1,15 @@
-package org.pay_my_buddy.application.account;
+package org.pay_my_buddy.application.account.create_account;
 
+import com.tngtech.jgiven.integration.spring.EnableJGiven;
 import com.tngtech.jgiven.integration.spring.junit5.SimpleSpringScenarioTest;
 import com.tngtech.jgiven.junit5.JGivenExtension;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.pay_my_buddy.application.account.AccountAlreadyExistsException;
 
-@ExtendWith({JGivenExtension.class, SpringExtension.class})
+@EnableJGiven
+@ExtendWith(JGivenExtension.class)
 class CreateAccountUseCaseTest extends SimpleSpringScenarioTest<CreateAccountStage> {
 
     @Test

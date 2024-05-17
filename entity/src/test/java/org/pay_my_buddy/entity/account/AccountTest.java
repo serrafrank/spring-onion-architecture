@@ -1,52 +1,103 @@
+
 package org.pay_my_buddy.entity.account;
 
-import com.tngtech.jgiven.integration.spring.junit5.SimpleSpringScenarioTest;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.pay_my_buddy.entity.account.exception.CurrencyMismatchException;
 import org.pay_my_buddy.entity.account.exception.InsufficientFundsException;
+import org.pay_my_buddy.entity.commun.entity.Id;
+import org.pay_my_buddy.entity.commun.value_object.Amount;
 import org.pay_my_buddy.entity.commun.value_object.CurrencyCode;
+import org.pay_my_buddy.entity.user.UserId;
 
-class AccountTest extends SimpleSpringScenarioTest<AccountTestStages> {
+import static org.junit.jupiter.api.Assertions.*;
 
+class AccountTest {
 
     @Test
-    void debit_account() {
-        given().an_account_with_a_balance_of_$_$(10, CurrencyCode.USD);
-        when().the_account_is_debited_of_$_$(10, CurrencyCode.USD);
-        then().no_exception_is_thrown()
-                .and().the_account_has_a_balance_of_$_$(0, CurrencyCode.USD);
+    @DisplayName("Can create an Account object with a non-empty Id and balance")
+    void can_create_an_account_object_with_a_non_empty_id_and_balance() {
+        // Given
+        Id userId = UserId.of();
+        Amount balance = Amount.of(100, CurrencyCode.USD);
 
+        // When
+        Account account = Account.of(userId, balance);
+
+        // Then
+        assertNotNull(account);
+        assertEquals(userId, account.getUserId());
+        assertEquals(balance, account.getBalance());
     }
 
     @Test
-    void credit_account() {
-        given().an_account_with_a_balance_of_$_$(10, CurrencyCode.USD);
-        when().the_account_is_credited_of_$_$(10, CurrencyCode.USD);
-        then().no_exception_is_thrown()
-                .and().the_account_has_a_balance_of_$_$(20, CurrencyCode.USD);
+    @DisplayName("Can credit an Account object with a valid amount")
+    void can_credit_an_account_object_with_a_valid_amount() {
+        // Given
+        Id userId = UserId.of();
+        Amount balance = Amount.of(100, CurrencyCode.USD);
+        Amount creditAmount = Amount.of(50, CurrencyCode.USD);
+        Account account = Account.of(userId, balance);
+
+        // When
+        Account creditedAccount = account.credit(creditAmount);
+
+        // Then
+        assertEquals(Amount.of(150, CurrencyCode.USD), creditedAccount.getBalance());
     }
 
     @Test
-    void debit_account_with_insufficient_balance() {
-        given().an_account_with_a_balance_of_$_$(10, CurrencyCode.USD);
-        when().the_account_is_debited_of_$_$(20, CurrencyCode.USD);
-        then().an_exception_is_thrown(InsufficientFundsException.class)
-                .and().the_account_has_a_balance_of_$_$(10, CurrencyCode.USD);
+    @DisplayName("Cannot credit an Account object with a different currency")
+    void cannot_credit_an_account_object_with_a_different_currency() {
+        // Given
+        Id userId = UserId.of();
+        Amount balance = Amount.of(100, CurrencyCode.USD);
+        Amount creditAmount = Amount.of(50, CurrencyCode.EUR);
+        Account account = Account.of(userId, balance);
+
+        // When & Then
+        assertThrows(CurrencyMismatchException.class, () -> account.credit(creditAmount));
     }
 
     @Test
-    void credit_account_debited_with_different_currency() {
-        given().an_account_with_a_balance_of_$_$(10, CurrencyCode.GBP);
-        when().the_account_is_debited_of_$_$(20, CurrencyCode.USD);
-        then().an_exception_is_thrown(CurrencyMismatchException.class)
-                .and().the_account_has_a_balance_of_$_$(10, CurrencyCode.GBP);
+    @DisplayName("Can debit an Account object with a valid amount")
+    void can_debit_an_account_object_with_a_valid_amount() {
+        // Given
+        Id userId = UserId.of();
+        Amount balance = Amount.of(100, CurrencyCode.USD);
+        Amount debitAmount = Amount.of(50, CurrencyCode.USD);
+        Account account = Account.of(userId, balance);
+
+        // When
+        Account debitedAccount = account.debit(debitAmount);
+
+        // Then
+        assertEquals(Amount.of(50, CurrencyCode.USD), debitedAccount.getBalance());
     }
 
     @Test
-    void credit_account_credited_with_different_currency() {
-        given().an_account_with_a_balance_of_$_$(10, CurrencyCode.GBP);
-        when().the_account_is_credited_of_$_$(20, CurrencyCode.USD);
-        then().an_exception_is_thrown(CurrencyMismatchException.class)
-                .and().the_account_has_a_balance_of_$_$(10, CurrencyCode.GBP);
+    @DisplayName("Cannot debit an Account object with a different currency")
+    void cannot_debit_an_account_object_with_a_different_currency() {
+        // Given
+        Id userId = UserId.of();
+        Amount balance = Amount.of(100, CurrencyCode.USD);
+        Amount debitAmount = Amount.of(50, CurrencyCode.EUR);
+        Account account = Account.of(userId, balance);
+
+        // When & Then
+        assertThrows(CurrencyMismatchException.class, () -> account.debit(debitAmount));
+    }
+
+    @Test
+    @DisplayName("Cannot debit an Account object with an amount greater than the balance")
+    void cannot_debit_an_account_object_with_an_amount_greater_than_the_balance() {
+        // Given
+        Id userId = UserId.of();
+        Amount balance = Amount.of(100, CurrencyCode.USD);
+        Amount debitAmount = Amount.of(150, CurrencyCode.USD);
+        Account account = Account.of(userId, balance);
+
+        // When & Then
+        assertThrows(InsufficientFundsException.class, () -> account.debit(debitAmount));
     }
 }

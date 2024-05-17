@@ -3,6 +3,7 @@ package org.pay_my_buddy.entity.commun.entity;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
+import org.pay_my_buddy.entity.UuidStub;
 
 import java.util.UUID;
 
@@ -29,7 +30,7 @@ class GenericIdTest {
     @DisplayName("Id Constructor sets Id")
     void idConstructorSetsId() {
         //GIVEN an Id instance
-        final Id id = new IdStub();
+        final Id id = new UuidStub();
 
         //WHEN the Id is used to create a GenericId
         final GenericId genericId = GenericId.of(id);
@@ -58,26 +59,9 @@ class GenericIdTest {
         final Id id = null;
 
         //WHEN the Id is used to create a GenericId
-        Executable executable = () -> GenericId.of((UUID) null);
+        Executable executable = () -> GenericId.of(id);
 
         //THEN an exception is thrown
-        assertThrows(IllegalArgumentException.class, executable);
-    }
-
-
-    //Stub class to test the GenericId class
-    static class IdStub implements Id {
-
-        private final UUID uuid = UUID.randomUUID();
-
-        @Override
-        public Object value() {
-            return uuid;
-        }
-
-        @Override
-        public Object generateUniqueId() {
-            return null;
-        }
+        assertThrows(NullPointerException.class, executable);
     }
 }

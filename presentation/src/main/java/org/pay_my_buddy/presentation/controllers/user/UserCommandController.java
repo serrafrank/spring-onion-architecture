@@ -17,7 +17,7 @@ public class UserCommandController {
 
     @PostMapping("/users")
     public ResponseEntity<?> createUser(@Validated @RequestBody CreateUserRequest request) {
-        final CreateUserCommand createUserCommand = new CreateUserCommand(request.getEmail(), request.getPassword(), request.getFirstName(), request.getLastName());
+        final CreateUserCommand createUserCommand = new CreateUserCommand(request.email(), request.password(), request.firstName(), request.lastName());
         apiProvider.execute(createUserCommand);
         return ResponseEntity.noContent().build();
     }

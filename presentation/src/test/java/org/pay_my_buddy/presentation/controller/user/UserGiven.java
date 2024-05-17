@@ -61,10 +61,10 @@ public class UserGiven extends Stage<UserGiven> {
 
     public UserGiven the_user_tries_to_register() {
         request = CreateUserRequest.builder()
-                .email(user.getEmail().value())
-                .password(user.getPassword().value())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
+                .email(user.email().value())
+                .password(user.password().value())
+                .firstName(user.firstName())
+                .lastName(user.lastName())
                 .build();
         return self();
     }

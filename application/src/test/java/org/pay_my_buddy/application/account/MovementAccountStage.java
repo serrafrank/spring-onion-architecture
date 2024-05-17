@@ -107,7 +107,7 @@ public class MovementAccountStage extends Stage<MovementAccountStage> {
         this.account = accountCaptor.getValue();
         Assertions.assertNotNull(this.account);
         Assertions.assertEquals(this.userId, this.account.getUserId());
-        Assertions.assertEquals(BigDecimal.valueOf(amount), this.account.getBalance().getValue());
+        Assertions.assertEquals(BigDecimal.valueOf(amount), this.account.getBalance().value());
         Mockito.verify(accountSpi).save(eq(this.account));
         return self();
     }
