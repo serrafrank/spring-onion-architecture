@@ -1,7 +1,7 @@
 package org.pay_my_buddy.entity.user;
 
-import org.pay_my_buddy.entity.commun.value_object.EncodedPassword;
-import org.pay_my_buddy.entity.commun.value_object.RawPassword;
+import org.pay_my_buddy.entity.common.value_object.EncodedPassword;
+import org.pay_my_buddy.entity.common.value_object.RawPassword;
 
 public interface PasswordEncoderTool {
 

@@ -1,7 +1,7 @@
 package org.pay_my_buddy.entity.account.spi;
 
 import org.pay_my_buddy.entity.account.Account;
-import org.pay_my_buddy.entity.commun.entity.Id;
+import org.pay_my_buddy.entity.common.entity.Id;
 
 import java.util.Optional;
 

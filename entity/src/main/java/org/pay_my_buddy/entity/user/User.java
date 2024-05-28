@@ -5,10 +5,10 @@ import lombok.NonNull;
 import lombok.Value;
 import lombok.With;
 import lombok.experimental.Accessors;
-import org.pay_my_buddy.entity.commun.entity.AbstractModel;
-import org.pay_my_buddy.entity.commun.entity.Id;
-import org.pay_my_buddy.entity.commun.value_object.Email;
-import org.pay_my_buddy.entity.commun.value_object.EncodedPassword;
+import org.pay_my_buddy.entity.common.entity.AbstractModel;
+import org.pay_my_buddy.entity.common.entity.Id;
+import org.pay_my_buddy.entity.common.value_object.Email;
+import org.pay_my_buddy.entity.common.value_object.EncodedPassword;
 
 import java.util.HashSet;
 import java.util.Set;

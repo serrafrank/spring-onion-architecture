@@ -1,7 +1,7 @@
 package org.pay_my_buddy.presentation.controllers.user;
 
 import lombok.AllArgsConstructor;
-import org.pay_my_buddy.entity.commun.api.ApiProvider;
+import org.pay_my_buddy.entity.common.api.ApiProvider;
 import org.pay_my_buddy.entity.user.api.CreateUserCommand;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -16,7 +16,7 @@ public class UserCommandController {
     private final ApiProvider apiProvider;
 
     @PostMapping("/users")
-    public ResponseEntity<?> createUser(@Validated @RequestBody CreateUserRequest request) {
+    public ResponseEntity<Void> createUser(@Validated @RequestBody CreateUserRequest request) {
         final CreateUserCommand createUserCommand = new CreateUserCommand(request.email(), request.password(), request.firstName(), request.lastName());
         apiProvider.execute(createUserCommand);
         return ResponseEntity.noContent().build();

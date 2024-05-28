@@ -1,7 +1,7 @@
 package org.pay_my_buddy.entity.user.api;
 
-import org.pay_my_buddy.entity.commun.api.query.Query;
-import org.pay_my_buddy.entity.commun.entity.Id;
+import org.pay_my_buddy.entity.common.api.query.Query;
+import org.pay_my_buddy.entity.common.entity.Id;
 import org.pay_my_buddy.entity.user.UserId;
 
 public record AreFriendsQuery(UserId userId, UserId friendId) implements Query<Boolean> {

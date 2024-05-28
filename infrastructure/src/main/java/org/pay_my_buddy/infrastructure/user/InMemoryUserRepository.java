@@ -1,7 +1,7 @@
 package org.pay_my_buddy.infrastructure.user;
 
-import org.pay_my_buddy.entity.commun.entity.Id;
-import org.pay_my_buddy.entity.commun.value_object.Email;
+import org.pay_my_buddy.entity.common.entity.Id;
+import org.pay_my_buddy.entity.common.value_object.Email;
 import org.pay_my_buddy.entity.user.User;
 import org.pay_my_buddy.entity.user.spi.UserSpi;
 import org.springframework.stereotype.Repository;

@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.pay_my_buddy.entity.account.Account;
 import org.pay_my_buddy.entity.account.api.DebitAccountCommand;
 import org.pay_my_buddy.entity.account.spi.AccountSpi;
-import org.pay_my_buddy.entity.commun.ApplicationService;
-import org.pay_my_buddy.entity.commun.api.command.CommandHandler;
+import org.pay_my_buddy.entity.common.ApplicationService;
+import org.pay_my_buddy.entity.common.api.command.CommandHandler;
 
 @ApplicationService
 @RequiredArgsConstructor

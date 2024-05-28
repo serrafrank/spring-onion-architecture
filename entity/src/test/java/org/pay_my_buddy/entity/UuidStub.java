@@ -1,6 +1,6 @@
 package org.pay_my_buddy.entity;
 
-import org.pay_my_buddy.entity.commun.entity.AbstractId;
+import org.pay_my_buddy.entity.common.entity.AbstractId;
 
 import java.util.UUID;
 

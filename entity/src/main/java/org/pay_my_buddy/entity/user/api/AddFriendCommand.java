@@ -1,6 +1,6 @@
 package org.pay_my_buddy.entity.user.api;
 
-import org.pay_my_buddy.entity.commun.api.command.Command;
+import org.pay_my_buddy.entity.common.api.command.Command;
 import org.pay_my_buddy.entity.user.UserId;
 
 public record AddFriendCommand(UserId userId, UserId friendId) implements Command {

@@ -1,10 +1,10 @@
 package org.pay_my_buddy.presentation.api;
 
 import lombok.RequiredArgsConstructor;
-import org.pay_my_buddy.entity.commun.api.ApiProvider;
-import org.pay_my_buddy.entity.commun.api.command.CommandApi;
-import org.pay_my_buddy.entity.commun.api.event.EventApi;
-import org.pay_my_buddy.entity.commun.api.query.QueryApi;
+import org.pay_my_buddy.entity.common.api.ApiProvider;
+import org.pay_my_buddy.entity.common.api.command.CommandApi;
+import org.pay_my_buddy.entity.common.api.event.EventApi;
+import org.pay_my_buddy.entity.common.api.query.QueryApi;
 import org.springframework.stereotype.Component;
 
 /**

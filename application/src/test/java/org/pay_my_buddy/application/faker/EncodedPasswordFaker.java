@@ -1,7 +1,7 @@
 package org.pay_my_buddy.application.faker;
 
 import lombok.experimental.Accessors;
-import org.pay_my_buddy.entity.commun.value_object.EncodedPassword;
+import org.pay_my_buddy.entity.common.value_object.EncodedPassword;
 
 public class EncodedPasswordFaker {
 

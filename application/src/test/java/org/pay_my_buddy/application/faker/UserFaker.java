@@ -1,6 +1,6 @@
 package org.pay_my_buddy.application.faker;
 
-import org.pay_my_buddy.entity.commun.value_object.EncodedPassword;
+import org.pay_my_buddy.entity.common.value_object.EncodedPassword;
 import org.pay_my_buddy.entity.user.User;
 import org.pay_my_buddy.entity.user.UserId;
 

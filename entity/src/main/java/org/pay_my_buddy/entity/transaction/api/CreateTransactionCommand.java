@@ -1,9 +1,9 @@
 package org.pay_my_buddy.entity.transaction.api;
 
 import lombok.NonNull;
-import org.pay_my_buddy.entity.commun.api.command.Command;
-import org.pay_my_buddy.entity.commun.entity.Id;
-import org.pay_my_buddy.entity.commun.value_object.Amount;
+import org.pay_my_buddy.entity.common.api.command.Command;
+import org.pay_my_buddy.entity.common.entity.Id;
+import org.pay_my_buddy.entity.common.value_object.Amount;
 
 public record CreateTransactionCommand(
         @NonNull

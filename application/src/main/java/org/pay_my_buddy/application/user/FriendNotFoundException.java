@@ -1,6 +1,6 @@
 package org.pay_my_buddy.application.user;
 
-import org.pay_my_buddy.entity.commun.exception.UserNotFoundException;
+import org.pay_my_buddy.entity.common.exception.UserNotFoundException;
 import org.pay_my_buddy.entity.user.UserId;
 
 public class FriendNotFoundException extends UserNotFoundException {

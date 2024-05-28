@@ -1,7 +1,7 @@
 package org.pay_my_buddy.entity.transaction.api;
 
-import org.pay_my_buddy.entity.commun.api.query.Query;
-import org.pay_my_buddy.entity.commun.entity.Id;
+import org.pay_my_buddy.entity.common.api.query.Query;
+import org.pay_my_buddy.entity.common.entity.Id;
 import org.pay_my_buddy.entity.transaction.Transaction;
 import org.pay_my_buddy.entity.transaction.TransactionId;
 

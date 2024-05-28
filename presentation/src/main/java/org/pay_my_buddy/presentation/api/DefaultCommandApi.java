@@ -2,9 +2,9 @@ package org.pay_my_buddy.presentation.api;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.pay_my_buddy.entity.commun.api.NoHandlerFoundException;
-import org.pay_my_buddy.entity.commun.api.command.Command;
-import org.pay_my_buddy.entity.commun.api.command.CommandApi;
+import org.pay_my_buddy.entity.common.api.NoHandlerFoundException;
+import org.pay_my_buddy.entity.common.api.command.Command;
+import org.pay_my_buddy.entity.common.api.command.CommandApi;
 import org.pay_my_buddy.presentation.api.providers.CommandHandlerProvider;
 import org.springframework.stereotype.Component;
 

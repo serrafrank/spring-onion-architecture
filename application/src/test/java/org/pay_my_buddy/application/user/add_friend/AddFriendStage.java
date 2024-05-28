@@ -7,7 +7,7 @@ import org.pay_my_buddy.application.faker.UserFaker;
 import org.pay_my_buddy.application.user.AddFriendUseCase;
 import org.pay_my_buddy.application.user.FriendNotFoundException;
 import org.pay_my_buddy.application.user.UserIsAlreadyAFriendException;
-import org.pay_my_buddy.entity.commun.exception.UserNotFoundException;
+import org.pay_my_buddy.entity.common.exception.UserNotFoundException;
 import org.pay_my_buddy.entity.user.User;
 import org.pay_my_buddy.entity.user.api.AddFriendCommand;
 import org.pay_my_buddy.entity.user.spi.UserSpi;

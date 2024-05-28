@@ -5,9 +5,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.pay_my_buddy.entity.account.exception.CurrencyMismatchException;
 import org.pay_my_buddy.entity.account.exception.InsufficientFundsException;
-import org.pay_my_buddy.entity.commun.entity.Id;
-import org.pay_my_buddy.entity.commun.value_object.Amount;
-import org.pay_my_buddy.entity.commun.value_object.CurrencyCode;
+import org.pay_my_buddy.entity.common.entity.Id;
+import org.pay_my_buddy.entity.common.value_object.Amount;
+import org.pay_my_buddy.entity.common.value_object.CurrencyCode;
 import org.pay_my_buddy.entity.user.UserId;
 
 import static org.junit.jupiter.api.Assertions.*;

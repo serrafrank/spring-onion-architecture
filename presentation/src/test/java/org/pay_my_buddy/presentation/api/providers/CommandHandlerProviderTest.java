@@ -3,9 +3,9 @@ package org.pay_my_buddy.presentation.api.providers;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.pay_my_buddy.entity.commun.api.DuplicateHandlerFoundException;
-import org.pay_my_buddy.entity.commun.api.command.Command;
-import org.pay_my_buddy.entity.commun.api.command.CommandHandler;
+import org.pay_my_buddy.entity.common.api.DuplicateHandlerFoundException;
+import org.pay_my_buddy.entity.common.api.command.Command;
+import org.pay_my_buddy.entity.common.api.command.CommandHandler;
 import org.springframework.context.ApplicationContext;
 
 import java.util.HashMap;

@@ -1,7 +1,7 @@
 package org.pay_my_buddy.application.account;
 
-import org.pay_my_buddy.entity.commun.entity.Id;
-import org.pay_my_buddy.entity.commun.exception.generic.ConflictException;
+import org.pay_my_buddy.entity.common.entity.Id;
+import org.pay_my_buddy.entity.common.exception.generic.ConflictException;
 
 public class AccountNotExistsException extends ConflictException {
     public AccountNotExistsException(Id id) {

@@ -3,7 +3,7 @@ package org.pay_my_buddy.infrastructure.account;
 
 import org.pay_my_buddy.entity.account.Account;
 import org.pay_my_buddy.entity.account.spi.AccountSpi;
-import org.pay_my_buddy.entity.commun.entity.Id;
+import org.pay_my_buddy.entity.common.entity.Id;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;

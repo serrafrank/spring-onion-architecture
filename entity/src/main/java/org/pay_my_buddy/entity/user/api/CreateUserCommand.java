@@ -2,9 +2,9 @@ package org.pay_my_buddy.entity.user.api;
 
 
 import org.apache.commons.lang3.StringUtils;
-import org.pay_my_buddy.entity.commun.api.command.Command;
-import org.pay_my_buddy.entity.commun.value_object.Email;
-import org.pay_my_buddy.entity.commun.value_object.RawPassword;
+import org.pay_my_buddy.entity.common.api.command.Command;
+import org.pay_my_buddy.entity.common.value_object.Email;
+import org.pay_my_buddy.entity.common.value_object.RawPassword;
 
 public record CreateUserCommand(
         Email email,

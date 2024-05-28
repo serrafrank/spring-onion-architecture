@@ -10,10 +10,10 @@ import org.pay_my_buddy.entity.account.Account;
 import org.pay_my_buddy.entity.account.api.CreditAccountCommand;
 import org.pay_my_buddy.entity.account.api.DebitAccountCommand;
 import org.pay_my_buddy.entity.account.spi.AccountSpi;
-import org.pay_my_buddy.entity.commun.api.command.Command;
-import org.pay_my_buddy.entity.commun.entity.GenericId;
-import org.pay_my_buddy.entity.commun.value_object.Amount;
-import org.pay_my_buddy.entity.commun.value_object.CurrencyCode;
+import org.pay_my_buddy.entity.common.api.command.Command;
+import org.pay_my_buddy.entity.common.entity.GenericId;
+import org.pay_my_buddy.entity.common.value_object.Amount;
+import org.pay_my_buddy.entity.common.value_object.CurrencyCode;
 
 import java.math.BigDecimal;
 import java.util.Optional;

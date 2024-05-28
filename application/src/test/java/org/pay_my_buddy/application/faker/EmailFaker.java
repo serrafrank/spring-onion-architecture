@@ -1,6 +1,6 @@
 package org.pay_my_buddy.application.faker;
 
-import org.pay_my_buddy.entity.commun.value_object.Email;
+import org.pay_my_buddy.entity.common.value_object.Email;
 
 public class EmailFaker {
 

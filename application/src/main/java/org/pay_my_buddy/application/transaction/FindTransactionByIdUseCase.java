@@ -1,8 +1,8 @@
 package org.pay_my_buddy.application.transaction;
 
 import lombok.RequiredArgsConstructor;
-import org.pay_my_buddy.entity.commun.ApplicationService;
-import org.pay_my_buddy.entity.commun.api.query.QueryHandler;
+import org.pay_my_buddy.entity.common.ApplicationService;
+import org.pay_my_buddy.entity.common.api.query.QueryHandler;
 import org.pay_my_buddy.entity.transaction.Transaction;
 import org.pay_my_buddy.entity.transaction.TransactionId;
 import org.pay_my_buddy.entity.transaction.api.FindTransactionByIdQuery;

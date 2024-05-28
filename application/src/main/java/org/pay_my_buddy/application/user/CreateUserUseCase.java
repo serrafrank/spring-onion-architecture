@@ -1,11 +1,11 @@
 package org.pay_my_buddy.application.user;
 
 import lombok.RequiredArgsConstructor;
-import org.pay_my_buddy.entity.commun.ApplicationService;
-import org.pay_my_buddy.entity.commun.api.command.CommandHandler;
-import org.pay_my_buddy.entity.commun.api.query.QueryApi;
-import org.pay_my_buddy.entity.commun.value_object.Email;
-import org.pay_my_buddy.entity.commun.value_object.EncodedPassword;
+import org.pay_my_buddy.entity.common.ApplicationService;
+import org.pay_my_buddy.entity.common.api.command.CommandHandler;
+import org.pay_my_buddy.entity.common.api.query.QueryApi;
+import org.pay_my_buddy.entity.common.value_object.Email;
+import org.pay_my_buddy.entity.common.value_object.EncodedPassword;
 import org.pay_my_buddy.entity.user.PasswordEncoderTool;
 import org.pay_my_buddy.entity.user.User;
 import org.pay_my_buddy.entity.user.api.CreateUserCommand;

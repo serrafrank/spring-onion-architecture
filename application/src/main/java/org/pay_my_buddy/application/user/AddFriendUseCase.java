@@ -1,9 +1,9 @@
 package org.pay_my_buddy.application.user;
 
 import lombok.RequiredArgsConstructor;
-import org.pay_my_buddy.entity.commun.ApplicationService;
-import org.pay_my_buddy.entity.commun.api.command.CommandHandler;
-import org.pay_my_buddy.entity.commun.exception.UserNotFoundException;
+import org.pay_my_buddy.entity.common.ApplicationService;
+import org.pay_my_buddy.entity.common.api.command.CommandHandler;
+import org.pay_my_buddy.entity.common.exception.UserNotFoundException;
 import org.pay_my_buddy.entity.user.User;
 import org.pay_my_buddy.entity.user.api.AddFriendCommand;
 import org.pay_my_buddy.entity.user.spi.UserSpi;

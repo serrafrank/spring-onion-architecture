@@ -3,7 +3,7 @@ package org.pay_my_buddy.entity.account;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.pay_my_buddy.entity.UuidStub;
-import org.pay_my_buddy.entity.commun.entity.Id;
+import org.pay_my_buddy.entity.common.entity.Id;
 
 import java.util.UUID;
 
