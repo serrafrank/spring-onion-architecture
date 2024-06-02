@@ -5,8 +5,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.pay_my_buddy.entity.common.api.NoHandlerFoundException;
 import org.pay_my_buddy.entity.common.api.command.Command;
 import org.pay_my_buddy.entity.common.api.command.CommandApi;
+import org.pay_my_buddy.entity.common.api.command.EventList;
+import org.pay_my_buddy.entity.common.api.event.Event;
+import org.pay_my_buddy.entity.common.api.event.EventApi;
 import org.pay_my_buddy.presentation.api.providers.CommandHandlerProvider;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * This class is a Spring specific implementation of the CommandApi interface.
@@ -20,6 +25,8 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class DefaultCommandApi implements CommandApi {
 
+    private final EventApi eventApi;
+
     /**
      * The CommandHandlerProvider instance. This is automatically injected by Spring.
      */
@@ -30,15 +37,25 @@ public class DefaultCommandApi implements CommandApi {
      * It takes a command as input and executes it using the appropriate handler.
      * It uses the CommandHandlerProvider to get the appropriate handler for the command.
      * If no handler is found, it throws a NoHandlerFoundException.
+     * <p>
+     * The handler is then used to handle the command, which returns a list of events.
+     * The events are then published using the EventApi.
      *
      * @param command the command to be executed
      * @throws NoHandlerFoundException if no handler is found for the command
      */
     @Override
     public <C extends Command> void execute(C command) {
-        commandHandlerProvider.getHandler(command)
-                .orElseThrow(() -> new NoHandlerFoundException(command.getClass()))
-                .handle(command);
+        final var handler = commandHandlerProvider.getHandler(command)
+                .orElseThrow(() -> new NoHandlerFoundException(command.getClass()));
+
+        final EventList eventList = handler.handle(command);
+
+        publishEvents(eventList);
+    }
+
+    private void publishEvents(EventList events) {
+        events.events().forEach(eventApi::publish);
     }
 
 }

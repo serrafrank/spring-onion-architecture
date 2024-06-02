@@ -6,6 +6,7 @@ import org.pay_my_buddy.entity.account.api.DebitAccountCommand;
 import org.pay_my_buddy.entity.common.ApplicationService;
 import org.pay_my_buddy.entity.common.api.ApiProvider;
 import org.pay_my_buddy.entity.common.api.command.CommandHandler;
+import org.pay_my_buddy.entity.common.api.command.EventList;
 import org.pay_my_buddy.entity.common.entity.Id;
 import org.pay_my_buddy.entity.common.value_object.Amount;
 import org.pay_my_buddy.entity.transaction.Transaction;
@@ -21,7 +22,7 @@ public class CreateTransactionUseCase implements CommandHandler<CreateTransactio
     private final ApiProvider apiProvider;
 
     @Override
-    public void handle(CreateTransactionCommand createTransactionCommand) {
+    public EventList handle(CreateTransactionCommand createTransactionCommand) {
 
         final Id debtorId = createTransactionCommand.debtorId();
         final Id creditorId = createTransactionCommand.creditorId();
@@ -42,6 +43,8 @@ public class CreateTransactionUseCase implements CommandHandler<CreateTransactio
         Transaction transaction = new Transaction(debtorId, creditorId, amount);
 
         transactionSpi.save(transaction);
+
+        return EventList.empty();
 
     }
 

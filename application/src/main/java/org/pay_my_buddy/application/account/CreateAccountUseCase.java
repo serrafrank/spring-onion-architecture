@@ -6,6 +6,7 @@ import org.pay_my_buddy.entity.account.api.CreateAccountCommand;
 import org.pay_my_buddy.entity.account.spi.AccountSpi;
 import org.pay_my_buddy.entity.common.ApplicationService;
 import org.pay_my_buddy.entity.common.api.command.CommandHandler;
+import org.pay_my_buddy.entity.common.api.command.EventList;
 
 @ApplicationService
 @RequiredArgsConstructor
@@ -15,7 +16,7 @@ public class CreateAccountUseCase implements CommandHandler<CreateAccountCommand
 
 
     @Override
-    public void handle(CreateAccountCommand createAccountCommand) {
+    public EventList handle(CreateAccountCommand createAccountCommand) {
 
         if (accountSpi.existsForUserId(createAccountCommand.userId())) {
             throw new AccountAlreadyExistsException(createAccountCommand.userId());
@@ -23,5 +24,6 @@ public class CreateAccountUseCase implements CommandHandler<CreateAccountCommand
 
         Account account = Account.of(createAccountCommand.userId());
         accountSpi.save(account);
+        return  EventList.empty();
     }
 }

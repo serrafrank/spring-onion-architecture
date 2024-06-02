@@ -3,6 +3,7 @@ package org.pay_my_buddy.application.user;
 import lombok.RequiredArgsConstructor;
 import org.pay_my_buddy.entity.common.ApplicationService;
 import org.pay_my_buddy.entity.common.api.command.CommandHandler;
+import org.pay_my_buddy.entity.common.api.command.EventList;
 import org.pay_my_buddy.entity.common.api.query.QueryApi;
 import org.pay_my_buddy.entity.common.value_object.Email;
 import org.pay_my_buddy.entity.common.value_object.EncodedPassword;
@@ -20,7 +21,7 @@ public class CreateUserUseCase implements CommandHandler<CreateUserCommand> {
     private final QueryApi queryApi;
     private final PasswordEncoderTool passwordEncoder;
 
-    public void handle(CreateUserCommand command) {
+    public EventList handle(CreateUserCommand command) {
 
         final String firstName = command.firstName();
         final String lastName = command.lastName();
@@ -40,6 +41,7 @@ public class CreateUserUseCase implements CommandHandler<CreateUserCommand> {
 
         this.userSpi.save(user);
 
+        return EventList.empty();
     }
 
     private boolean userAlreadyExists(Email email) {

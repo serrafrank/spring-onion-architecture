@@ -3,9 +3,11 @@ package org.pay_my_buddy.application.user;
 import lombok.RequiredArgsConstructor;
 import org.pay_my_buddy.entity.common.ApplicationService;
 import org.pay_my_buddy.entity.common.api.command.CommandHandler;
+import org.pay_my_buddy.entity.common.api.command.EventList;
 import org.pay_my_buddy.entity.common.exception.UserNotFoundException;
 import org.pay_my_buddy.entity.user.User;
 import org.pay_my_buddy.entity.user.api.AddFriendCommand;
+import org.pay_my_buddy.entity.user.events.FriendAddedEvent;
 import org.pay_my_buddy.entity.user.spi.UserSpi;
 
 /**
@@ -31,7 +33,7 @@ public class AddFriendUseCase implements CommandHandler<AddFriendCommand> {
      * @throws UserIsAlreadyAFriendException if the friend is already in the user's friend list
      */
     @Override
-    public void handle(AddFriendCommand command) {
+    public EventList handle(AddFriendCommand command) {
 
         // Find the user by ID
         final User user = userSpi.findUser(command.userId())
@@ -52,5 +54,7 @@ public class AddFriendUseCase implements CommandHandler<AddFriendCommand> {
 
         // Save the user entity
         userSpi.save(user);
+
+        return EventList.of(FriendAddedEvent.of(command.userId(), command.friendId()));
     }
 }

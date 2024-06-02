@@ -16,8 +16,6 @@ public interface ApiProvider {
 
     CommandApi getCommandApi();
 
-    EventApi getEventApi();
-
     QueryApi getQueryApi();
 
     /**
@@ -28,16 +26,6 @@ public interface ApiProvider {
      */
     default <C extends Command> void execute(C command) {
         getCommandApi().execute(command);
-    }
-
-    /**
-     * This method is responsible for dispatching an event to its respective handler.
-     *
-     * @param event The event to publish.
-     * @param <E>   The type of the event.
-     */
-    default <E extends Event> void publish(E event) {
-        getEventApi().publish(event);
     }
 
     /**

@@ -24,11 +24,6 @@ public class SpringApiProvider implements ApiProvider {
     private final CommandApi commandApi;
 
     /**
-     * The EventApi instance. This is automatically injected by Spring.
-     */
-    private final EventApi eventApi;
-
-    /**
      * The QueryApi instance. This is automatically injected by Spring.
      */
     private final QueryApi queryApi;
@@ -42,17 +37,6 @@ public class SpringApiProvider implements ApiProvider {
     @Override
     public CommandApi getCommandApi() {
         return commandApi;
-    }
-
-    /**
-     * Returns the EventApi instance.
-     * This method is an implementation of the getEventApi method defined in the ApiProvider interface.
-     *
-     * @return the EventApi instance
-     */
-    @Override
-    public EventApi getEventApi() {
-        return eventApi;
     }
 
     /**

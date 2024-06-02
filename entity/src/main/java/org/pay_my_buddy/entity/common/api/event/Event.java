@@ -1,5 +1,9 @@
 package org.pay_my_buddy.entity.common.api.event;
 
+import org.pay_my_buddy.entity.common.entity.Id;
+
+import java.time.LocalDateTime;
+
 /**
  * This is the Event interface.
  * It serves as a marker interface for all event classes in the application.
@@ -7,4 +11,9 @@ package org.pay_my_buddy.entity.common.api.event;
  * Each specific event will implement this interface.
  */
 public interface Event {
+
+    Id eventId();
+
+    LocalDateTime occurredOn();
+
 }

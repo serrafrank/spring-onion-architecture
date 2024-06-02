@@ -11,5 +11,5 @@ import org.pay_my_buddy.entity.common.api.Handler;
  */
 public interface CommandHandler<C extends Command> extends Handler<C> {
 
-    void handle(C command);
+    EventList handle(C command);
 }

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.pay_my_buddy.entity.common.api.DuplicateHandlerFoundException;
 import org.pay_my_buddy.entity.common.api.command.Command;
 import org.pay_my_buddy.entity.common.api.command.CommandHandler;
+import org.pay_my_buddy.entity.common.api.command.EventList;
 import org.springframework.context.ApplicationContext;
 
 import java.util.HashMap;
@@ -27,8 +28,7 @@ public class CommandHandlerProviderTest {
     void getHandlerReturnsHandlerWhenCommandTypeMatches() {
         // Given
         MockCommand command = new MockCommand();
-        CommandHandler<MockCommand> handler = _ -> {
-        };
+        CommandHandler<MockCommand> handler = new MockCommandHandler();
         when(applicationContext.getBeansOfType(CommandHandler.class)).thenReturn(Map.of(handler.getClass().getName(), handler));
         commandHandlerProvider = new CommandHandlerProvider(applicationContext);
 
@@ -91,4 +91,10 @@ public class CommandHandlerProviderTest {
     static class MockCommand implements Command {
     }
 
+    private static class MockCommandHandler implements CommandHandler<MockCommand> {
+        @Override
+        public EventList handle(MockCommand command) {
+            return EventList.empty();
+        }
+    }
 }
