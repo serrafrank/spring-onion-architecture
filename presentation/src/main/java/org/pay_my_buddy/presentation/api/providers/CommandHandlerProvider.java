@@ -32,7 +32,7 @@ public class CommandHandlerProvider {
      * Constructor for the CommandHandlerProvider.
      * It takes a list of CommandHandler instances, and maps each Command class to its respective handler.
      *
-     * @param applicationContext  the application context
+     * @param applicationContext the application context
      */
     public CommandHandlerProvider(ApplicationContext applicationContext) {
         List<? extends CommandHandler<?>> handlers = applicationContext.getBeansOfType(CommandHandler.class)

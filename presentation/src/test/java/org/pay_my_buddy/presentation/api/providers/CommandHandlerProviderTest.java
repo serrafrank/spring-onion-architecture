@@ -4,6 +4,7 @@ package org.pay_my_buddy.presentation.api.providers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.pay_my_buddy.entity.common.api.DuplicateHandlerFoundException;
+import org.pay_my_buddy.entity.common.api.command.AbstractCommand;
 import org.pay_my_buddy.entity.common.api.command.Command;
 import org.pay_my_buddy.entity.common.api.command.CommandHandler;
 import org.pay_my_buddy.entity.common.api.command.EventList;
@@ -88,7 +89,7 @@ public class CommandHandlerProviderTest {
     }
 
 
-    static class MockCommand implements Command {
+    static class MockCommand extends AbstractCommand {
     }
 
     private static class MockCommandHandler implements CommandHandler<MockCommand> {

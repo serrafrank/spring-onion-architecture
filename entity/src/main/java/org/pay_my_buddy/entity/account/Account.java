@@ -3,11 +3,9 @@ package org.pay_my_buddy.entity.account;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
-import org.pay_my_buddy.entity.account.exception.CurrencyMismatchException;
-import org.pay_my_buddy.entity.account.exception.InsufficientFundsException;
-import org.pay_my_buddy.entity.common.entity.AbstractModel;
-import org.pay_my_buddy.entity.common.entity.Id;
-import org.pay_my_buddy.entity.common.value_object.Amount;
+import org.pay_my_buddy.entity.AbstractModel;
+import org.pay_my_buddy.entity.Id;
+import org.pay_my_buddy.entity.amount.Amount;
 
 /**
  * Account is a class that represents a user's account in the system.
@@ -47,6 +45,10 @@ public class Account extends AbstractModel<AccountId> {
 
     public static Account of(AccountId id, Id userId, Amount balance) {
         return new Account(id, userId, balance);
+    }
+
+    public static Account of(Account account) {
+        return new Account(account.id(), account.userId, account.balance);
     }
 
     /**

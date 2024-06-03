@@ -1,9 +1,9 @@
 package org.pay_my_buddy.infrastructure.user;
 
-import org.pay_my_buddy.entity.common.entity.Id;
-import org.pay_my_buddy.entity.common.value_object.Email;
+import org.pay_my_buddy.entity.Id;
+import org.pay_my_buddy.entity.application.user.spi.UserSpi;
+import org.pay_my_buddy.entity.user.Email;
 import org.pay_my_buddy.entity.user.User;
-import org.pay_my_buddy.entity.user.spi.UserSpi;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ public class InMemoryUserRepository implements UserSpi {
     public Optional<User> findUser(Id id) {
         return
                 users.stream()
-                        .filter(user -> user.getId().equals(id))
+                        .filter(user -> user.id().equals(id))
                         .reduce((a, b) -> {
                             throw new IllegalStateException("Multiple users found for id: " + id);
                         });
@@ -29,7 +29,7 @@ public class InMemoryUserRepository implements UserSpi {
     public boolean existsById(Id id) {
         return
                 users.stream()
-                        .anyMatch(user -> user.getId().equals(id));
+                        .anyMatch(user -> user.id().equals(id));
     }
 
     @Override
@@ -42,9 +42,9 @@ public class InMemoryUserRepository implements UserSpi {
     @Override
     public void save(User user) {
         users.stream()
-                .filter(u -> u.getId().equals(user.getId()))
+                .filter(u -> u.id().equals(user.id()))
                 .reduce((a, b) -> {
-                    throw new IllegalStateException("Multiple users found for id: " + user.getId());
+                    throw new IllegalStateException("Multiple users found for id: " + user.id());
                 })
                 .ifPresentOrElse(
                         u -> {

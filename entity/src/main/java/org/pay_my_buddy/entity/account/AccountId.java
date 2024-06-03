@@ -1,7 +1,8 @@
 package org.pay_my_buddy.entity.account;
 
-import org.pay_my_buddy.entity.common.entity.GenericId;
-import org.pay_my_buddy.entity.common.entity.Id;
+
+import org.pay_my_buddy.entity.GenericId;
+import org.pay_my_buddy.entity.Id;
 
 import java.util.UUID;
 

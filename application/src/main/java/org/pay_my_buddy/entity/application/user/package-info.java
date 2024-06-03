@@ -1,0 +1,1 @@
+package org.pay_my_buddy.entity.application.user;

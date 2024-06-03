@@ -1,9 +1,9 @@
 package org.pay_my_buddy.infrastructure.user;
 
 import lombok.RequiredArgsConstructor;
-import org.pay_my_buddy.entity.common.value_object.EncodedPassword;
-import org.pay_my_buddy.entity.common.value_object.RawPassword;
+import org.pay_my_buddy.entity.user.EncodedPassword;
 import org.pay_my_buddy.entity.user.PasswordEncoderTool;
+import org.pay_my_buddy.entity.user.RawPassword;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;

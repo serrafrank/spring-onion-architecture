@@ -6,12 +6,9 @@ import org.pay_my_buddy.entity.common.api.NoHandlerFoundException;
 import org.pay_my_buddy.entity.common.api.command.Command;
 import org.pay_my_buddy.entity.common.api.command.CommandApi;
 import org.pay_my_buddy.entity.common.api.command.EventList;
-import org.pay_my_buddy.entity.common.api.event.Event;
 import org.pay_my_buddy.entity.common.api.event.EventApi;
 import org.pay_my_buddy.presentation.api.providers.CommandHandlerProvider;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 /**
  * This class is a Spring specific implementation of the CommandApi interface.

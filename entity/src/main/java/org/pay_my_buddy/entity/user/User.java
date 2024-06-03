@@ -5,10 +5,8 @@ import lombok.NonNull;
 import lombok.Value;
 import lombok.With;
 import lombok.experimental.Accessors;
-import org.pay_my_buddy.entity.common.entity.AbstractModel;
-import org.pay_my_buddy.entity.common.entity.Id;
-import org.pay_my_buddy.entity.common.value_object.Email;
-import org.pay_my_buddy.entity.common.value_object.EncodedPassword;
+import org.pay_my_buddy.entity.AbstractModel;
+import org.pay_my_buddy.entity.Id;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -90,7 +88,7 @@ public class User extends AbstractModel<UserId> {
      * @param friendId The id of the friend to be added.
      */
     public User addFriend(@NonNull Id friendId) {
-        if (getId().equals(friendId)) {
+        if (id().equals(friendId)) {
             throw new IllegalArgumentException("User and friend cannot be the same");
         }
 
@@ -124,7 +122,7 @@ public class User extends AbstractModel<UserId> {
      * @param firstName The new first name of the user.
      */
     public User updateFirstName(@NonNull String firstName) {
-        return new User(getId(), firstName, lastName(), email(), password(), friends());
+        return new User(id(), firstName, lastName(), email(), password(), friends());
     }
 
     /**
@@ -133,7 +131,7 @@ public class User extends AbstractModel<UserId> {
      * @param lastName The new last name of the user.
      */
     public User updateLastName(@NonNull String lastName) {
-        return new User(getId(), firstName(), lastName, email(), password(), friends());
+        return new User(id(), firstName(), lastName, email(), password(), friends());
     }
 
     /**
@@ -142,7 +140,7 @@ public class User extends AbstractModel<UserId> {
      * @param email The new email of the user.
      */
     public User updateEmail(@NonNull Email email) {
-        return new User(getId(), firstName(), lastName(), email, password(), friends());
+        return new User(id(), firstName(), lastName(), email, password(), friends());
     }
 
     /**
@@ -151,7 +149,7 @@ public class User extends AbstractModel<UserId> {
      * @param password The new password of the user.
      */
     public User updatePassword(@NonNull EncodedPassword password) {
-        return new User(getId(), firstName(), lastName(), email(), password, friends());
+        return new User(id(), firstName(), lastName(), email(), password, friends());
     }
 
 }

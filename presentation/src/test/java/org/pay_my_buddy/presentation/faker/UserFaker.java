@@ -3,11 +3,7 @@ package org.pay_my_buddy.presentation.faker;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import net.datafaker.Faker;
-import org.pay_my_buddy.entity.common.value_object.Email;
-import org.pay_my_buddy.entity.common.value_object.EncodedPassword;
-import org.pay_my_buddy.entity.common.value_object.RawPassword;
-import org.pay_my_buddy.entity.user.PasswordEncoderTool;
-import org.pay_my_buddy.entity.user.User;
+import org.pay_my_buddy.entity.user.*;
 import org.pay_my_buddy.infrastructure.user.BCryptPasswordEncoderTool;
 
 @Data

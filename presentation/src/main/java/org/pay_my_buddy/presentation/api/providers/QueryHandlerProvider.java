@@ -39,7 +39,7 @@ public class QueryHandlerProvider {
         queryHandlers = applicationContext.getBeansOfType(QueryHandler.class)
                 .values()
                 .stream()
-                .map(handler -> ( QueryHandler<?, ?>) handler)
+                .map(handler -> (QueryHandler<?, ?>) handler)
                 .map(handler -> Map.entry(resolve(handler), handler))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 

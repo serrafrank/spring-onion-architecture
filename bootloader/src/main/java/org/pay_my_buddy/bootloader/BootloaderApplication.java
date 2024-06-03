@@ -2,9 +2,11 @@ package org.pay_my_buddy.bootloader;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 
 @SpringBootApplication
+@ComponentScan(basePackages = {"org.pay_my_buddy"})
 public class BootloaderApplication {
 
     public static void main(String[] args) {

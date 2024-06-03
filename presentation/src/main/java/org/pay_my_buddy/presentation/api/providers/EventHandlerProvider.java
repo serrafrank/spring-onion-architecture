@@ -33,7 +33,7 @@ public class EventHandlerProvider {
      * @param applicationContext the application context
      */
     public EventHandlerProvider(ApplicationContext applicationContext) {
-        this.eventHandlers =  applicationContext.getBeansOfType(EventHandler.class)
+        this.eventHandlers = applicationContext.getBeansOfType(EventHandler.class)
                 .values()
                 .stream()
                 .map(handler -> (EventHandler<?>) handler)
