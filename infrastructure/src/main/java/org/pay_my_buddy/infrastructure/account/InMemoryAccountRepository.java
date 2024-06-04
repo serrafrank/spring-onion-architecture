@@ -1,9 +1,9 @@
 package org.pay_my_buddy.infrastructure.account;
 
 
+import org.pay_my_buddy.application.features.account.spi.AccountSpi;
 import org.pay_my_buddy.entity.Id;
 import org.pay_my_buddy.entity.account.Account;
-import org.pay_my_buddy.entity.application.account.spi.AccountSpi;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -19,14 +19,14 @@ public class InMemoryAccountRepository implements AccountSpi {
     public boolean existsForUserId(Id userId) {
         return
                 accounts.stream()
-                        .anyMatch(account -> account.getUserId().equals(userId));
+                        .anyMatch(account -> account.userId().equals(userId));
     }
 
     @Override
     public Optional<Account> findByUserId(Id userId) {
         return
                 accounts.stream()
-                        .filter(account -> account.getUserId().equals(userId))
+                        .filter(account -> account.userId().equals(userId))
                         .reduce((a, b) -> {
                             throw new IllegalStateException("Multiple accounts found for user id: " + userId);
                         });
@@ -35,9 +35,9 @@ public class InMemoryAccountRepository implements AccountSpi {
     @Override
     public void save(Account accountEntity) {
         accounts.stream()
-                .filter(account -> account.getUserId().equals(accountEntity.getUserId()))
+                .filter(account -> account.userId().equals(accountEntity.userId()))
                 .reduce((a, b) -> {
-                    throw new IllegalStateException("Multiple accounts found for user id: " + accountEntity.getUserId());
+                    throw new IllegalStateException("Multiple accounts found for user id: " + accountEntity.userId());
                 })
                 .ifPresentOrElse(
                         account -> {

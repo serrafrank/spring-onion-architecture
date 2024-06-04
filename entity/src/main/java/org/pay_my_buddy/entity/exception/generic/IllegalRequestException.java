@@ -4,7 +4,7 @@ package org.pay_my_buddy.entity.exception.generic;
 /**
  * This class represents a IllegalRequestException.
  */
-public class IllegalRequestException extends RuntimeException {
+public class IllegalRequestException extends GenericApiRequestException {
     /**
      * Default constructor for IllegalRequestException.
      * It sets a default message for this exception.
@@ -39,6 +39,6 @@ public class IllegalRequestException extends RuntimeException {
      * @param args    The arguments for formatting the message.
      */
     public IllegalRequestException(String message, Object... args) {
-        super(String.format(message, args));
+        super(message, args);
     }
 }

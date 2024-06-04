@@ -1,7 +1,7 @@
 package org.pay_my_buddy.presentation;
 
 import lombok.extern.slf4j.Slf4j;
-import org.pay_my_buddy.entity.common.DomainService;
+import org.pay_my_buddy.application.common.DomainService;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 

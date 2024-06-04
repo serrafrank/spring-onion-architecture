@@ -4,7 +4,7 @@ package org.pay_my_buddy.entity.exception.generic;
  * This class represents an UnauthorizedException.
  * It extends the RuntimeException class and sets the HTTP status to UNAUTHORIZED.
  */
-public class UnauthorizedException extends RuntimeException {
+public class UnauthorizedException extends GenericApiRequestException {
     /**
      * Default constructor for UnauthorizedException.
      * It sets a default message for this exception.
@@ -39,6 +39,6 @@ public class UnauthorizedException extends RuntimeException {
      * @param args    The arguments for formatting the message.
      */
     public UnauthorizedException(String message, Object... args) {
-        super(String.format(message, args));
+        super(message, args);
     }
 }

@@ -3,7 +3,6 @@ package org.pay_my_buddy.entity.amount;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.Value;
-import lombok.experimental.Accessors;
 import org.pay_my_buddy.entity.AbstractValueObject;
 import org.pay_my_buddy.entity.account.CurrencyMismatchException;
 
@@ -18,7 +17,6 @@ import java.util.Currency;
  */
 @Value
 @EqualsAndHashCode(callSuper = true)
-@Accessors(fluent = true)
 @ToString(callSuper = true)
 public class Amount extends AbstractValueObject<BigDecimal> implements Comparable<Amount> {
 
@@ -26,7 +24,6 @@ public class Amount extends AbstractValueObject<BigDecimal> implements Comparabl
 
     // The currency
     Currency currency;
-
 
     /**
      * Private constructor that accepts a BigDecimal value for the amount and a CurrencyCode.
@@ -50,7 +47,7 @@ public class Amount extends AbstractValueObject<BigDecimal> implements Comparabl
      * @param currency The CurrencyCode of the amount.
      */
     private Amount(BigDecimal value, CurrencyCode currency) {
-        this(value, Currency.getInstance(currency.getCode()));
+        this(value, Currency.getInstance(currency.code()));
     }
 
     /**
@@ -128,5 +125,4 @@ public class Amount extends AbstractValueObject<BigDecimal> implements Comparabl
             throw new CurrencyMismatchException(this.currency.getCurrencyCode(), amount.currency().getCurrencyCode());
         }
     }
-
 }

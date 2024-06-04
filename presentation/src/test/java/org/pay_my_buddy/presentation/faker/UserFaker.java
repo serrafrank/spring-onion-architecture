@@ -1,40 +1,67 @@
 package org.pay_my_buddy.presentation.faker;
 
-import lombok.Data;
-import lombok.experimental.Accessors;
+import lombok.Value;
 import net.datafaker.Faker;
 import org.pay_my_buddy.entity.user.*;
 import org.pay_my_buddy.infrastructure.user.BCryptPasswordEncoderTool;
 
-@Data
-@Accessors(chain = true, fluent = true)
+@Value
 public class UserFaker {
 
     private static final Faker faker = new Faker();
 
     private static final PasswordEncoderTool passwordEncoderTool = new BCryptPasswordEncoderTool();
 
-    private String firstName = faker.name().firstName();
-    private String lastName = faker.name().lastName();
-    private Email email = Email.of(faker.internet().emailAddress());
-    private RawPassword password = RawPassword.of(faker.internet().password(8, 20, true, true, true));
+    private final String firstName;
+    private final String lastName;
+    private final Email email;
+    private final RawPassword password;
 
-    public User create() {
-        return new User(firstName, lastName, email, passwordEncoded());
+    private UserFaker() {
+        this.firstName = faker.name().firstName();
+        this.lastName = faker.name().lastName();
+        this.email = Email.of(faker.internet().emailAddress());
+        this.password = RawPassword.of(faker.internet().password(8, 15));
     }
 
-    public EncodedPassword passwordEncoded() {
-        return passwordEncoderTool.encode(password);
-    }
-
-    public UserFaker email(String email) {
+    private UserFaker(String firstName, String lastName, String  email,String  password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = Email.of(email);
-        return this;
+        this.password = RawPassword.of(password);
     }
 
-    public UserFaker password(String password) {
-        this.password = RawPassword.of(password);
-        return this;
+    public User build() {
+        return new User(firstName, lastName, email, passwordEncoded(password));
+    }
+
+    public UserFaker firstName(String firstName) {
+        return new UserFaker(firstName, lastName, email.value(), password.value());
+    }
+
+    public UserFaker lastName(String lastName) {
+        return new UserFaker(firstName, lastName, email.value(), password.value());
+    }
+
+    public UserFaker email(Email email) {
+        return new UserFaker(firstName, lastName, email.value(), password.value());
+    }
+
+    public UserFaker password(RawPassword password) {
+        return new UserFaker(firstName, lastName, email.value(), password.value());
+    }
+
+
+    public static User create() {
+        return new UserFaker().build();
+    }
+
+    public static UserFaker with() {
+        return new UserFaker();
+    }
+
+    public static EncodedPassword passwordEncoded(RawPassword password) {
+        return passwordEncoderTool.encode(password);
     }
 
 

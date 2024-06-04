@@ -4,7 +4,7 @@ package org.pay_my_buddy.entity.exception.generic;
  * This class represents an InternalErrorException.
  * It extends the RuntimeException class
  */
-public class InternalErrorException extends RuntimeException {
+public class InternalErrorException extends GenericApiRequestException {
 
     /**
      * Default constructor for InternalErrorException.
@@ -40,6 +40,6 @@ public class InternalErrorException extends RuntimeException {
      * @param args    The arguments for formatting the message.
      */
     public InternalErrorException(String message, Object... args) {
-        super(String.format(message, args));
+        super(message, args);
     }
 }

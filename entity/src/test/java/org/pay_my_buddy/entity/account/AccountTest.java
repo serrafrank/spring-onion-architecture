@@ -23,8 +23,8 @@ class AccountTest {
 
         // Then
         assertNotNull(account);
-        assertEquals(userId, account.getUserId());
-        assertEquals(balance, account.getBalance());
+        assertEquals(userId, account.userId());
+        assertEquals(balance, account.balance());
     }
 
     @Test
@@ -40,7 +40,7 @@ class AccountTest {
         Account creditedAccount = account.credit(creditAmount);
 
         // Then
-        assertEquals(Amount.of(150, CurrencyCode.USD), creditedAccount.getBalance());
+        assertEquals(Amount.of(150, CurrencyCode.USD), creditedAccount.balance());
     }
 
     @Test
@@ -69,7 +69,7 @@ class AccountTest {
         Account debitedAccount = account.debit(debitAmount);
 
         // Then
-        assertEquals(Amount.of(50, CurrencyCode.USD), debitedAccount.getBalance());
+        assertEquals(Amount.of(50, CurrencyCode.USD), debitedAccount.balance());
     }
 
     @Test

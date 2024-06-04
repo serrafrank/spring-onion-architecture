@@ -6,7 +6,6 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.2.3</version>
-        <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
     <groupId>org.pay_my_buddy</groupId>
@@ -23,8 +22,9 @@
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jgiven.version>1.3.1</jgiven.version>
-        <datafaker.version>2.1.0</datafaker.version>
-        <commons-validator.version>1.8.0</commons-validator.version>
+        <datafaker.version>2.2.2</datafaker.version>
+        <commons-validator.version>1.9.0</commons-validator.version>
+        <passay.version>1.6.4</passay.version>
     </properties>
 
     <modules>
@@ -41,6 +41,11 @@
                 <groupId>commons-validator</groupId>
                 <artifactId>commons-validator</artifactId>
                 <version>${commons-validator.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.passay</groupId>
+                <artifactId>passay</artifactId>
+                <version>${passay.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -84,14 +89,27 @@
             <version>${jgiven.version}</version>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
 
     <build>
         <plugins>
             <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.5</version>
                 <configuration>
                     <systemPropertyVariables>
                         <jgiven.report.dir>${project.parent.build.directory}/jgiven-reports/json</jgiven.report.dir>
@@ -140,6 +158,7 @@
                     <sourceDirectory>${project.parent.build.directory}/jgiven-reports/json</sourceDirectory>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 

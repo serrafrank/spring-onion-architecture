@@ -4,14 +4,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.pay_my_buddy.entity.exception.generic.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 
 /**
@@ -21,7 +19,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
  */
 @Slf4j
 @RestControllerAdvice
-public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
+public class ApiExceptionHandler {
 
     /**
      * This method handles all exceptions.
@@ -32,47 +30,36 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
      * @return a ResponseEntity containing an ErrorResponse
      */
 
-    @ExceptionHandler({IllegalRequestException.class, IllegalArgumentException.class})
-    public ResponseEntity<Object> handleBadRequestException(WebRequest request, Exception exception) {
-        return handle(exception, HttpStatus.BAD_REQUEST, request);
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<Object> handleGenericException(WebRequest request, RuntimeException exception) {
+        HttpStatus status = switch (exception) {
+            case IllegalRequestException i -> HttpStatus.BAD_REQUEST;
+            case ConflictException i -> HttpStatus.CONFLICT;
+            case ForbiddenException i -> HttpStatus.FORBIDDEN;
+            case ResourceNotFoundException i -> HttpStatus.NOT_FOUND;
+            case UnauthorizedException i -> HttpStatus.UNAUTHORIZED;
+            default -> HttpStatus.INTERNAL_SERVER_ERROR;
+        };
+
+        return handleExceptionInternal(exception, status, request);
     }
 
-    @ExceptionHandler(ConflictException.class)
-    public ResponseEntity<Object> handleConflictException(WebRequest request, ConflictException exception) {
-        return handle(exception, HttpStatus.CONFLICT, request);
+    @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+    public ResponseEntity<Object> handleHttpMediaTypeNotSupportedException(HttpMediaTypeNotSupportedException exception, WebRequest request) {
+        return handleExceptionInternal(exception, HttpStatus.UNSUPPORTED_MEDIA_TYPE, request);
     }
 
-    @ExceptionHandler(ForbiddenException.class)
-    public ResponseEntity<Object> handleForbiddenException(WebRequest request, ForbiddenException exception) {
-        return handle(exception, HttpStatus.FORBIDDEN, request);
-    }
+    protected ResponseEntity<Object> handleExceptionInternal(Exception exception, HttpStatus status, WebRequest request) {
+        final String requestUrl =  ((ServletWebRequest)request).getRequest().getRequestURI();
 
-    @ExceptionHandler(InternalErrorException.class)
-    public ResponseEntity<Object> handleInternalErrorException(WebRequest request, InternalErrorException exception) {
-        return handle(exception, HttpStatus.INTERNAL_SERVER_ERROR, request);
-    }
+        if (status.is5xxServerError()) {
+            log.error("AN UNPROCESSED ERROR {} - {} OCCURRED on URL {} with message \"{}\"", status.value(), status.getReasonPhrase(), requestUrl, exception.getMessage(), exception);
+        } else {
+            log.error("An error {} - {} occurred on URL {} with message \"{}\"", status.value(), status.getReasonPhrase(), requestUrl, exception.getMessage(), exception);
+        }
 
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<Object> handleNotFoundException(WebRequest request, ResourceNotFoundException exception) {
-        return handle(exception, HttpStatus.NOT_FOUND, request);
-    }
+        ErrorResponse body = new ErrorResponse(request, exception, status);
 
-    @ExceptionHandler(UnauthorizedException.class)
-    public ResponseEntity<Object> handleUnauthorizedException(WebRequest request, UnauthorizedException exception) {
-        return handle(exception, HttpStatus.UNAUTHORIZED, request);
-    }
-
-    private ResponseEntity<Object> handle(Exception exception, HttpStatus status, WebRequest request) {
-        return super.handleExceptionInternal(exception, null, new HttpHeaders(), status, request);
-    }
-
-    @Override
-    @Nullable
-    protected ResponseEntity<Object> handleExceptionInternal(Exception exception, @Nullable Object body, HttpHeaders headers, HttpStatusCode statusCode, WebRequest request) {
-        log.error("Requested URL : " + ((ServletWebRequest) request).getRequest().getRequestURI());
-        log.error(exception.getMessage(), exception);
-        body = new ErrorResponse(request, exception, statusCode);
-
-        return super.handleExceptionInternal(exception, body, headers, statusCode, request);
+        return new ResponseEntity<>(body, new HttpHeaders(), status);
     }
 }

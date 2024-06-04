@@ -9,8 +9,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 
+import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.Map;
@@ -22,7 +24,7 @@ import java.util.stream.Collectors;
  * The information includes the timestamp, status, error, exception, message, fieldError, and path.
  */
 @JsonPropertyOrder({"timestamp", "status", "error", "exception", "message", "fieldError", "path"})
-public class ErrorResponse {
+public class ErrorResponse implements Serializable {
 
     private final Exception exception;
 
@@ -69,7 +71,7 @@ public class ErrorResponse {
      */
     public ErrorResponse(WebRequest request, Exception exception, HttpStatusCode status) {
         this.exception = exception;
-        this.path = request.getContextPath();
+        this.path = ((ServletWebRequest)request).getRequest().getRequestURI();
         this.status = status;
     }
 
@@ -127,8 +129,8 @@ public class ErrorResponse {
      */
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getFieldError() {
-        if (this.exception instanceof MethodArgumentNotValidException) {
-            return ((MethodArgumentNotValidException) this.exception).getBindingResult()
+        if (this.exception instanceof MethodArgumentNotValidException methodArgumentNotValidException) {
+            return methodArgumentNotValidException.getBindingResult()
                     .getFieldErrors()
                     .stream()
                     .collect(Collectors.toMap(

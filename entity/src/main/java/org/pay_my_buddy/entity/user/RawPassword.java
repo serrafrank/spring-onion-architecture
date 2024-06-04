@@ -38,12 +38,17 @@ public class RawPassword extends AbstractValueObject<String> {
         return this.result(password).isValid();
     }
 
+    private RuleResult result(String password) {
+        return this.validator().validate(new PasswordData(password));
+    }
+
     private PasswordValidator validator() {
         return new PasswordValidator(Arrays.asList(
                 new LengthRule(8, 30), // length between 8 and 30 characters
-                new UppercaseCharacterRule(1), // at least one upper-case character
-                new DigitCharacterRule(1), // at least one digit character
-                new SpecialCharacterRule(1), // at least one special character
+//                new CharacterRule(EnglishCharacterData.LowerCase, 1), // at least one lower-case character
+//                new CharacterRule(EnglishCharacterData.UpperCase, 1), // at least one upper-case character
+//                new CharacterRule(EnglishCharacterData.Digit, 1), // at least one digit character
+//                new CharacterRule(EnglishCharacterData.Special, 1), // at least one special character
                 new WhitespaceRule())); // no whitespace
     }
 
@@ -51,7 +56,4 @@ public class RawPassword extends AbstractValueObject<String> {
         return this.validator().getMessages(this.result(password));
     }
 
-    private RuleResult result(String password) {
-        return this.validator().validate(new PasswordData(password));
-    }
 }

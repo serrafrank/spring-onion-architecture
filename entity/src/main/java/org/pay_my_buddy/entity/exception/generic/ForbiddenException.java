@@ -4,7 +4,7 @@ package org.pay_my_buddy.entity.exception.generic;
  * This class represents a ForbiddenException.
  * It extends the RuntimeException class and sets the HTTP status to FORBIDDEN.
  */
-public class ForbiddenException extends RuntimeException {
+public class ForbiddenException extends GenericApiRequestException {
 
     /**
      * Default constructor for ForbiddenException.
@@ -40,6 +40,6 @@ public class ForbiddenException extends RuntimeException {
      * @param args    The arguments for formatting the message.
      */
     public ForbiddenException(String message, Object... args) {
-        super(String.format(message, args));
+        super(message, args);
     }
 }

@@ -6,7 +6,7 @@ import org.pay_my_buddy.entity.Id;
  * This class represents a NotFoundException.
  * It extends the RuntimeException class and sets the HTTP status to NOT_FOUND.
  */
-public class ResourceNotFoundException extends RuntimeException {
+public class ResourceNotFoundException extends GenericApiRequestException {
 
     /**
      * Default constructor for NotFoundException.
@@ -46,6 +46,6 @@ public class ResourceNotFoundException extends RuntimeException {
      * @param args    The arguments for formatting the message.
      */
     public ResourceNotFoundException(String message, Object... args) {
-        super(String.format(message, args));
+        super(message, args);
     }
 }

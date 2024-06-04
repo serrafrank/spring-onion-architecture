@@ -2,8 +2,8 @@ package org.pay_my_buddy.entity.account;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.pay_my_buddy.entity.GenericId;
 import org.pay_my_buddy.entity.Id;
-import org.pay_my_buddy.entity.fake.FakeId;
 
 import java.util.UUID;
 
@@ -16,7 +16,7 @@ class AccountIdTest {
     @DisplayName("Can create an AccountId object with a non-empty Id")
     void can_create_an_account_id_object_with_a_non_empty_id() {
         // Given
-        Id id = FakeId.of();
+        Id id = GenericId.of();
 
         // When
         AccountId accountId = AccountId.of(id);

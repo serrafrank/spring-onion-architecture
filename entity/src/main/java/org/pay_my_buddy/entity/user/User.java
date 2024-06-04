@@ -4,7 +4,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.Value;
 import lombok.With;
-import lombok.experimental.Accessors;
 import org.pay_my_buddy.entity.AbstractModel;
 import org.pay_my_buddy.entity.Id;
 
@@ -18,7 +17,6 @@ import java.util.Set;
  */
 @Value
 @With
-@Accessors(fluent = true)
 @EqualsAndHashCode(callSuper = true)
 public class User extends AbstractModel<UserId> {
 

@@ -1,6 +1,7 @@
 package org.pay_my_buddy.infrastructure.transaction;
 
-import org.pay_my_buddy.entity.application.transaction.spi.TransactionSpi;
+
+import org.pay_my_buddy.application.features.transaction.spi.TransactionSpi;
 import org.pay_my_buddy.entity.transaction.Transaction;
 import org.pay_my_buddy.entity.transaction.TransactionId;
 import org.springframework.stereotype.Repository;

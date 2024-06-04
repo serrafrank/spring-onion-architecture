@@ -1,9 +1,9 @@
 package org.pay_my_buddy.presentation.api;
 
 import lombok.RequiredArgsConstructor;
-import org.pay_my_buddy.entity.common.api.ApiProvider;
-import org.pay_my_buddy.entity.common.api.command.CommandApi;
-import org.pay_my_buddy.entity.common.api.query.QueryApi;
+import org.pay_my_buddy.application.common.api.ApiProvider;
+import org.pay_my_buddy.application.common.api.command.CommandApi;
+import org.pay_my_buddy.application.common.api.query.QueryApi;
 import org.springframework.stereotype.Component;
 
 /**

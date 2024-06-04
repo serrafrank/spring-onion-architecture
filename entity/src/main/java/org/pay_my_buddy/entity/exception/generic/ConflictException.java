@@ -4,7 +4,7 @@ package org.pay_my_buddy.entity.exception.generic;
  * This class represents a ConflictException.
  * It extends the RuntimeException class.
  */
-public class ConflictException extends RuntimeException {
+public class ConflictException extends GenericApiRequestException {
 
     /**
      * Default constructor for ConflictException.
@@ -41,6 +41,6 @@ public class ConflictException extends RuntimeException {
      * @param args    The arguments for formatting the message.
      */
     public ConflictException(String message, Object... args) {
-        super(String.format(message, args));
+        super(message, args);
     }
 }
