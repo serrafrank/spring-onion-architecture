@@ -10,13 +10,13 @@ import org.pay_my_buddy.entity.AbstractValueObject;
 public class Email extends AbstractValueObject<String> {
 
     private Email(String value) {
-        if (value == null || value.isBlank()) {
+        super(value);
+        if (value.isBlank()) {
             throw new InvalidEmailException("Email cannot be null or empty");
         }
         if (!isValid(value)) {
             throw new InvalidEmailException("Invalid email format : " + value);
         }
-        this.value = value;
     }
 
     @Override

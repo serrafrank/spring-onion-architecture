@@ -10,10 +10,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
+
 public class InMemoryUserRepository implements UserSpi {
 
     private final List<User> users = new ArrayList<>();
+
+    @Override
+    public List<User> findAll() {
+        return users;
+    }
 
     @Override
     public Optional<User> findUser(Id id) {

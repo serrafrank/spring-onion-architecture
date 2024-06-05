@@ -3,7 +3,7 @@ package org.pay_my_buddy.application.use_case.user.command.add_friend;
 import lombok.RequiredArgsConstructor;
 import org.pay_my_buddy.application.common.DomainService;
 import org.pay_my_buddy.application.common.api.CommandHandler;
-import org.pay_my_buddy.application.common.api.EventList;
+import org.pay_my_buddy.application.common.api.CommandResponse;
 import org.pay_my_buddy.application.use_case.user.events.FriendAddedEvent;
 import org.pay_my_buddy.application.use_case.user.UserSpi;
 import org.pay_my_buddy.entity.exception.UserNotFoundException;
@@ -15,7 +15,7 @@ import org.pay_my_buddy.entity.user.User;
  */
 @DomainService
 @RequiredArgsConstructor
-public class AddFriendUseCase implements CommandHandler<AddFriendCommand> {
+public class AddFriendUseCase implements CommandHandler<AddFriendCommand, Void> {
 
     // UserSpi is used to interact with the User entity
     private final UserSpi userSpi;
@@ -32,7 +32,7 @@ public class AddFriendUseCase implements CommandHandler<AddFriendCommand> {
      * @throws UserIsAlreadyAFriendException if the friend is already in the user's friend list
      */
     @Override
-    public EventList handle(AddFriendCommand command) {
+    public CommandResponse<Void> handle(AddFriendCommand command) {
 
         // Find the user by ID
         final User user = userSpi.findUser(command.userId())
@@ -54,6 +54,6 @@ public class AddFriendUseCase implements CommandHandler<AddFriendCommand> {
         // Save the user entity
         userSpi.save(user);
 
-        return EventList.of(FriendAddedEvent.of(command, command.userId(), command.friendId()));
+        return CommandResponse.empty().add(FriendAddedEvent.of(command, command.userId(), command.friendId()));
     }
 }

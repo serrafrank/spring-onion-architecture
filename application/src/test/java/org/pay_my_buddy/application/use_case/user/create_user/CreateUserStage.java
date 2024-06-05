@@ -128,7 +128,7 @@ class CreateUserStage extends Stage<CreateUserStage> {
 
 
     private void createCommand() {
-        this.command = CreateUserCommand.of(UserId.of(), email, password, firstName, lastName);
+        this.command = CreateUserCommand.of(email, password, firstName, lastName);
     }
 
     private EncodedPassword encodePassword(Object password) {

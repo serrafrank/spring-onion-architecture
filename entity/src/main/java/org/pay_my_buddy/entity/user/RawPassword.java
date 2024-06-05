@@ -13,7 +13,8 @@ import java.util.List;
 public class RawPassword extends AbstractValueObject<String> {
 
     public RawPassword(String value) {
-        if (value == null || value.isBlank()) {
+        super(value);
+        if (value.isBlank()) {
             throw new IllegalArgumentException("Password cannot be null or empty");
         }
 
@@ -21,8 +22,6 @@ public class RawPassword extends AbstractValueObject<String> {
             throw new IllegalArgumentException("Invalid format for password: " + value + ". \n" +
                     String.join("\n", messages(value)));
         }
-
-        this.value = value;
     }
 
     public static RawPassword of(String password) {

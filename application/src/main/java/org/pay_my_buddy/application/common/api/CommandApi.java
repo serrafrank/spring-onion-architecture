@@ -6,5 +6,5 @@ package org.pay_my_buddy.application.common.api;
  */
 public interface CommandApi {
 
-    <C extends Command> void execute(C command);
+    <C extends Command<R>, R> R execute(C command);
 }

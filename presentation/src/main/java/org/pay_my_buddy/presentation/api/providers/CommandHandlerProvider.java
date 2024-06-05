@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -26,7 +27,7 @@ public class CommandHandlerProvider {
     /**
      * The map of Command classes to their respective CommandHandler instances.
      */
-    private final Map<Class<? extends Command>, CommandHandler<? extends Command>> commandHandlers;
+    private final Map<Class<? extends Command>, CommandHandler<? extends Command, ?>> commandHandlers;
 
     /**
      * Constructor for the CommandHandlerProvider.
@@ -35,10 +36,10 @@ public class CommandHandlerProvider {
      * @param applicationContext the application context
      */
     public CommandHandlerProvider(ApplicationContext applicationContext) {
-        List<? extends CommandHandler<?>> handlers = applicationContext.getBeansOfType(CommandHandler.class)
+        List<? extends CommandHandler<?, ?>> handlers = applicationContext.getBeansOfType(CommandHandler.class)
                 .values()
                 .stream()
-                .map(handler -> (CommandHandler<?>) handler)
+                .map(handler -> (CommandHandler<?, ?>) handler)
                 .toList();
         try {
 
@@ -67,12 +68,12 @@ public class CommandHandlerProvider {
      * @return the CommandHandler instance for the given command, or an empty Optional if no handler is found
      */
     @SuppressWarnings("unchecked")
-    public <C extends Command> Optional<CommandHandler<C>> getHandler(C command) {
+    public <C extends Command, R> Optional<CommandHandler<C, R>> getHandler(C command) {
         if (command == null) {
             throw new NullPointerException("Command cannot be null");
         }
         return Optional.ofNullable(commandHandlers.get(command.getClass()))
-                .map(handler -> (CommandHandler<C>) handler);
+                .map(handler -> (CommandHandler<C, R>) handler);
     }
 
     /**
@@ -83,8 +84,8 @@ public class CommandHandlerProvider {
      * @return the Command class for the given handler
      */
     @SuppressWarnings("unchecked")
-    private <C extends Command> Class<C> resolve(CommandHandler<C> handler) {
-        return (Class<C>) GenericTypeResolver.resolveTypeArgument(handler.getClass(), CommandHandler.class);
+    private <C extends Command, R> Class<C> resolve(CommandHandler<C, R> handler) {
+        return (Class<C>) Objects.requireNonNull(GenericTypeResolver.resolveTypeArguments(handler.getClass(), CommandHandler.class))[0];
     }
 
 }

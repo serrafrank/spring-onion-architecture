@@ -36,10 +36,10 @@ public class EventId extends GenericId {
         super();
     }
 
-    @Override
-    public String toString() {
-        return value().toString();
-    }
+//    @Override
+//    public String toString() {
+//        return value().toString();
+//    }
 
     public static EventId of() {
         return new EventId();

@@ -1,6 +1,5 @@
 package org.pay_my_buddy.entity;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 /**
@@ -8,7 +7,6 @@ import lombok.Getter;
  * It uses Lombok annotations for getter, equals and hashcode, and toString methods.
  */
 @Getter
-@EqualsAndHashCode
 public abstract class AbstractId<U> implements Id {
 
     // The value of the ID.

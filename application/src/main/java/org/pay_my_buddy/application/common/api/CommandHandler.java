@@ -7,7 +7,7 @@ package org.pay_my_buddy.application.common.api;
  *
  * @param <C> The type of the command, which extends AbstractCommand.
  */
-public interface CommandHandler<C extends Command> extends Handler<C> {
+public interface CommandHandler<C extends Command, R> extends Handler<C> {
 
-    EventList handle(C command);
+    CommandResponse<R> handle(C command);
 }

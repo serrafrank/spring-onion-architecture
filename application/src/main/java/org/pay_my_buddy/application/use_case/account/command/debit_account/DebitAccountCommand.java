@@ -8,7 +8,7 @@ import org.pay_my_buddy.entity.amount.Amount;
 
 @Value
 @EqualsAndHashCode(callSuper = true)
-public class DebitAccountCommand extends AbstractCommand {
+public class DebitAccountCommand extends AbstractCommand<Void> {
     Id userId;
     Amount amount;
 

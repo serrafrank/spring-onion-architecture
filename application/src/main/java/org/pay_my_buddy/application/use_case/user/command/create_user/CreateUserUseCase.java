@@ -3,24 +3,21 @@ package org.pay_my_buddy.application.use_case.user.command.create_user;
 import lombok.RequiredArgsConstructor;
 import org.pay_my_buddy.application.common.DomainService;
 import org.pay_my_buddy.application.common.api.CommandHandler;
-import org.pay_my_buddy.application.common.api.EventList;
+import org.pay_my_buddy.application.common.api.CommandResponse;
 import org.pay_my_buddy.application.common.api.QueryApi;
 import org.pay_my_buddy.application.use_case.user.query.exists_user_by_email.UserExistsByEmailQuery;
 import org.pay_my_buddy.application.use_case.user.UserSpi;
-import org.pay_my_buddy.entity.user.Email;
-import org.pay_my_buddy.entity.user.EncodedPassword;
-import org.pay_my_buddy.entity.user.PasswordEncoderTool;
-import org.pay_my_buddy.entity.user.User;
+import org.pay_my_buddy.entity.user.*;
 
 @DomainService
 @RequiredArgsConstructor
-public class CreateUserUseCase implements CommandHandler<CreateUserCommand> {
+public class CreateUserUseCase implements CommandHandler<CreateUserCommand, UserId> {
 
     private final UserSpi userSpi;
     private final QueryApi queryApi;
     private final PasswordEncoderTool passwordEncoder;
 
-    public EventList handle(CreateUserCommand command) {
+    public CommandResponse<UserId> handle(CreateUserCommand command) {
 
         final String firstName = command.firstName();
         final String lastName = command.lastName();
@@ -40,7 +37,7 @@ public class CreateUserUseCase implements CommandHandler<CreateUserCommand> {
 
         this.userSpi.save(user);
 
-        return EventList.empty();
+        return CommandResponse.of(user.id());
     }
 
     private boolean userAlreadyExists(Email email) {

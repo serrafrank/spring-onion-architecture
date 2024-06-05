@@ -7,7 +7,7 @@ import org.pay_my_buddy.entity.user.UserId;
 
 @Value
 @EqualsAndHashCode(callSuper = true)
-public class AddFriendCommand extends AbstractCommand {
+public class AddFriendCommand extends AbstractCommand<Void> {
     UserId userId;
     UserId friendId;
 

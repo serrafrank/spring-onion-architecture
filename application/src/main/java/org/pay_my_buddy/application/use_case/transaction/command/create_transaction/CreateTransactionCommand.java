@@ -10,7 +10,7 @@ import java.util.Objects;
 
 @Value
 @EqualsAndHashCode(callSuper = true)
-public class CreateTransactionCommand extends AbstractCommand {
+public class CreateTransactionCommand extends AbstractCommand<Void> {
     Id debtorId;
     Id creditorId;
     Amount amount;

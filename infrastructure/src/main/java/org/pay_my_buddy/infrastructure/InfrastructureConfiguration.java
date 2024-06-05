@@ -21,13 +21,13 @@ public class InfrastructureConfiguration {
     }
 
     @Bean
-    @ConditionalOnBean
+    @ConditionalOnMissingBean
     public TransactionSpi transactionSpi() {
         return new InMemoryTransactionRepository();
     }
 
     @Bean
-    @ConditionalOnBean
+    @ConditionalOnMissingBean
     public UserSpi userSpi() {
         return new InMemoryUserRepository();
     }

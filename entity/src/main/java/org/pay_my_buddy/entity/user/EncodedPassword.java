@@ -17,10 +17,10 @@ public class EncodedPassword extends AbstractValueObject<String> {
      * @param value the value
      */
     private EncodedPassword(String value) {
-        if (value == null || value.isBlank()) {
+        super(value);
+        if (value.isBlank()) {
             throw new IllegalArgumentException("Password cannot be null or empty");
         }
-        this.value = value;
     }
 
     /**

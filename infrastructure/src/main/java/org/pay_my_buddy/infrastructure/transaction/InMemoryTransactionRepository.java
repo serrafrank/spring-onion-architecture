@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 
-@Repository
+
 public class InMemoryTransactionRepository implements TransactionSpi {
 
     private final List<Transaction> transactions = new ArrayList<>();

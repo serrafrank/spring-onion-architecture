@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.pay_my_buddy.application.common.DomainService;
 import org.pay_my_buddy.application.common.api.ApiProvider;
 import org.pay_my_buddy.application.common.api.CommandHandler;
-import org.pay_my_buddy.application.common.api.EventList;
+import org.pay_my_buddy.application.common.api.CommandResponse;
 import org.pay_my_buddy.application.use_case.account.command.credit_account.CreditAccountCommand;
 import org.pay_my_buddy.application.use_case.account.command.debit_account.DebitAccountCommand;
 import org.pay_my_buddy.application.use_case.transaction.TransactionSpi;
@@ -15,13 +15,13 @@ import org.pay_my_buddy.entity.transaction.Transaction;
 
 @DomainService
 @RequiredArgsConstructor
-public class CreateTransactionUseCase implements CommandHandler<CreateTransactionCommand> {
+public class CreateTransactionUseCase implements CommandHandler<CreateTransactionCommand, Void> {
 
     private final TransactionSpi transactionSpi;
     private final ApiProvider apiProvider;
 
     @Override
-    public EventList handle(CreateTransactionCommand createTransactionCommand) {
+    public CommandResponse<Void> handle(CreateTransactionCommand createTransactionCommand) {
 
         final Id debtorId = createTransactionCommand.debtorId();
         final Id creditorId = createTransactionCommand.creditorId();
@@ -43,7 +43,7 @@ public class CreateTransactionUseCase implements CommandHandler<CreateTransactio
 
         transactionSpi.save(transaction);
 
-        return EventList.empty();
+        return CommandResponse.empty();
 
     }
 

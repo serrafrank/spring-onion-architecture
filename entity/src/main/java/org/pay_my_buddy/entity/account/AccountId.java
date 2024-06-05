@@ -42,11 +42,6 @@ public class AccountId extends GenericId {
         super();
     }
 
-    @Override
-    public String toString() {
-        return value().toString();
-    }
-
     public static AccountId of() {
         return new AccountId();
     }

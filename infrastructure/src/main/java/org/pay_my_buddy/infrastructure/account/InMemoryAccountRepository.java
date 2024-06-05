@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
+
 public class InMemoryAccountRepository implements AccountSpi {
 
     private final List<Account> accounts = new ArrayList<>();

@@ -7,7 +7,7 @@ import org.pay_my_buddy.application.common.api.DuplicateHandlerFoundException;
 import org.pay_my_buddy.application.common.api.AbstractCommand;
 import org.pay_my_buddy.application.common.api.Command;
 import org.pay_my_buddy.application.common.api.CommandHandler;
-import org.pay_my_buddy.application.common.api.EventList;
+import org.pay_my_buddy.application.common.api.CommandResponse;
 import org.springframework.context.ApplicationContext;
 
 import java.util.HashMap;
@@ -29,13 +29,13 @@ class CommandHandlerProviderTest {
     void getHandlerReturnsHandlerWhenCommandTypeMatches() {
         // Given
         MockCommand command = new MockCommand();
-        CommandHandler<MockCommand> handler = new MockCommandHandler();
+        CommandHandler<MockCommand, Void> handler = new MockCommandHandler();
         when(applicationContext.getBeansOfType(CommandHandler.class)).thenReturn(Map.of(handler.getClass().getName(), handler));
         commandHandlerProvider = new CommandHandlerProvider(applicationContext);
 
 
         // When
-        Optional<CommandHandler<Command>> result = commandHandlerProvider.getHandler(command);
+        Optional<CommandHandler<Command, Void>> result = commandHandlerProvider.getHandler(command);
 
         // Then
         assertTrue(result.isPresent());
@@ -51,7 +51,7 @@ class CommandHandlerProviderTest {
         commandHandlerProvider = new CommandHandlerProvider(applicationContext);
 
         // When
-        Optional<CommandHandler<Command>> result = commandHandlerProvider.getHandler(command);
+        Optional<CommandHandler<Command, Void>> result = commandHandlerProvider.getHandler(command);
 
         // Then
         assertFalse(result.isPresent());
@@ -71,8 +71,8 @@ class CommandHandlerProviderTest {
     @DisplayName("constructor throws DuplicateHandlerFoundException when duplicate handlers found")
     void constructorThrowsDuplicateHandlerFoundExceptionWhenDuplicateHandlersFound() {
         // Given
-        CommandHandler<?> handler1 = mock(CommandHandler.class);
-        CommandHandler<?> handler2 = mock(CommandHandler.class);
+        CommandHandler<?,?> handler1 = mock(CommandHandler.class);
+        CommandHandler<?,?> handler2 = mock(CommandHandler.class);
         when(applicationContext.getBeansOfType(CommandHandler.class)).thenReturn(Map.of("handler1", handler1, "handler2", handler2));
 
         // When & Then
@@ -90,13 +90,13 @@ class CommandHandlerProviderTest {
     }
 
 
-    static class MockCommand extends AbstractCommand {
+    static class MockCommand extends AbstractCommand<Void> {
     }
 
-    private static class MockCommandHandler implements CommandHandler<MockCommand> {
+    private static class MockCommandHandler implements CommandHandler<MockCommand, Void> {
         @Override
-        public EventList handle(MockCommand command) {
-            return EventList.empty();
+        public CommandResponse<Void> handle(MockCommand command) {
+            return CommandResponse.empty();
         }
     }
 }

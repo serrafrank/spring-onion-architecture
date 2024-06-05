@@ -32,11 +32,11 @@ public class Amount extends AbstractValueObject<BigDecimal> implements Comparabl
      * @param currency The Currency of the amount.
      */
     private Amount(BigDecimal value, Currency currency) {
+        super(value);
         if (value.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("Amount cannot be negative");
         }
 
-        this.value = value;
         this.currency = currency;
     }
 

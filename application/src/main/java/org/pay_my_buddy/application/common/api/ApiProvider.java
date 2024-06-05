@@ -17,8 +17,8 @@ public interface ApiProvider {
      * @param command The command to execute.
      * @param <C>     The type of the command.
      */
-    default <C extends AbstractCommand> void execute(C command) {
-        getCommandApi().execute(command);
+    default <C extends AbstractCommand<R>, R> R execute(C command) {
+        return getCommandApi().execute(command);
     }
 
     /**

@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.pay_my_buddy.application.common.api.NoHandlerFoundException;
 import org.pay_my_buddy.application.common.api.Command;
 import org.pay_my_buddy.application.common.api.CommandApi;
-import org.pay_my_buddy.application.common.api.EventList;
+import org.pay_my_buddy.application.common.api.CommandResponse;
 import org.pay_my_buddy.application.common.api.EventApi;
 import org.pay_my_buddy.presentation.api.providers.CommandHandlerProvider;
 import org.springframework.stereotype.Component;
@@ -42,16 +42,18 @@ public class DefaultCommandApi implements CommandApi {
      * @throws NoHandlerFoundException if no handler is found for the command
      */
     @Override
-    public <C extends Command> void execute(C command) {
+    public <C extends Command<R>, R> R execute(C command) {
         final var handler = commandHandlerProvider.getHandler(command)
                 .orElseThrow(() -> new NoHandlerFoundException(command.getClass()));
 
-        final EventList eventList = handler.handle(command);
+        final CommandResponse<?> commandResponse = handler.handle(command);
 
-        publishEvents(eventList);
+        publishEvents(commandResponse);
+
+        return (R) commandResponse.response().orElse(null);
     }
 
-    private void publishEvents(EventList events) {
+    private void publishEvents(CommandResponse<?> events) {
         events.events().forEach(eventApi::publish);
     }
 

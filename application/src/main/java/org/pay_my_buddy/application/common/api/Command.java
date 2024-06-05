@@ -6,6 +6,6 @@ package org.pay_my_buddy.application.common.api;
  * A command represents an operation or action that the application can perform.
  * Each specific command will implement this interface.
  */
-public sealed interface Command extends Request permits AbstractCommand {
+public sealed interface Command<R> extends Request permits AbstractCommand {
 
 }

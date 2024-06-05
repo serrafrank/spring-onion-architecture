@@ -9,7 +9,7 @@ import java.util.Objects;
 
 @Value
 @EqualsAndHashCode(callSuper = true)
-public class CreateAccountCommand extends AbstractCommand {
+public class CreateAccountCommand extends AbstractCommand<Void> {
     Id userId;
 
     private CreateAccountCommand(Id userId) {
