@@ -1,0 +1,1 @@
+package org.pay_my_buddy.application.use_case.user.events;

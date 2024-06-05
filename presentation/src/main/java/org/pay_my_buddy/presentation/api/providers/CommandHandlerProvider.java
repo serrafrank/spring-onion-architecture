@@ -2,8 +2,8 @@ package org.pay_my_buddy.presentation.api.providers;
 
 import lombok.extern.slf4j.Slf4j;
 import org.pay_my_buddy.application.common.api.DuplicateHandlerFoundException;
-import org.pay_my_buddy.application.common.api.command.Command;
-import org.pay_my_buddy.application.common.api.command.CommandHandler;
+import org.pay_my_buddy.application.common.api.Command;
+import org.pay_my_buddy.application.common.api.CommandHandler;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.GenericTypeResolver;
 import org.springframework.stereotype.Component;

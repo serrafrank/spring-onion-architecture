@@ -4,10 +4,10 @@ package org.pay_my_buddy.presentation.api.providers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.pay_my_buddy.application.common.api.DuplicateHandlerFoundException;
-import org.pay_my_buddy.application.common.api.command.AbstractCommand;
-import org.pay_my_buddy.application.common.api.command.Command;
-import org.pay_my_buddy.application.common.api.command.CommandHandler;
-import org.pay_my_buddy.application.common.api.command.EventList;
+import org.pay_my_buddy.application.common.api.AbstractCommand;
+import org.pay_my_buddy.application.common.api.Command;
+import org.pay_my_buddy.application.common.api.CommandHandler;
+import org.pay_my_buddy.application.common.api.EventList;
 import org.springframework.context.ApplicationContext;
 
 import java.util.HashMap;

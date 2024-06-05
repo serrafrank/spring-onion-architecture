@@ -1,6 +1,6 @@
 package org.pay_my_buddy.application.common.api;
 
-import lombok.Value;
+import lombok.Getter;
 import org.pay_my_buddy.application.common.tools.TextConverter;
 import org.pay_my_buddy.entity.GenericId;
 import org.pay_my_buddy.entity.Id;
@@ -8,18 +8,21 @@ import org.pay_my_buddy.entity.Id;
 import java.time.Clock;
 import java.time.LocalDateTime;
 
-public class AbstractRequest implements Request {
+public abstract sealed  class AbstractRequest implements Request permits AbstractCommand, AbstractQuery, AbstractEvent {
 
     protected Metadata metadata;
+    private final String requestName = this.getClass().getSimpleName();
 
-    public AbstractRequest() {
-        super();
-        this.metadata = RequestMetadata.create(this);
+    protected AbstractRequest() {
+        this.metadata = new RequestMetadata(requestName);
     }
 
-    public AbstractRequest(Request eventObject) {
-        super();
-        this.metadata = RequestMetadata.copy(eventObject);
+    protected AbstractRequest(Metadata metadata) {
+        this.metadata = new RequestMetadata(metadata);
+    }
+
+    protected AbstractRequest(Request trigger) {
+        this.metadata = new RequestMetadata(requestName, trigger);
     }
 
     @Override
@@ -28,36 +31,30 @@ public class AbstractRequest implements Request {
     }
 
 
-    @Value
+    @Getter
     private static class RequestMetadata implements Request.Metadata {
-        Id requestId;
-        LocalDateTime occurredOn;
-        String name;
+        private final Id requestId;
+        private final LocalDateTime occurredOn;
+        private final String name;
+        private final Request trigger;
 
-        private RequestMetadata(String name) {
-            this.requestId = GenericId.of();
-            this.occurredOn = LocalDateTime.now(Clock.systemDefaultZone());
+        protected RequestMetadata(String name) {
+            this(GenericId.of(), LocalDateTime.now(Clock.systemDefaultZone()), name, null);
+        }
+
+        protected RequestMetadata(String name, Request request) {
+            this(GenericId.of(), LocalDateTime.now(Clock.systemDefaultZone()), name, request);
+        }
+
+        protected RequestMetadata(Metadata metadata) {
+            this(metadata.requestId(), metadata.occurredOn(), metadata.name(), metadata.trigger());
+        }
+
+        private RequestMetadata(Id requestId, LocalDateTime occurredOn, String name, Request trigger) {
+            this.requestId = requestId;
+            this.occurredOn = occurredOn;
             this.name = name;
-        }
-
-        private RequestMetadata(Request request) {
-            if (request == null) {
-                throw new IllegalArgumentException("Request object cannot be null");
-            }
-
-            final Request.Metadata requestMetadata = request.metadata();
-
-            this.requestId = requestMetadata.requestId();
-            this.occurredOn = requestMetadata.occurredOn();
-            this.name = requestMetadata.name();
-        }
-
-        protected static Request.Metadata create(Request request) {
-            return new RequestMetadata(request.getClass().getSimpleName());
-        }
-
-        protected static Request.Metadata copy(Request request) {
-            return new RequestMetadata(request);
+            this.trigger = trigger;
         }
 
         @Override
@@ -78,6 +75,11 @@ public class AbstractRequest implements Request {
         @Override
         public String type() {
             return TextConverter.toScreamingSnakeCase(name());
+        }
+
+        @Override
+        public Request trigger() {
+            return null;
         }
     }
 }

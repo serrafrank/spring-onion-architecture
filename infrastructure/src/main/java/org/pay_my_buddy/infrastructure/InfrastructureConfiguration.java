@@ -1,8 +1,8 @@
 package org.pay_my_buddy.infrastructure;
 
-import org.pay_my_buddy.application.features.account.spi.AccountSpi;
-import org.pay_my_buddy.application.features.transaction.spi.TransactionSpi;
-import org.pay_my_buddy.application.features.user.spi.UserSpi;
+import org.pay_my_buddy.application.use_case.account.AccountSpi;
+import org.pay_my_buddy.application.use_case.transaction.TransactionSpi;
+import org.pay_my_buddy.application.use_case.user.UserSpi;
 import org.pay_my_buddy.infrastructure.account.InMemoryAccountRepository;
 import org.pay_my_buddy.infrastructure.transaction.InMemoryTransactionRepository;
 import org.pay_my_buddy.infrastructure.user.InMemoryUserRepository;

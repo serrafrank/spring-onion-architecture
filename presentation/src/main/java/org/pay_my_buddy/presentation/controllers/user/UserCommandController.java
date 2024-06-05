@@ -2,7 +2,10 @@ package org.pay_my_buddy.presentation.controllers.user;
 
 import lombok.AllArgsConstructor;
 import org.pay_my_buddy.application.common.api.ApiProvider;
-import org.pay_my_buddy.application.features.user.api.CreateUserCommand;
+import org.pay_my_buddy.application.use_case.user.command.create_user.CreateUserCommand;
+import org.pay_my_buddy.entity.Id;
+import org.pay_my_buddy.entity.user.UserId;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -19,10 +22,11 @@ public class UserCommandController {
     private final ApiProvider apiProvider;
 
     @PostMapping
-    public ResponseEntity<Void> createUser(@Validated @RequestBody CreateUserRequest request) {
-        final CreateUserCommand createUserCommand = CreateUserCommand.of(request.email(), request.password(), request.firstName(), request.lastName());
+    public ResponseEntity<UserId> createUser(@Validated @RequestBody CreateUserRequest request) {
+        UserId userId = UserId.of();
+        final CreateUserCommand createUserCommand = CreateUserCommand.of(userId, request.email(), request.password(), request.firstName(), request.lastName());
         apiProvider.execute(createUserCommand);
-        return ResponseEntity.created(null).build();
+        return new ResponseEntity<>(userId, HttpStatus.CREATED);
     }
 
 }

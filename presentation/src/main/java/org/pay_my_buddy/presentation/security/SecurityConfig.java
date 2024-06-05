@@ -19,7 +19,7 @@ public class SecurityConfig {
             // -- Swagger UI v3 (OpenAPI)
             "/swagger-ui.html",
             "/swagger-ui/**",
-            "/v3/api-docs/**"
+            "/v3/command-docs/**"
     };
 
 

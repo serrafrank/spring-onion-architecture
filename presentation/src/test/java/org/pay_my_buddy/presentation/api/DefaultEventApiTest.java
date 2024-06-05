@@ -3,8 +3,8 @@ package org.pay_my_buddy.presentation.api;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.pay_my_buddy.application.common.api.event.Event;
-import org.pay_my_buddy.application.common.api.event.EventHandler;
+import org.pay_my_buddy.application.common.api.Event;
+import org.pay_my_buddy.application.common.api.EventHandler;
 import org.pay_my_buddy.presentation.api.providers.EventHandlerProvider;
 
 import java.time.Duration;

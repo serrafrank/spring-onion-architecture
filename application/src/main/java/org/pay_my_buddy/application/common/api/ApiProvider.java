@@ -1,10 +1,5 @@
 package org.pay_my_buddy.application.common.api;
 
-import org.pay_my_buddy.application.common.api.command.AbstractCommand;
-import org.pay_my_buddy.application.common.api.command.CommandApi;
-import org.pay_my_buddy.application.common.api.query.Query;
-import org.pay_my_buddy.application.common.api.query.QueryApi;
-
 /**
  * This interface defines the contract for an API provider.
  * An API provider is responsible for providing access to the different buses in the system.

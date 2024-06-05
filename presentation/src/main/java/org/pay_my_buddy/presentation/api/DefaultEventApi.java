@@ -2,8 +2,8 @@ package org.pay_my_buddy.presentation.api;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.pay_my_buddy.application.common.api.event.Event;
-import org.pay_my_buddy.application.common.api.event.EventApi;
+import org.pay_my_buddy.application.common.api.Event;
+import org.pay_my_buddy.application.common.api.EventApi;
 import org.pay_my_buddy.presentation.api.providers.EventHandlerProvider;
 import org.springframework.stereotype.Component;
 

@@ -1,7 +1,7 @@
 package org.pay_my_buddy.infrastructure.account;
 
 
-import org.pay_my_buddy.application.features.account.spi.AccountSpi;
+import org.pay_my_buddy.application.use_case.account.AccountSpi;
 import org.pay_my_buddy.entity.Id;
 import org.pay_my_buddy.entity.account.Account;
 import org.springframework.stereotype.Repository;

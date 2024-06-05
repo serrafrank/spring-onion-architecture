@@ -1,6 +1,6 @@
 package org.pay_my_buddy.infrastructure.user;
 
-import org.pay_my_buddy.application.features.user.spi.UserSpi;
+import org.pay_my_buddy.application.use_case.user.UserSpi;
 import org.pay_my_buddy.entity.Id;
 import org.pay_my_buddy.entity.user.Email;
 import org.pay_my_buddy.entity.user.User;
