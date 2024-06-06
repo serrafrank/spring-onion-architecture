@@ -71,7 +71,7 @@ public class ErrorResponse implements Serializable {
      */
     public ErrorResponse(WebRequest request, Exception exception, HttpStatusCode status) {
         this.exception = exception;
-        this.path = ((ServletWebRequest)request).getRequest().getRequestURI();
+        this.path = ((ServletWebRequest) request).getRequest().getRequestURI();
         this.status = status;
     }
 

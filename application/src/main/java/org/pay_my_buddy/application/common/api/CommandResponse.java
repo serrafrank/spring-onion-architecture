@@ -9,7 +9,7 @@ public final class CommandResponse<R> {
     private final List<Event> events = new LinkedList<>();
     private final Optional<R> response;
 
-    private CommandResponse(Optional<R> response , List<Event> events) {
+    private CommandResponse(Optional<R> response, List<Event> events) {
         this.response = response;
         this.events.addAll(List.copyOf(events));
     }

@@ -64,22 +64,22 @@ public final class FakerTool {
     }
 
 
-    public static Number number(long min, long max){
-        if (min > max){
+    public static Number number(long min, long max) {
+        if (min > max) {
             throw new IllegalArgumentException("min must be less than or equal to max");
         }
         return data().number().numberBetween(min, max);
     }
 
-    public static Number number(){
-        return number(1,10);
+    public static Number number() {
+        return number(1, 10);
     }
 
     public static String regexify(String regex) {
         return data().regexify(regex);
     }
 
-    public static String stringify(String string){
+    public static String stringify(String string) {
         return stringify(string, 10);
     }
 

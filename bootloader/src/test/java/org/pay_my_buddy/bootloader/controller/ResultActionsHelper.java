@@ -47,7 +47,7 @@ public class ResultActionsHelper {
      * @return The object of the class type passed in
      */
     public static <T> T toObject(ResultActions resultActions, Class<T> toClass)
-        throws JsonProcessingException, UnsupportedEncodingException {
+            throws JsonProcessingException, UnsupportedEncodingException {
         final String rawResponse = toJson(resultActions);
         return toObject(rawResponse, toClass);
     }
@@ -73,7 +73,7 @@ public class ResultActionsHelper {
      * @return A list of objects of type t
      */
     public static <T> List<T> toList(ResultActions resultActions, Class<T> toClass)
-        throws JsonProcessingException, UnsupportedEncodingException {
+            throws JsonProcessingException, UnsupportedEncodingException {
         final String rawResponse = toJson(resultActions);
         return toList(rawResponse, toClass);
     }
@@ -82,12 +82,12 @@ public class ResultActionsHelper {
     /**
      * The toList function takes a JSON string and converts it to a list of objects of the specified class.
      *
-     * @param json  Pass in the json string to be converted into a list of objects
+     * @param json    Pass in the json string to be converted into a list of objects
      * @param toClass Tell the compiler what type of object to expect in the list
      * @return A list of objects of type T
      */
     public static <T> List<T> toList(String json, Class<T> toClass)
-        throws JsonProcessingException {
+            throws JsonProcessingException {
         return objectMapper.readerForListOf(toClass).readValue(json);
     }
 }

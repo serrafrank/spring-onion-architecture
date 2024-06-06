@@ -3,11 +3,7 @@ package org.pay_my_buddy.presentation.api.providers;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.pay_my_buddy.application.common.api.DuplicateHandlerFoundException;
-import org.pay_my_buddy.application.common.api.AbstractCommand;
-import org.pay_my_buddy.application.common.api.Command;
-import org.pay_my_buddy.application.common.api.CommandHandler;
-import org.pay_my_buddy.application.common.api.CommandResponse;
+import org.pay_my_buddy.application.common.api.*;
 import org.springframework.context.ApplicationContext;
 
 import java.util.HashMap;
@@ -71,8 +67,8 @@ class CommandHandlerProviderTest {
     @DisplayName("constructor throws DuplicateHandlerFoundException when duplicate handlers found")
     void constructorThrowsDuplicateHandlerFoundExceptionWhenDuplicateHandlersFound() {
         // Given
-        CommandHandler<?,?> handler1 = mock(CommandHandler.class);
-        CommandHandler<?,?> handler2 = mock(CommandHandler.class);
+        CommandHandler<?, ?> handler1 = mock(CommandHandler.class);
+        CommandHandler<?, ?> handler2 = mock(CommandHandler.class);
         when(applicationContext.getBeansOfType(CommandHandler.class)).thenReturn(Map.of("handler1", handler1, "handler2", handler2));
 
         // When & Then

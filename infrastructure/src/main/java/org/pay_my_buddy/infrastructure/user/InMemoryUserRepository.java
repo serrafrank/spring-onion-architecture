@@ -4,7 +4,6 @@ import org.pay_my_buddy.application.use_case.user.UserSpi;
 import org.pay_my_buddy.entity.Id;
 import org.pay_my_buddy.entity.user.Email;
 import org.pay_my_buddy.entity.user.User;
-import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,26 +21,23 @@ public class InMemoryUserRepository implements UserSpi {
 
     @Override
     public Optional<User> findUser(Id id) {
-        return
-                users.stream()
-                        .filter(user -> user.id().equals(id))
-                        .reduce((a, b) -> {
-                            throw new IllegalStateException("Multiple users found for id: " + id);
-                        });
+        return users.stream()
+                .filter(user -> user.id().equals(id))
+                .reduce((a, b) -> {
+                    throw new IllegalStateException("Multiple users found for id: " + id);
+                });
     }
 
     @Override
     public boolean existsById(Id id) {
-        return
-                users.stream()
-                        .anyMatch(user -> user.id().equals(id));
+        return users.stream()
+                .anyMatch(user -> user.id().equals(id));
     }
 
     @Override
     public boolean existsByEmail(Email email) {
-        return
-                users.stream()
-                        .anyMatch(user -> user.email().equals(email));
+        return users.stream()
+                .anyMatch(user -> user.email().equals(email));
     }
 
     @Override

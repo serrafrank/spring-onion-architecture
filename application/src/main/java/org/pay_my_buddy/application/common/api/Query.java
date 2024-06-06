@@ -6,5 +6,5 @@ package org.pay_my_buddy.application.common.api;
  * A query represents an operation or action that the application can perform.
  * Each specific query will implement this interface.
  */
-public sealed interface Query<R> extends Request  permits AbstractQuery {
+public sealed interface Query<R> extends Request permits AbstractQuery {
 }

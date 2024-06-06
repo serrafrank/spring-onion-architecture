@@ -2,8 +2,8 @@ package org.pay_my_buddy.application.use_case.user.events;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import org.pay_my_buddy.application.common.api.Request;
 import org.pay_my_buddy.application.common.api.AbstractEvent;
+import org.pay_my_buddy.application.common.api.Request;
 import org.pay_my_buddy.entity.user.UserId;
 
 @Getter

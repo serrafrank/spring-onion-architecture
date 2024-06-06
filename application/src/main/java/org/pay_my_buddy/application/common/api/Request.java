@@ -11,9 +11,13 @@ public interface Request extends Cloneable {
 
     interface Metadata extends Cloneable {
         Id requestId();
+
         LocalDateTime occurredOn();
+
         String name();
+
         String type();
+
         Request trigger();
     }
 

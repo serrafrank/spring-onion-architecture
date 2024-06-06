@@ -7,13 +7,15 @@ import com.tngtech.jgiven.integration.spring.JGivenStage;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.pay_my_buddy.application.common.api.QueryApi;
+import org.pay_my_buddy.application.use_case.user.UserSpi;
 import org.pay_my_buddy.application.use_case.user.command.create_user.CreateUserCommand;
 import org.pay_my_buddy.application.use_case.user.command.create_user.CreateUserUseCase;
 import org.pay_my_buddy.application.use_case.user.command.create_user.EmailAlreadyExistsException;
 import org.pay_my_buddy.application.use_case.user.query.exists_user_by_email.UserExistsByEmailQuery;
-import org.pay_my_buddy.application.use_case.user.UserSpi;
-import org.pay_my_buddy.entity.GenericId;
-import org.pay_my_buddy.entity.user.*;
+import org.pay_my_buddy.entity.user.EncodedPassword;
+import org.pay_my_buddy.entity.user.PasswordEncoderTool;
+import org.pay_my_buddy.entity.user.RawPassword;
+import org.pay_my_buddy.entity.user.User;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

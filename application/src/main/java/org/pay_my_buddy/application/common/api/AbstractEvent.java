@@ -4,7 +4,7 @@ public non-sealed class AbstractEvent extends AbstractRequest implements Event {
 
     /**
      * This constructor is used to create a new event object from an existing event object.
-      */
+     */
     protected AbstractEvent(Event eventObject) {
         super(eventObject.metadata());
     }

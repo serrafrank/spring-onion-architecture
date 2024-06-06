@@ -7,7 +7,7 @@ public class PasswordValidatorResponse {
     private final List<String> errorMessages = new ArrayList<>();
 
     public void addErrorMessage(String message) {
-        if(message != null){
+        if (message != null) {
             errorMessages.add(message);
         }
     }

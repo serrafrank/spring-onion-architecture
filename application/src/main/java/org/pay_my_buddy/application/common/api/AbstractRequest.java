@@ -8,7 +8,7 @@ import org.pay_my_buddy.entity.Id;
 import java.time.Clock;
 import java.time.LocalDateTime;
 
-public abstract sealed  class AbstractRequest implements Request permits AbstractCommand, AbstractQuery, AbstractEvent {
+public abstract sealed class AbstractRequest implements Request permits AbstractCommand, AbstractQuery, AbstractEvent {
 
     protected Metadata metadata;
     private final String requestName = this.getClass().getSimpleName();

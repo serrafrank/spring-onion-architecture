@@ -7,7 +7,6 @@ import org.pay_my_buddy.infrastructure.account.InMemoryAccountRepository;
 import org.pay_my_buddy.infrastructure.transaction.InMemoryTransactionRepository;
 import org.pay_my_buddy.infrastructure.user.InMemoryUserRepository;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 

@@ -8,15 +8,15 @@ public record EncodedPasswordFaker(String encodedPassword) {
 
     private static final Faker faker = new Faker();
 
-        public EncodedPasswordFaker of(String encodedPassword) {
-            return new EncodedPasswordFaker(encodedPassword);
-        }
+    public EncodedPasswordFaker of(String encodedPassword) {
+        return new EncodedPasswordFaker(encodedPassword);
+    }
 
-        public static EncodedPasswordFaker of() {
-            return new EncodedPasswordFaker(faker.internet().password(8, 15));
-        }
+    public static EncodedPasswordFaker of() {
+        return new EncodedPasswordFaker(faker.internet().password(8, 15));
+    }
 
-        public EncodedPassword build() {
-            return EncodedPassword.of(this.encodedPassword);
-        }
+    public EncodedPassword build() {
+        return EncodedPassword.of(this.encodedPassword);
+    }
 }

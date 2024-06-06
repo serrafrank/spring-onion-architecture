@@ -50,7 +50,7 @@ public class ApiExceptionHandler {
     }
 
     protected ResponseEntity<Object> handleExceptionInternal(Exception exception, HttpStatus status, WebRequest request) {
-        final String requestUrl =  ((ServletWebRequest)request).getRequest().getRequestURI();
+        final String requestUrl = ((ServletWebRequest) request).getRequest().getRequestURI();
 
         if (status.is5xxServerError()) {
             log.error("AN UNPROCESSED ERROR {} - {} OCCURRED on URL {} with message \"{}\"", status.value(), status.getReasonPhrase(), requestUrl, exception.getMessage(), exception);

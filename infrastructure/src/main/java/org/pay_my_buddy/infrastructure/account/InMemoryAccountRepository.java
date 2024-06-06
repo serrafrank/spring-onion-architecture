@@ -4,7 +4,6 @@ package org.pay_my_buddy.infrastructure.account;
 import org.pay_my_buddy.application.use_case.account.AccountSpi;
 import org.pay_my_buddy.entity.Id;
 import org.pay_my_buddy.entity.account.Account;
-import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,19 +16,17 @@ public class InMemoryAccountRepository implements AccountSpi {
 
     @Override
     public boolean existsForUserId(Id userId) {
-        return
-                accounts.stream()
-                        .anyMatch(account -> account.userId().equals(userId));
+        return accounts.stream()
+                .anyMatch(account -> account.userId().equals(userId));
     }
 
     @Override
     public Optional<Account> findByUserId(Id userId) {
-        return
-                accounts.stream()
-                        .filter(account -> account.userId().equals(userId))
-                        .reduce((a, b) -> {
-                            throw new IllegalStateException("Multiple accounts found for user id: " + userId);
-                        });
+        return accounts.stream()
+                .filter(account -> account.userId().equals(userId))
+                .reduce((a, b) -> {
+                    throw new IllegalStateException("Multiple accounts found for user id: " + userId);
+                });
     }
 
     @Override

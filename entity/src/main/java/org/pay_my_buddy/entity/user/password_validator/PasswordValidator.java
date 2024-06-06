@@ -6,7 +6,6 @@ public final class PasswordValidator {
     }
 
 
-
     public static PasswordValidatorResponse of(String password) {
 
         var response = new PasswordValidatorResponse();
@@ -30,7 +29,7 @@ public final class PasswordValidator {
 
 
     private static void lengthIsValid(String password, PasswordValidatorResponse response) {
-        if (password.length() < RawPasswordValidationRules.MIN_LENGTH  || password.length() > RawPasswordValidationRules.MAX_LENGTH) {
+        if (password.length() < RawPasswordValidationRules.MIN_LENGTH || password.length() > RawPasswordValidationRules.MAX_LENGTH) {
             response.addErrorMessage("Password must be between " + RawPasswordValidationRules.MIN_LENGTH + " and " + RawPasswordValidationRules.MAX_LENGTH + " characters");
         }
     }

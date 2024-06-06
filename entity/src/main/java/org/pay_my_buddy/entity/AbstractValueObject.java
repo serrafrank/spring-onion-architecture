@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @EqualsAndHashCode
-public abstract class AbstractValueObject<T> implements ValueObject<T>{
+public abstract class AbstractValueObject<T> implements ValueObject<T> {
 
     protected final T value;
 

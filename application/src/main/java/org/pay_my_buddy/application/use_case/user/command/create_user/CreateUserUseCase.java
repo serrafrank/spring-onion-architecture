@@ -5,8 +5,8 @@ import org.pay_my_buddy.application.common.DomainService;
 import org.pay_my_buddy.application.common.api.CommandHandler;
 import org.pay_my_buddy.application.common.api.CommandResponse;
 import org.pay_my_buddy.application.common.api.QueryApi;
-import org.pay_my_buddy.application.use_case.user.query.exists_user_by_email.UserExistsByEmailQuery;
 import org.pay_my_buddy.application.use_case.user.UserSpi;
+import org.pay_my_buddy.application.use_case.user.query.exists_user_by_email.UserExistsByEmailQuery;
 import org.pay_my_buddy.entity.user.*;
 
 @DomainService
