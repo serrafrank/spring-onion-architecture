@@ -10,6 +10,6 @@ import org.pay_my_buddy.entity.exception.IllegalRequestException;
 public class CurrencyMismatchException extends IllegalRequestException {
 
     public CurrencyMismatchException(String accountCurrency, String transactionCurrency) {
-        super("Currency mismatch, cannot debit account with different currency. Account currency: " + accountCurrency + ", transaction currency: " + transactionCurrency);
+        super("Currency mismatch, cannot debit, credit or compare accounts with different currency. Account currency: " + accountCurrency + ", transaction currency: " + transactionCurrency);
     }
 }

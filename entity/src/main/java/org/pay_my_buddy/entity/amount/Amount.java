@@ -111,6 +111,9 @@ public class Amount extends AbstractValueObject<BigDecimal> implements Comparabl
 
     @Override
     public int compareTo(Amount other) {
+        if(!this.currency.equals(other.currency())) {
+            throw new CurrencyMismatchException(this.currency.getCurrencyCode(), other.currency().getCurrencyCode());
+        }
         return this.value.compareTo(other.value());
     }
 
