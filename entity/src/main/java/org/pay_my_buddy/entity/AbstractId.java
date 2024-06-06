@@ -1,5 +1,6 @@
 package org.pay_my_buddy.entity;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 /**
@@ -7,7 +8,8 @@ import lombok.Getter;
  * It uses Lombok annotations for getter, equals and hashcode, and toString methods.
  */
 @Getter
-public abstract class AbstractId<U> implements Id {
+@EqualsAndHashCode
+public abstract non-sealed class AbstractId<U> implements Id {
 
     // The value of the ID.
     private final U value;
@@ -41,13 +43,6 @@ public abstract class AbstractId<U> implements Id {
         return value;
     }
 
-    /**
-     * Abstract method to generate a unique ID.
-     * This method needs to be implemented by subclasses.
-     *
-     * @return A unique ID.
-     */
-    public abstract U generateUniqueId();
 
     @Override
     public String toString() {

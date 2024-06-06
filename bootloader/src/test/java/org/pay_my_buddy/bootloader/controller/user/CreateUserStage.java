@@ -55,8 +55,12 @@ public class CreateUserStage extends Stage<CreateUserStage> {
         return self();
     }
 
-    public CreateUserStage the_user_is_registered() throws Exception {
+    public CreateUserStage the_controller_return_a_created_status() throws Exception {
         resultActions.andExpect(status().isCreated());
+        return self();
+    }
+
+    public CreateUserStage the_user_is_registered() throws Exception {
         CreateUserResponse response = ResultActionsHelper.toObject(resultActions, CreateUserResponse.class);
         assertThat(response).isNotNull();
         assertThat(response.userId()).isNotNull();

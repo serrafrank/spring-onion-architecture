@@ -15,6 +15,7 @@ class CreateUserTest extends SimpleSpringScenarioTest<CreateUserStage> {
     void a_user_can_be_created() throws Exception {
         given().a_user(UserFaker.with());
         when().the_user_tries_to_register();
-        then().the_user_is_registered();
+        then().the_controller_return_a_created_status()
+                .and().the_user_is_registered();
     }
 }

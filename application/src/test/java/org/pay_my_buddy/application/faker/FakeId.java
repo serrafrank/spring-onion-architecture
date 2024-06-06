@@ -16,7 +16,7 @@ public class FakeId extends AbstractId<UUID> {
 
     @Override
     public UUID generateUniqueId() {
-        return UUID.fromString("00000000-0000-0000-0000-000000000000");
+        return UUID.randomUUID();
     }
 
 

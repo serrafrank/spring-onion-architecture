@@ -5,7 +5,7 @@ package org.pay_my_buddy.entity;
  * The ID is of an Object.
  * It declares two methods: value() and generateUniqueId().
  */
-public interface Id extends ValueObject<Object> {
+public sealed interface Id extends ValueObject<Object> permits AbstractId {
 
     /**
      * Method to generate a unique ID.
