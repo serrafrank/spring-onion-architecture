@@ -1,4 +1,4 @@
-package org.pay_my_buddy.test_fixtures.helper;
+package org.pay_my_buddy.bootloader.controller;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;

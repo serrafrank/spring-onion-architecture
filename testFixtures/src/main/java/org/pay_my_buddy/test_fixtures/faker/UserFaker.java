@@ -2,6 +2,7 @@ package org.pay_my_buddy.test_fixtures.faker;
 
 import lombok.Value;
 import net.datafaker.Faker;
+import org.pay_my_buddy.entity.user.*;
 import org.pay_my_buddy.infrastructure.user.BCryptPasswordEncoderTool;
 
 @Value

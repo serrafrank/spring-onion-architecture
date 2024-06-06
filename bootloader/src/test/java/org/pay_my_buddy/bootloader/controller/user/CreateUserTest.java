@@ -2,8 +2,8 @@ package org.pay_my_buddy.bootloader.controller.user;
 
 import com.tngtech.jgiven.integration.spring.junit5.SimpleSpringScenarioTest;
 import org.junit.jupiter.api.Test;
-import org.pay_my_buddy.bootloader.controller.faker.RawUser;
-import org.pay_my_buddy.bootloader.controller.faker.UserFaker;
+import org.pay_my_buddy.test_fixtures.faker.RawUser;
+import org.pay_my_buddy.test_fixtures.faker.UserFaker;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 

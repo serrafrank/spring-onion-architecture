@@ -1,8 +1,11 @@
-package org.pay_my_buddy.test_fixtures.helper;
+package org.pay_my_buddy.test_fixtures.faker;
 
 import net.datafaker.Faker;
 
-public final class FakerHelper {
+public final class FakerTool {
+    private FakerTool() {
+    }
+
     public static Faker data() {
         return new Faker();
     }
@@ -74,6 +77,10 @@ public final class FakerHelper {
 
     public static String regexify(String regex) {
         return data().regexify(regex);
+    }
+
+    public static String stringify(String string){
+        return stringify(string, 10);
     }
 
     public static String stringify(String string, int length) {
