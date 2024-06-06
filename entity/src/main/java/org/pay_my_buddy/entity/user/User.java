@@ -80,6 +80,10 @@ public class User extends AbstractModel<UserId> {
         friends.forEach(this::addFriend);
     }
 
+    public static User of(String firstName, String lastName, Email email, EncodedPassword password) {
+        return new User(firstName, lastName, email, password);
+    }
+
     /**
      * Adds a friend to the user's friend list.
      *

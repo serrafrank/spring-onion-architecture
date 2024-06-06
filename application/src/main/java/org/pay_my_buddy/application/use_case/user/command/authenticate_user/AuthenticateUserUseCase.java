@@ -37,7 +37,7 @@ public class AuthenticateUserUseCase implements CommandHandler<AuthenticateUserC
 
         var response = AuthenticationResponse.of(accessToken, refreshToken);
 
-        return CommandResponse.of(response).add(UserAuthenticatedEvent.of(command, user));
+        return CommandResponse.of(response).addEvent(UserAuthenticatedEvent.of(command, user));
 
     }
 

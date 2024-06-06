@@ -22,12 +22,11 @@ public final class CommandResponse<R> {
         return new CommandResponse<>(Optional.of(response), List.of());
     }
 
-    public CommandResponse<R> add(Event... events) {
-        add(List.of(events));
-        return new CommandResponse<>(this.response, this.events);
+    public CommandResponse<R> addEvent(Event... events) {
+        return addEvents(List.of(events));
     }
 
-    private CommandResponse<R> add(List<Event> events) {
+    private CommandResponse<R> addEvents(List<Event> events) {
         this.events.addAll(List.copyOf(events));
         return new CommandResponse<>(this.response, this.events);
     }

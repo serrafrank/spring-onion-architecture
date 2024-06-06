@@ -53,6 +53,6 @@ public class AddFriendUseCase implements CommandHandler<AddFriendCommand, Void> 
         // Save the user entity
         userSpi.save(user);
 
-        return CommandResponse.empty().add(FriendAddedEvent.of(command, command.userId(), command.friendId()));
+        return CommandResponse.empty().addEvent(FriendAddedEvent.of(command, command.userId(), command.friendId()));
     }
 }
