@@ -1,7 +1,6 @@
-package org.pay_my_buddy.entity.exception;
+package org.pay_my_buddy.entity.user;
 
-import org.pay_my_buddy.entity.exception.generic.ResourceNotFoundException;
-import org.pay_my_buddy.entity.user.UserId;
+import org.pay_my_buddy.entity.exception.ResourceNotFoundException;
 
 public class UserNotFoundException extends ResourceNotFoundException {
     public UserNotFoundException() {

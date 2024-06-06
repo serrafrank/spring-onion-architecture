@@ -1,6 +1,6 @@
 package org.pay_my_buddy.entity.user;
 
-import org.pay_my_buddy.entity.exception.generic.IllegalRequestException;
+import org.pay_my_buddy.entity.exception.IllegalRequestException;
 
 public class InvalidEmailException extends IllegalRequestException {
     public InvalidEmailException() {

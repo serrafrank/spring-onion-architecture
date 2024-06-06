@@ -4,13 +4,13 @@ import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.integration.spring.JGivenStage;
 import org.mockito.Mockito;
 import org.pay_my_buddy.application.faker.UserFaker;
-import org.pay_my_buddy.application.use_case.user.command.add_friend.UserIsAlreadyAFriendException;
 import org.pay_my_buddy.application.use_case.user.UserSpi;
 import org.pay_my_buddy.application.use_case.user.command.add_friend.AddFriendCommand;
 import org.pay_my_buddy.application.use_case.user.command.add_friend.AddFriendUseCase;
 import org.pay_my_buddy.application.use_case.user.command.add_friend.FriendNotFoundException;
-import org.pay_my_buddy.entity.exception.UserNotFoundException;
+import org.pay_my_buddy.application.use_case.user.command.add_friend.UserIsAlreadyAFriendException;
 import org.pay_my_buddy.entity.user.User;
+import org.pay_my_buddy.entity.user.UserNotFoundException;
 
 import java.util.Optional;
 

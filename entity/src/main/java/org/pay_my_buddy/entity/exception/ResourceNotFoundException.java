@@ -1,4 +1,4 @@
-package org.pay_my_buddy.entity.exception.generic;
+package org.pay_my_buddy.entity.exception;
 
 import org.pay_my_buddy.entity.Id;
 

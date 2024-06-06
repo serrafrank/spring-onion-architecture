@@ -1,6 +1,6 @@
 package org.pay_my_buddy.application.use_case.user.command.add_friend;
 
-import org.pay_my_buddy.entity.exception.generic.IllegalRequestException;
+import org.pay_my_buddy.entity.exception.IllegalRequestException;
 import org.pay_my_buddy.entity.user.UserId;
 
 public class UserIsAlreadyAFriendException extends IllegalRequestException {
