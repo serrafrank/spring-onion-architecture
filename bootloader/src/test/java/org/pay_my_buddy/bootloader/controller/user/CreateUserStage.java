@@ -4,7 +4,7 @@ package org.pay_my_buddy.bootloader.controller.user;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.integration.spring.JGivenStage;
 import org.pay_my_buddy.application.use_case.user.UserSpi;
-import org.pay_my_buddy.bootloader.controller.faker.UserFaker;
+import org.pay_my_buddy.bootloader.controller.faker.RawUser;
 import org.pay_my_buddy.bootloader.controller.helper.ResultActionsHelper;
 import org.pay_my_buddy.entity.user.User;
 import org.pay_my_buddy.entity.user.UserId;
@@ -32,11 +32,11 @@ public class CreateUserStage extends Stage<CreateUserStage> {
     private UserSpi userSpi;
 
 
-    private UserFaker user;
+    private RawUser user;
 
     private ResultActions resultActions;
 
-    public CreateUserStage a_user(UserFaker user) {
+    public CreateUserStage a_user(RawUser user) {
         this.user = user;
         return self();
     }

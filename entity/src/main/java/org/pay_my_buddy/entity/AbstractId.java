@@ -43,6 +43,8 @@ public abstract non-sealed class AbstractId<U> implements Id {
         return value;
     }
 
+    abstract public U generateUniqueId();
+
 
     @Override
     public String toString() {

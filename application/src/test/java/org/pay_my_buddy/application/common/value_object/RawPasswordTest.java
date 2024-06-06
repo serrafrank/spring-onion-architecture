@@ -16,6 +16,7 @@ class RawPasswordTest {
     private static Stream<Arguments> invalidPassword() {
         return Stream.of(
                 Arguments.of(""),
+                Arguments.of("        "),
                 Arguments.of("1234567"), // less than 8 characters
                 Arguments.of("123456789012345678901"), // more than 30 characters
                 Arguments.of("password"), // no upper case letter
