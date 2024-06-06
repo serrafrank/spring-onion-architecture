@@ -3,6 +3,7 @@ package org.pay_my_buddy.application.common.tools;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.pay_my_buddy.application.common.TextConverter;
 
 import java.util.stream.Stream;
 

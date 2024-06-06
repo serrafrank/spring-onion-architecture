@@ -5,7 +5,7 @@ package org.pay_my_buddy.entity;
  * The entity has an ID of a generic type U which extends AbstractId.
  * It declares two methods: getId() and isNew().
  */
-public interface Model<U extends AbstractId<?>> {
+public sealed interface Model<U extends AbstractId<?>> permits AbstractModel {
 
     /**
      * Method to get the ID of the entity.

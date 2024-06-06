@@ -1,7 +1,5 @@
 package org.pay_my_buddy.entity;
 
-import lombok.experimental.SuperBuilder;
-
 /**
  * AbstractModel is an abstract class that represents a persistent entity in the system.
  * It implements the Entity interface.
@@ -12,8 +10,7 @@ import lombok.experimental.SuperBuilder;
  * @version 1.0
  * @since 2023.3.3
  */
-@SuperBuilder
-public abstract class AbstractModel<U extends AbstractId<?>> implements Model<U> {
+public abstract non-sealed class AbstractModel<U extends AbstractId<?>> implements Model<U> {
     /**
      * The id of the entity.
      */

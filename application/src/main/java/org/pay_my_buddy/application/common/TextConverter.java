@@ -1,4 +1,4 @@
-package org.pay_my_buddy.application.common.tools;
+package org.pay_my_buddy.application.common;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

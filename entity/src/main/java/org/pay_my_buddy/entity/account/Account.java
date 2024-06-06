@@ -2,7 +2,6 @@ package org.pay_my_buddy.entity.account;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.experimental.SuperBuilder;
 import org.pay_my_buddy.entity.AbstractModel;
 import org.pay_my_buddy.entity.Id;
 import org.pay_my_buddy.entity.amount.Amount;
@@ -13,7 +12,6 @@ import org.pay_my_buddy.entity.amount.Amount;
  * It also provides methods to credit, debit and check the balance of the account.
  */
 @Getter
-@SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 public class Account extends AbstractModel<AccountId> {
 

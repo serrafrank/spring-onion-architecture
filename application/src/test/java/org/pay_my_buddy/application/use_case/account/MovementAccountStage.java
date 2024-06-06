@@ -48,10 +48,7 @@ public class MovementAccountStage extends Stage<MovementAccountStage> {
     public MovementAccountStage an_account_with_balance_of_$_EUR(Integer amount) {
         final BigDecimal balance = BigDecimal.valueOf(amount);
         initialBalance = Amount.of(balance, CurrencyCode.EUR);
-        this.account = Account.builder()
-                .userId(this.userId)
-                .balance(initialBalance)
-                .build();
+        this.account = Account.of(this.userId, initialBalance);
         Mockito.when(accountSpi.findByUserId(this.userId)).thenReturn(Optional.of(this.account));
         return self();
     }

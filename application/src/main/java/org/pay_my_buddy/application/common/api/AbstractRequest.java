@@ -1,7 +1,7 @@
 package org.pay_my_buddy.application.common.api;
 
 import lombok.Getter;
-import org.pay_my_buddy.application.common.tools.TextConverter;
+import org.pay_my_buddy.application.common.TextConverter;
 import org.pay_my_buddy.entity.GenericId;
 import org.pay_my_buddy.entity.Id;
 
