@@ -10,13 +10,27 @@ import java.util.Optional;
 
 public interface UserSpi {
 
-    List<User> findAll();
+    default List<User> findAll() {
+        throw new UnsupportedOperationException("Method not implemented");
+    }
 
-    Optional<User> findUser(Id id);
+    default Optional<User> findUser(Id id) {
+        throw new UnsupportedOperationException("Method not implemented");
+    }
 
-    boolean existsById(Id id);
+    default Optional<User> findUser(Email email) {
+        throw new UnsupportedOperationException("Method not implemented");
+    }
 
-    boolean existsByEmail(Email email);
+    default  boolean existsById(Id id) {
+        throw new UnsupportedOperationException("Method not implemented");
+    }
 
-    void save(User user);
+    default boolean existsByEmail(Email email) {
+        throw new UnsupportedOperationException("Method not implemented");
+    }
+
+    default void save(User user) {
+        throw new UnsupportedOperationException("Method not implemented");
+    }
 }

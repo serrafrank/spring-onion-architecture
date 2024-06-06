@@ -30,8 +30,14 @@ public class ApiExceptionHandler {
      * @return a ResponseEntity containing an ErrorResponse
      */
 
+    @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+    public ResponseEntity<ErrorResponse> handleHttpMediaTypeNotSupportedException(HttpMediaTypeNotSupportedException exception, WebRequest request) {
+        return handleException(exception, HttpStatus.UNSUPPORTED_MEDIA_TYPE, request);
+    }
+
+
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<Object> handleGenericException(WebRequest request, RuntimeException exception) {
+    public ResponseEntity<ErrorResponse> handleGenericException(WebRequest request, RuntimeException exception) {
         HttpStatus status = switch (exception) {
             case IllegalRequestException i -> HttpStatus.BAD_REQUEST;
             case ConflictException i -> HttpStatus.CONFLICT;
@@ -41,15 +47,11 @@ public class ApiExceptionHandler {
             default -> HttpStatus.INTERNAL_SERVER_ERROR;
         };
 
-        return handleExceptionInternal(exception, status, request);
+        return handleException(exception, status, request);
     }
 
-    @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
-    public ResponseEntity<Object> handleHttpMediaTypeNotSupportedException(HttpMediaTypeNotSupportedException exception, WebRequest request) {
-        return handleExceptionInternal(exception, HttpStatus.UNSUPPORTED_MEDIA_TYPE, request);
-    }
 
-    protected ResponseEntity<Object> handleExceptionInternal(Exception exception, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<ErrorResponse> handleException(Exception exception, HttpStatus status, WebRequest request) {
         final String requestUrl = ((ServletWebRequest) request).getRequest().getRequestURI();
 
         if (status.is5xxServerError()) {

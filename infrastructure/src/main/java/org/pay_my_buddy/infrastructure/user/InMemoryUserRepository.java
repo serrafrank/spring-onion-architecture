@@ -29,6 +29,15 @@ public class InMemoryUserRepository implements UserSpi {
     }
 
     @Override
+    public Optional<User> findUser(Email email) {
+        return users.stream()
+                .filter(user -> user.email().equals(email))
+                .reduce((a, b) -> {
+                    throw new IllegalStateException("Multiple users found for email: " + email);
+                });
+    }
+
+    @Override
     public boolean existsById(Id id) {
         return users.stream()
                 .anyMatch(user -> user.id().equals(id));

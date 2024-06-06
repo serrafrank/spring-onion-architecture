@@ -1,4 +1,4 @@
-package org.pay_my_buddy.application.use_case.user.events;
+package org.pay_my_buddy.application.use_case.user.command.add_friend;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

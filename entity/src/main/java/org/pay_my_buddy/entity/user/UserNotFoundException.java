@@ -18,4 +18,8 @@ public class UserNotFoundException extends ResourceNotFoundException {
     public UserNotFoundException(String message, UserId id) {
         super(message, id);
     }
+
+    public UserNotFoundException(Email email) {
+        super("User not found with email: %s", email);
+    }
 }

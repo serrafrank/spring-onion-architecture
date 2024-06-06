@@ -56,6 +56,12 @@ public class EventHandlerProvider {
         if (event == null) {
             throw new NullPointerException("Event cannot be null");
         }
+
+        if (eventHandlers.isEmpty() || !eventHandlers.containsKey(event.getClass())) {
+            log.warn("No event handlers found for event {}", event.getClass().getSimpleName());
+            return Set.of();
+        }
+
         return eventHandlers.get(event.getClass())
                 .stream()
                 .map(handler -> (EventHandler<E>) handler)

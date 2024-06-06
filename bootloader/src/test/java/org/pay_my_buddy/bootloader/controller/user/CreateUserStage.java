@@ -48,7 +48,7 @@ public class CreateUserStage extends Stage<CreateUserStage> {
                 .firstName(user.firstName())
                 .lastName(user.lastName());
 
-        resultActions = mockMvc.perform(post("/users")
+        resultActions = mockMvc.perform(post("/api/v1/users")
                 .content(ResultActionsHelper.toJson(request))
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_VALUE));

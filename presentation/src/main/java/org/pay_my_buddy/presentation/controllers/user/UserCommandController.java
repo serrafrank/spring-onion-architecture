@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping(value = "users", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/v1/users", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 public class UserCommandController {
 
     private final ApiProvider apiProvider;
@@ -26,5 +26,11 @@ public class UserCommandController {
         UserId response = apiProvider.execute(createUserCommand);
         return new ResponseEntity<>(CreateUserResponse.of(response), HttpStatus.CREATED);
     }
+
+//    @PostMapping("add-friend")
+//    public ResponseEntity<Void> addFriend(@Validated @RequestBody AddFriendRequest request) {
+//        final AddFriendCommand addFriendCommand = AddFriendCommand.of(request.email());
+//        return ResponseEntity.ok().build();
+//    }
 
 }

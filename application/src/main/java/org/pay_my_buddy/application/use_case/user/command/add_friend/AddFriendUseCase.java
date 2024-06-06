@@ -5,7 +5,6 @@ import org.pay_my_buddy.application.common.DomainService;
 import org.pay_my_buddy.application.common.api.CommandHandler;
 import org.pay_my_buddy.application.common.api.CommandResponse;
 import org.pay_my_buddy.application.use_case.user.UserSpi;
-import org.pay_my_buddy.application.use_case.user.events.FriendAddedEvent;
 import org.pay_my_buddy.entity.user.User;
 import org.pay_my_buddy.entity.user.UserNotFoundException;
 
