@@ -19,17 +19,17 @@ public class Email extends AbstractValueObject<String> {
         }
     }
 
-    @Override
-    public String toString() {
-        return super.toString();
-    }
-
     public static Email of(String email) {
         return new Email(email);
     }
 
     public static Email of(Email email) {
         return new Email(email.value());
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
     }
 
     private boolean isValid(String email) {

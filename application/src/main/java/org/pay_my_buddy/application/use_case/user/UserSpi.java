@@ -22,7 +22,7 @@ public interface UserSpi {
         throw new UnsupportedOperationException("Method not implemented");
     }
 
-    default  boolean existsById(Id id) {
+    default boolean existsById(Id id) {
         throw new UnsupportedOperationException("Method not implemented");
     }
 

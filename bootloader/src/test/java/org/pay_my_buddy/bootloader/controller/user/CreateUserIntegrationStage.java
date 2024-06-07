@@ -3,13 +3,13 @@ package org.pay_my_buddy.bootloader.controller.user;
 
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.integration.spring.JGivenStage;
+import org.pay_my_buddy.application.faker.RawUser;
 import org.pay_my_buddy.application.use_case.user.UserSpi;
 import org.pay_my_buddy.bootloader.controller.ResultActionsHelper;
 import org.pay_my_buddy.entity.user.User;
 import org.pay_my_buddy.entity.user.UserId;
 import org.pay_my_buddy.presentation.controllers.user.CreateUserRequest;
 import org.pay_my_buddy.presentation.controllers.user.CreateUserResponse;
-import org.pay_my_buddy.test_fixtures.faker.RawUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @JGivenStage
-public class CreateUserStage extends Stage<CreateUserStage> {
+public class CreateUserIntegrationStage extends Stage<CreateUserIntegrationStage> {
 
     @Autowired
     private MockMvc mockMvc;
@@ -36,12 +36,12 @@ public class CreateUserStage extends Stage<CreateUserStage> {
 
     private ResultActions resultActions;
 
-    public CreateUserStage a_user(RawUser user) {
+    public CreateUserIntegrationStage a_user(RawUser user) {
         this.user = user;
         return self();
     }
 
-    public CreateUserStage the_user_tries_to_register() throws Exception {
+    public CreateUserIntegrationStage the_user_tries_to_register() throws Exception {
         CreateUserRequest request = new CreateUserRequest()
                 .email(user.email())
                 .password(user.password())
@@ -55,12 +55,12 @@ public class CreateUserStage extends Stage<CreateUserStage> {
         return self();
     }
 
-    public CreateUserStage the_controller_return_a_created_status() throws Exception {
+    public CreateUserIntegrationStage the_controller_return_a_created_status() throws Exception {
         resultActions.andExpect(status().isCreated());
         return self();
     }
 
-    public CreateUserStage the_user_is_registered() throws Exception {
+    public CreateUserIntegrationStage the_user_is_registered() throws Exception {
         CreateUserResponse response = ResultActionsHelper.toObject(resultActions, CreateUserResponse.class);
         assertThat(response).isNotNull();
         assertThat(response.userId()).isNotNull();

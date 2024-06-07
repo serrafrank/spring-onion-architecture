@@ -42,12 +42,12 @@ class CommandHandlerProviderTest {
     @DisplayName("getHandler returns empty Optional when no handler found")
     void getHandlerReturnsEmptyOptionalWhenNoHandlerFound() {
         // Given
-        Command command = mock(Command.class);
+        MockCommand command = new MockCommand();
         when(applicationContext.getBeansOfType(CommandHandler.class)).thenReturn(new HashMap<>());
         commandHandlerProvider = new CommandHandlerProvider(applicationContext);
 
         // When
-        Optional<CommandHandler<Command, Void>> result = commandHandlerProvider.getHandler(command);
+        Optional<CommandHandler<MockCommand, Void>> result = commandHandlerProvider.getHandler(command);
 
         // Then
         assertFalse(result.isPresent());
@@ -67,8 +67,8 @@ class CommandHandlerProviderTest {
     @DisplayName("constructor throws DuplicateHandlerFoundException when duplicate handlers found")
     void constructorThrowsDuplicateHandlerFoundExceptionWhenDuplicateHandlersFound() {
         // Given
-        CommandHandler<?, ?> handler1 = mock(CommandHandler.class);
-        CommandHandler<?, ?> handler2 = mock(CommandHandler.class);
+        CommandHandler<?, ?> handler1 = new MockCommandHandler();
+        CommandHandler<?, ?> handler2 = new MockCommandHandler();
         when(applicationContext.getBeansOfType(CommandHandler.class)).thenReturn(Map.of("handler1", handler1, "handler2", handler2));
 
         // When & Then

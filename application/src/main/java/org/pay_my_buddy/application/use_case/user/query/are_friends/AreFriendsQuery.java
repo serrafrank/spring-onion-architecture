@@ -28,11 +28,11 @@ public class AreFriendsQuery extends AbstractQuery<Boolean> {
         this.friendId = friendId;
     }
 
-    public static AreFriendsQuery of(UserId userId, UserId friendId) {
-        return new AreFriendsQuery(userId, friendId);
-    }
-
     public AreFriendsQuery(Id userId, Id friendId) {
         this(UserId.of(userId), UserId.of(friendId));
+    }
+
+    public static AreFriendsQuery of(UserId userId, UserId friendId) {
+        return new AreFriendsQuery(userId, friendId);
     }
 }

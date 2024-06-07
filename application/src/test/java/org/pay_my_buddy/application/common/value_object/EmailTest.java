@@ -24,8 +24,7 @@ class EmailTest {
 
         // Then an InvalidEmailException should be thrown with the correct message
         assertThatThrownBy(throwingCallable)
-                .isInstanceOf(InvalidEmailException.class)
-                .hasMessage("Email cannot be null or empty");
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test

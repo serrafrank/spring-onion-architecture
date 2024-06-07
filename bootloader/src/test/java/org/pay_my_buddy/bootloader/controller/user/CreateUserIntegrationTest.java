@@ -2,14 +2,14 @@ package org.pay_my_buddy.bootloader.controller.user;
 
 import com.tngtech.jgiven.integration.spring.junit5.SimpleSpringScenarioTest;
 import org.junit.jupiter.api.Test;
-import org.pay_my_buddy.test_fixtures.faker.RawUser;
-import org.pay_my_buddy.test_fixtures.faker.UserFaker;
+import org.pay_my_buddy.application.faker.RawUser;
+import org.pay_my_buddy.application.faker.UserFaker;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-class CreateUserTest extends SimpleSpringScenarioTest<CreateUserStage> {
+class CreateUserIntegrationTest extends SimpleSpringScenarioTest<CreateUserIntegrationStage> {
 
     RawUser user = UserFaker.of().rawUser();
 

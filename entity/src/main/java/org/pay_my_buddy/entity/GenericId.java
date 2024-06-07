@@ -38,16 +38,6 @@ public class GenericId extends AbstractId<UUID> {
         super();
     }
 
-    /**
-     * This method overrides the generateUniqueId() method of the AbstractId class.
-     * It generates a random UUID.
-     *
-     * @return A random UUID.
-     */
-    public UUID generateUniqueId() {
-        return UUID.randomUUID();
-    }
-
     public static GenericId of() {
         return new GenericId();
     }
@@ -58,6 +48,16 @@ public class GenericId extends AbstractId<UUID> {
 
     public static GenericId of(UUID uuid) {
         return new GenericId(uuid);
+    }
+
+    /**
+     * This method overrides the generateUniqueId() method of the AbstractId class.
+     * It generates a random UUID.
+     *
+     * @return A random UUID.
+     */
+    public UUID generateUniqueId() {
+        return UUID.randomUUID();
     }
 
 }

@@ -33,14 +33,14 @@ public class AddFriendStage extends Stage<AddFriendStage> {
     Exception commandException;
 
     public AddFriendStage a_valid_user() {
-        user = UserFaker.create();
+        user = UserFaker.of().build();
         Mockito.when(userSpi.existsById(user.id())).thenReturn(true);
         Mockito.when(userSpi.findUser(user.id())).thenReturn(Optional.of(user));
         return self();
     }
 
     public AddFriendStage a_valid_friend() {
-        friend = UserFaker.create();
+        friend = UserFaker.of().build();
         Mockito.when(userSpi.existsById(friend.id())).thenReturn(true);
         Mockito.when(userSpi.findUser(friend.id())).thenReturn(Optional.of(friend));
         return self();
@@ -77,7 +77,7 @@ public class AddFriendStage extends Stage<AddFriendStage> {
     }
 
     public AddFriendStage a_user_select_himself() {
-        user = UserFaker.create();
+        user = UserFaker.of().build();
         friend = user;
         return self();
     }

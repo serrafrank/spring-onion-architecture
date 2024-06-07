@@ -1,26 +1,25 @@
 package org.pay_my_buddy.application.use_case.user.create_user;
 
 import com.tngtech.jgiven.Stage;
-import com.tngtech.jgiven.annotation.BeforeScenario;
 import com.tngtech.jgiven.annotation.Quoted;
 import com.tngtech.jgiven.integration.spring.JGivenStage;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
-import org.pay_my_buddy.application.common.api.QueryApi;
+import org.pay_my_buddy.application.common.api.ApiProvider;
+import org.pay_my_buddy.application.faker.PasswordEncoderToolFaker;
 import org.pay_my_buddy.application.use_case.user.UserSpi;
 import org.pay_my_buddy.application.use_case.user.command.create_user.CreateUserCommand;
 import org.pay_my_buddy.application.use_case.user.command.create_user.CreateUserUseCase;
 import org.pay_my_buddy.application.use_case.user.command.create_user.EmailAlreadyExistsException;
 import org.pay_my_buddy.application.use_case.user.query.exists_user_by_email.UserExistsByEmailQuery;
-import org.pay_my_buddy.entity.user.EncodedPassword;
 import org.pay_my_buddy.entity.user.PasswordEncoderTool;
 import org.pay_my_buddy.entity.user.RawPassword;
 import org.pay_my_buddy.entity.user.User;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 @JGivenStage
 class CreateUserStage extends Stage<CreateUserStage> {
@@ -29,32 +28,22 @@ class CreateUserStage extends Stage<CreateUserStage> {
     private final UserSpi userSpi = Mockito.mock(UserSpi.class);
 
 
-    private final QueryApi queryApi = Mockito.mock(QueryApi.class);
+    private final ApiProvider apiProvider = Mockito.mock(ApiProvider.class);
 
 
-    private final PasswordEncoderTool passwordEncoder = Mockito.mock(PasswordEncoderTool.class);
+    private final PasswordEncoderTool passwordEncoder = new PasswordEncoderToolFaker();
 
 
-    private final CreateUserUseCase createUserUseCase = new CreateUserUseCase(userSpi, queryApi, passwordEncoder);
+    private final CreateUserUseCase createUserUseCase = new CreateUserUseCase(userSpi, apiProvider, passwordEncoder);
 
 
     private final ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
-
     private CreateUserCommand command;
-
     private String firstName = "John";
     private String lastName = "Doe";
     private String email = "john.doe@test.com";
     private String password = "Password123!";
-
-    private final String passwordSuffix = "_encoded";
     private Exception exception;
-
-
-    @BeforeScenario
-    void setUp() {
-        lenient().when(passwordEncoder.encode(any(RawPassword.class))).thenAnswer(i -> encodePassword(i.getArguments()[0]));
-    }
 
     public CreateUserStage a_new_user() {
         createCommand();
@@ -87,13 +76,13 @@ class CreateUserStage extends Stage<CreateUserStage> {
 
 
     public CreateUserStage the_email_is_not_used() {
-        Mockito.when(queryApi.request(any(UserExistsByEmailQuery.class))).thenReturn(false);
+        Mockito.when(apiProvider.request(any(UserExistsByEmailQuery.class))).thenReturn(false);
         return self();
     }
 
 
     public CreateUserStage the_email_is_already_used() {
-        Mockito.when(queryApi.request(any(UserExistsByEmailQuery.class))).thenReturn(true);
+        Mockito.when(apiProvider.request(any(UserExistsByEmailQuery.class))).thenReturn(true);
         return self();
     }
 
@@ -113,7 +102,7 @@ class CreateUserStage extends Stage<CreateUserStage> {
         assertEquals(firstName, user.firstName());
         assertEquals(lastName, user.lastName());
         assertEquals(email, user.email().value());
-        assertEquals(encodePassword(password), user.password());
+        assertTrue(passwordEncoder.matches(RawPassword.of(password), user.password()));
         return self();
     }
 
@@ -133,9 +122,6 @@ class CreateUserStage extends Stage<CreateUserStage> {
         this.command = CreateUserCommand.of(email, password, firstName, lastName);
     }
 
-    private EncodedPassword encodePassword(Object password) {
-        String passwordString = password.toString();
-        return EncodedPassword.of(passwordString + passwordSuffix);
-    }
+
 
 }

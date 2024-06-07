@@ -27,7 +27,7 @@ public class CommandHandlerProvider {
     /**
      * The map of Command classes to their respective CommandHandler instances.
      */
-    private final Map<Class<? extends Command>, CommandHandler<? extends Command, ?>> commandHandlers;
+    private final Map<Class<? extends Command<?>>, CommandHandler<? extends Command<?>, ?>> commandHandlers;
 
     /**
      * Constructor for the CommandHandlerProvider.
@@ -45,7 +45,7 @@ public class CommandHandlerProvider {
 
             this.commandHandlers = handlers
                     .stream()
-                    .map(handler -> Map.entry(resolve(handler), handler))
+                    .map(handler -> Map.entry((Class<? extends Command<?>>) resolve(handler), ( CommandHandler<? extends Command<?>, ?>) handler))
                     .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         } catch (IllegalStateException e) {
@@ -68,7 +68,7 @@ public class CommandHandlerProvider {
      * @return the CommandHandler instance for the given command, or an empty Optional if no handler is found
      */
     @SuppressWarnings("unchecked")
-    public <C extends Command, R> Optional<CommandHandler<C, R>> getHandler(C command) {
+    public <C extends Command<R>, R> Optional<CommandHandler<C, R>> getHandler(C command) {
         if (command == null) {
             throw new NullPointerException("Command cannot be null");
         }
@@ -84,7 +84,7 @@ public class CommandHandlerProvider {
      * @return the Command class for the given handler
      */
     @SuppressWarnings("unchecked")
-    private <C extends Command, R> Class<C> resolve(CommandHandler<C, R> handler) {
+    private <C extends Command<R>, R> Class<C> resolve(CommandHandler<C, R> handler) {
         return (Class<C>) Objects.requireNonNull(GenericTypeResolver.resolveTypeArguments(handler.getClass(), CommandHandler.class))[0];
     }
 

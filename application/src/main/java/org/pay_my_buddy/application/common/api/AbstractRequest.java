@@ -10,8 +10,8 @@ import java.time.LocalDateTime;
 
 public abstract sealed class AbstractRequest implements Request permits AbstractCommand, AbstractQuery, AbstractEvent {
 
-    protected Metadata metadata;
     private final String requestName = this.getClass().getSimpleName();
+    protected Metadata metadata;
 
     protected AbstractRequest() {
         this.metadata = new RequestMetadata(requestName);

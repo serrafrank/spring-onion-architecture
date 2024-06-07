@@ -3,6 +3,7 @@ package org.pay_my_buddy.presentation.api;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.pay_my_buddy.application.common.api.AbstractEvent;
 import org.pay_my_buddy.application.common.api.Event;
 import org.pay_my_buddy.application.common.api.EventHandler;
 import org.pay_my_buddy.presentation.api.providers.EventHandlerProvider;
@@ -30,7 +31,7 @@ public class DefaultEventApiTest {
     @DisplayName("Verify that publish method dispatches an event to all appropriate handlers")
     void dispatch_event_to_all_handlers() {
         // Given
-        Event mockEvent = mock(Event.class);
+        Event mockEvent = mock(AbstractEvent.class);
         EventHandler<Event> mockHandler1 = mock(EventHandler.class);
         EventHandler<Event> mockHandler2 = mock(EventHandler.class);
         Set<EventHandler<Event>> handlers = new HashSet<>(Arrays.asList(mockHandler1, mockHandler2));
@@ -51,7 +52,7 @@ public class DefaultEventApiTest {
     @DisplayName("Check that all handlers for a specific event type are called once")
     void ensure_all_handlers_called_once() {
         // Given
-        Event specificEvent = mock(Event.class);
+        Event specificEvent = mock(AbstractEvent.class);
         EventHandler<Event> handler = mock(EventHandler.class);
         Set<EventHandler<Event>> singleHandlerSet = Collections.singleton(handler);
         EventHandlerProvider provider = mock(EventHandlerProvider.class);
@@ -70,7 +71,7 @@ public class DefaultEventApiTest {
     @DisplayName("Ensure that event handlers are called with the correct event instance")
     void handlers_receive_correct_event_instance() {
         // Given
-        Event expectedEvent = mock(Event.class);
+        Event expectedEvent = mock(AbstractEvent.class);
         EventHandler<Event> eventHandler = mock(EventHandler.class);
         Set<EventHandler<Event>> handlers = Collections.singleton(eventHandler);
         EventHandlerProvider provider = mock(EventHandlerProvider.class);
@@ -89,7 +90,7 @@ public class DefaultEventApiTest {
     @DisplayName("Handle scenarios where an event handler throws an exception")
     void handle_exceptions_in_event_handlers() {
         // Given
-        Event problematicEvent = mock(Event.class);
+        Event problematicEvent = mock(AbstractEvent.class);
         EventHandler<Event> problematicHandler = mock(EventHandler.class);
         doThrow(new RuntimeException("Handler error")).when(problematicHandler).handle(problematicEvent);
         Set<EventHandler<Event>> handlersWithException = Collections.singleton(problematicHandler);
@@ -107,7 +108,7 @@ public class DefaultEventApiTest {
     void performance_with_large_number_of_events() {
         // Given
         int numberOfEvents = 10000;
-        Event commonEvent = mock(Event.class);
+        Event commonEvent = mock(AbstractEvent.class);
         EventHandler<Event> commonHandler = mock(EventHandler.class);
         Set<EventHandler<Event>> manyHandlers = Stream.generate(() -> commonHandler).limit(numberOfEvents).collect(Collectors.toSet());
 
@@ -125,7 +126,7 @@ public class DefaultEventApiTest {
     @DisplayName("Evaluate system behavior under concurrent event publishing")
     void concurrent_event_publishing_behavior() throws InterruptedException {
         // Given
-        Event concurrentEvent = mock(Event.class);
+        Event concurrentEvent = mock(AbstractEvent.class);
 
         EventHandler<Event> handler1 = mock(EventHandler.class);
         EventHandler<Event> handler2 = mock(EventHandler.class);

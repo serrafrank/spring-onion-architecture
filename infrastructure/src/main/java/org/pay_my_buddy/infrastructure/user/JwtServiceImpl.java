@@ -57,6 +57,7 @@ public class JwtServiceImpl implements tokenService {
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
+
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }

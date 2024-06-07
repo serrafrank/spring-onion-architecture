@@ -1,4 +1,4 @@
-package org.pay_my_buddy.test_fixtures.faker;
+package org.pay_my_buddy.application.faker;
 
 public record RawUser(String firstName, String lastName, String email, String password) {
 
