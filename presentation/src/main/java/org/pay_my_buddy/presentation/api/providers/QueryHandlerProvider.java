@@ -2,15 +2,12 @@ package org.pay_my_buddy.presentation.api.providers;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.pay_my_buddy.application.common.api.Query;
-import org.pay_my_buddy.application.common.api.QueryHandler;
-import org.pay_my_buddy.application.common.api.WrongHandlerImplementationException;
+import org.pay_my_buddy.application.common.api.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.GenericTypeResolver;
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -27,21 +24,17 @@ public class QueryHandlerProvider {
     /**
      * The map of Query classes to their respective QueryHandler instances.
      */
-    private final Map<Class<? extends Query<?>>, QueryHandler<? extends Query<?>, ?>> queryHandlers;
+    private final Map<Class<? extends Query<?>>, QueryProvider<?>> queryHandlers = new HashMap<>();
 
     /**
      * Constructor for the QueryHandlerProvider.
      * It takes a list of QueryHandler instances, and maps each Query class to its respective handler.
      *
-     * @param handlers the list of QueryHandler instances
+     * @param applicationContext the application context
      */
     public QueryHandlerProvider(ApplicationContext applicationContext) {
-        queryHandlers = applicationContext.getBeansOfType(QueryHandler.class)
-                .values()
-                .stream()
-                .map(handler -> (QueryHandler<?, ?>) handler)
-                .map(handler -> Map.entry(resolve(handler), handler))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        List.of(applicationContext.getBeanNamesForType(QueryHandler.class))
+                .forEach(name -> register(applicationContext, name));
 
         log.info("QueryHandlerProvider initialized with {} handlers", queryHandlers.size());
     }
@@ -59,7 +52,7 @@ public class QueryHandlerProvider {
             throw new NullPointerException("Query cannot be null");
         }
         return Optional.ofNullable(queryHandlers.get(query.getClass()))
-                .map(handler -> (QueryHandler<Q, R>) handler);
+                .map(handler -> (QueryHandler<Q, R>) handler.get());
     }
 
     /**
@@ -78,5 +71,17 @@ public class QueryHandlerProvider {
             throw new WrongHandlerImplementationException(handler);
         }
         return (Class<Q>) parameters[0];
+    }
+
+    private void register(ApplicationContext applicationContext, String name) {
+        Class<QueryHandler<?, ?>> handlerClass = (Class<QueryHandler<?, ?>>) applicationContext.getType(name);
+        Class<?>[] generics = GenericTypeResolver.resolveTypeArguments(handlerClass, QueryHandler.class);
+        Class<? extends Query<?>> queryType = (Class<? extends Query<?>>) generics[0];
+
+        if (queryHandlers.containsKey(queryType)) {
+            throw new DuplicateHandlerFoundException(queryType.getSimpleName());
+        }
+
+        queryHandlers.put(queryType, new QueryProvider<>(applicationContext, handlerClass));
     }
 }

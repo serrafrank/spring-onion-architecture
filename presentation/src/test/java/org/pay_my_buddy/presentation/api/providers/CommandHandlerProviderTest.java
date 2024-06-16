@@ -4,6 +4,7 @@ package org.pay_my_buddy.presentation.api.providers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.pay_my_buddy.application.common.api.*;
+import org.pay_my_buddy.presentation.api.ApplicationContextMock;
 import org.springframework.context.ApplicationContext;
 
 import java.util.HashMap;
@@ -17,7 +18,8 @@ import static org.mockito.Mockito.when;
 class CommandHandlerProviderTest {
 
 
-    private final ApplicationContext applicationContext = mock(ApplicationContext.class);
+    private final ApplicationContextMock applicationContextMock = new ApplicationContextMock();
+    private final ApplicationContext applicationContext = applicationContextMock.getApplicationContext();
     private CommandHandlerProvider commandHandlerProvider;
 
     @Test
@@ -26,7 +28,9 @@ class CommandHandlerProviderTest {
         // Given
         MockCommand command = new MockCommand();
         CommandHandler<MockCommand, Void> handler = new MockCommandHandler();
-        when(applicationContext.getBeansOfType(CommandHandler.class)).thenReturn(Map.of(handler.getClass().getName(), handler));
+        applicationContextMock.mockBean(handler);
+        when(applicationContext.getBeanNamesForType(CommandHandler.class)).thenReturn(new String[]{handler.getClass().getName()});
+
         commandHandlerProvider = new CommandHandlerProvider(applicationContext);
 
 
@@ -43,7 +47,7 @@ class CommandHandlerProviderTest {
     void getHandlerReturnsEmptyOptionalWhenNoHandlerFound() {
         // Given
         MockCommand command = new MockCommand();
-        when(applicationContext.getBeansOfType(CommandHandler.class)).thenReturn(new HashMap<>());
+        when(applicationContext.getBeanNamesForType(CommandHandler.class)).thenReturn(new String[0]);
         commandHandlerProvider = new CommandHandlerProvider(applicationContext);
 
         // When
@@ -57,7 +61,7 @@ class CommandHandlerProviderTest {
     @DisplayName("getHandler throws NullPointerException when command is null")
     void getHandlerThrowsNullPointerExceptionWhenCommandIsNull() {
         // Given
-        when(applicationContext.getBeansOfType(CommandHandler.class)).thenReturn(new HashMap<>());
+        when(applicationContext.getBeanNamesForType(CommandHandler.class)).thenReturn(new String[0]);
 
         // When & Then
         assertThrows(NullPointerException.class, () -> commandHandlerProvider.getHandler(null));
@@ -69,7 +73,9 @@ class CommandHandlerProviderTest {
         // Given
         CommandHandler<?, ?> handler1 = new MockCommandHandler();
         CommandHandler<?, ?> handler2 = new MockCommandHandler();
-        when(applicationContext.getBeansOfType(CommandHandler.class)).thenReturn(Map.of("handler1", handler1, "handler2", handler2));
+        applicationContextMock.mockBean(handler1);
+        applicationContextMock.mockBean(handler2);
+        when(applicationContext.getBeanNamesForType(CommandHandler.class)).thenReturn(new String[]{handler1.getClass().getName(), handler2.getClass().getName()});
 
         // When & Then
         assertThrows(DuplicateHandlerFoundException.class, () -> new CommandHandlerProvider(applicationContext));
@@ -79,7 +85,7 @@ class CommandHandlerProviderTest {
     @DisplayName("constructor initializes without duplicates")
     void constructorInitializesWithoutDuplicates() {
         // Given
-        when(applicationContext.getBeansOfType(CommandHandler.class)).thenReturn(new HashMap<>());
+        when(applicationContext.getBeanNamesForType(CommandHandler.class)).thenReturn(new String[0]);
 
         // When & Then
         assertDoesNotThrow(() -> new CommandHandlerProvider(applicationContext));

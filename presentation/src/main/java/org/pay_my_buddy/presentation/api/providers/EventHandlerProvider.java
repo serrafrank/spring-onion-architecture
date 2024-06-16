@@ -1,14 +1,12 @@
 package org.pay_my_buddy.presentation.api.providers;
 
 import lombok.extern.slf4j.Slf4j;
-import org.pay_my_buddy.application.common.api.Event;
-import org.pay_my_buddy.application.common.api.EventHandler;
+import org.pay_my_buddy.application.common.api.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.GenericTypeResolver;
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -24,7 +22,7 @@ public class EventHandlerProvider {
     /**
      * The map of Event classes to their respective sets of EventHandler instances.
      */
-    private final Map<Class<? extends Event>, Set<EventHandler<? extends Event>>> eventHandlers;
+    private final Map<Class<? extends Event>, Set<EventProvider<?>>> eventHandlers = new HashMap<>();
 
     /**
      * Constructor for the EventHandlerProvider.
@@ -33,12 +31,9 @@ public class EventHandlerProvider {
      * @param applicationContext the application context
      */
     public EventHandlerProvider(ApplicationContext applicationContext) {
-        this.eventHandlers = applicationContext.getBeansOfType(EventHandler.class)
-                .values()
-                .stream()
-                .map(handler -> (EventHandler<?>) handler)
-                .map(handler -> Map.entry(resolve(handler), handler))
-                .collect(Collectors.groupingBy(Map.Entry::getKey, Collectors.mapping(Map.Entry::getValue, Collectors.toSet())));
+
+        List.of(applicationContext.getBeanNamesForType(EventHandler.class))
+                .forEach(name -> register(applicationContext, name));
 
         log.info("EventHandlerProvider initialized with {} handlers", this.eventHandlers.size());
 
@@ -64,7 +59,7 @@ public class EventHandlerProvider {
 
         return eventHandlers.get(event.getClass())
                 .stream()
-                .map(handler -> (EventHandler<E>) handler)
+                .map(handler -> (EventHandler<E>) handler.get())
                 .collect(Collectors.toSet());
     }
 
@@ -78,6 +73,19 @@ public class EventHandlerProvider {
     @SuppressWarnings("unchecked")
     private <E extends Event> Class<E> resolve(EventHandler<E> handler) {
         return (Class<E>) GenericTypeResolver.resolveTypeArgument(handler.getClass(), EventHandler.class);
+    }
+
+    private void register(ApplicationContext applicationContext, String name) {
+        Class<EventHandler<?>> handlerClass = (Class<EventHandler<?>>) applicationContext.getType(name);
+        Class<?>[] generics = GenericTypeResolver.resolveTypeArguments(handlerClass, EventHandler.class);
+        Class<? extends Event> eventType = (Class<? extends Event>) generics[0];
+
+        if (!eventHandlers.containsKey(eventType)) {
+            eventHandlers.put(eventType, new HashSet<>());
+        }
+
+        eventHandlers.get(eventType).add(new EventProvider<>(applicationContext, handlerClass));
+
     }
 
 }

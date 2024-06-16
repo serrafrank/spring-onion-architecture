@@ -8,10 +8,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.core.GenericTypeResolver;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -27,7 +24,7 @@ public class CommandHandlerProvider {
     /**
      * The map of Command classes to their respective CommandHandler instances.
      */
-    private final Map<Class<? extends Command<?>>, CommandHandler<? extends Command<?>, ?>> commandHandlers;
+    private final Map<Class<? extends Command<?>>, CommandProvider<?>> commandHandlers = new HashMap<>();
 
     /**
      * Constructor for the CommandHandlerProvider.
@@ -36,28 +33,10 @@ public class CommandHandlerProvider {
      * @param applicationContext the application context
      */
     public CommandHandlerProvider(ApplicationContext applicationContext) {
-        List<? extends CommandHandler<?, ?>> handlers = applicationContext.getBeansOfType(CommandHandler.class)
-                .values()
-                .stream()
-                .map(handler -> (CommandHandler<?, ?>) handler)
-                .toList();
-        try {
-
-            this.commandHandlers = handlers
-                    .stream()
-                    .map(handler -> Map.entry((Class<? extends Command<?>>) resolve(handler), ( CommandHandler<? extends Command<?>, ?>) handler))
-                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-
-        } catch (IllegalStateException e) {
-            var duplicateHandlers = handlers
-                    .stream()
-                    .map(handler -> resolve(handler).getName())
-                    .collect(Collectors.toSet());
-            throw new DuplicateHandlerFoundException(duplicateHandlers);
-        }
+        List.of(applicationContext.getBeanNamesForType(CommandHandler.class))
+                .forEach(name -> register(applicationContext, name));
 
         log.info("CommandHandlerProvider initialized with {} handlers", this.commandHandlers.size());
-
     }
 
     /**
@@ -72,20 +51,26 @@ public class CommandHandlerProvider {
         if (command == null) {
             throw new NullPointerException("Command cannot be null");
         }
+
         return Optional.ofNullable(commandHandlers.get(command.getClass()))
-                .map(handler -> (CommandHandler<C, R>) handler);
+                .map(handler -> (CommandHandler<C, R>) handler.get());
     }
 
     /**
      * This method resolves the Command class for a given CommandHandler.
      * It uses the GenericTypeResolver from Spring to resolve the generic type argument of the CommandHandler.
      *
-     * @param handler the handler for which to resolve the Command class
-     * @return the Command class for the given handler
      */
-    @SuppressWarnings("unchecked")
-    private <C extends Command<R>, R> Class<C> resolve(CommandHandler<C, R> handler) {
-        return (Class<C>) Objects.requireNonNull(GenericTypeResolver.resolveTypeArguments(handler.getClass(), CommandHandler.class))[0];
+    private void register(ApplicationContext applicationContext, String name) {
+        Class<CommandHandler<?, ?>> handlerClass = (Class<CommandHandler<?, ?>>) applicationContext.getType(name);
+        Class<?>[] generics = GenericTypeResolver.resolveTypeArguments(handlerClass, CommandHandler.class);
+        Class<? extends Command<?>> commandType = (Class<? extends Command<?>>) generics[0];
+
+        if (commandHandlers.containsKey(commandType)) {
+            throw new DuplicateHandlerFoundException(commandType.getSimpleName());
+        }
+
+        commandHandlers.put(commandType, new CommandProvider<>(applicationContext, handlerClass));
     }
 
 }
