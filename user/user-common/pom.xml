@@ -4,19 +4,17 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.pay_my_buddy</groupId>
-        <artifactId>root</artifactId>
+        <artifactId>user</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>user</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <artifactId>user-common</artifactId>
 
-    <packaging>pom</packaging>
-
-    <modules>
-        <module>user-common</module>
-        <module>user-command</module>
-        <module>user-query</module>
-        <module>user-starter</module>
-    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>org.pay_my_buddy</groupId>
+            <artifactId>shared-common</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+    </dependencies>
 </project>

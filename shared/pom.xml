@@ -13,9 +13,9 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>shared-domain</module>
-        <module>shared-infrastructure</module>
-        <module>shared-presentation</module>
+        <module>shared-common</module>
+        <module>shared-command</module>
+        <module>shared-query</module>
     </modules>
 
 </project>

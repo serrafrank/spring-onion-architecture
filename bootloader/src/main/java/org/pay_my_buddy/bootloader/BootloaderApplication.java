@@ -1,6 +1,6 @@
 package org.pay_my_buddy.bootloader;
 
-import org.pay_my_buddy.shared.domain.DomainService;
+import org.pay_my_buddy.shared.common.DomainService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;

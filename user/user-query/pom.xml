@@ -8,21 +8,20 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>user-starter</artifactId>
-
-    <packaging>jar</packaging>
+    <artifactId>user-query</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>org.pay_my_buddy</groupId>
-            <artifactId>user-query</artifactId>
+            <artifactId>user-common</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.pay_my_buddy</groupId>
-            <artifactId>user-command</artifactId>
+            <artifactId>shared-query</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+
     </dependencies>
 </project>
