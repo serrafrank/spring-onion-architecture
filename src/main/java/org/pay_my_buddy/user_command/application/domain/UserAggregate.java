@@ -1,23 +1,25 @@
 package org.pay_my_buddy.user_command.application.domain;
 
+import java.util.HashSet;
+import java.util.Set;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.pay_my_buddy.api_command.AggregateRoot;
-import org.pay_my_buddy.api_command.event_storage.AggregateEventHandler;
+import org.pay_my_buddy.api_command.event_storage.AggregateEventListener;
 import org.pay_my_buddy.shared.exception.ConflictException;
 import org.pay_my_buddy.shared.exchange.user.UserId;
 import org.pay_my_buddy.shared.exchange.user.command.UserCreatedEvent;
 import org.pay_my_buddy.shared.exchange.user.command.UserDeletedEvent;
 import org.pay_my_buddy.shared.exchange.user.query.UserFriendAddedEvent;
-
-import java.util.HashSet;
-import java.util.Set;
+import org.pay_my_buddy.shared.exchange.user.query.UserFriendRemovedEvent;
 
 @Getter
-@Accessors(fluent = true, chain = true)
+@Accessors(fluent = true)
 @EqualsAndHashCode(callSuper = true)
-public class UserAggregate extends AggregateRoot<UserAggregate, UserId> {
+@ToString
+public class UserAggregate extends AggregateRoot<UserId> {
 	private String firstname;
 	private String lastname;
 	private String email;
@@ -31,7 +33,7 @@ public class UserAggregate extends AggregateRoot<UserAggregate, UserId> {
 		super(id);
 	}
 	private UserAggregate() {
-		super(UserId.createRandomUnique());
+		super(new UserId());
 	}
 
     public static UserAggregate newInstance(UserId id) {
@@ -42,22 +44,28 @@ public class UserAggregate extends AggregateRoot<UserAggregate, UserId> {
 		return new UserAggregate();
 	}
 
-	public static UserAggregate create(String firstname, String lastname, String email, String password) {
-		final var id = UserId.createRandomUnique();
-		final var event = new UserCreatedEvent(id, firstname, lastname, email, password);
-		return newInstance().addEvent(event);
+	public UserAggregate create(String firstname, String lastname, String email, String password) {
+		final var event = new UserCreatedEvent(id(), firstname, lastname, email, password);
+		addEvent(event);
+		return this;
 	}
 
-	public UserAggregate addFriend(UserId id) {
+	public UserAggregate addFriend(UserId friend) {
 		if (this.currentState == State.CLOSE) {
 			throw new ConflictException("User is close");
 		}
 
-		if (this.friends.contains(id)) {
-			throw new IllegalArgumentException("User is already a friend");
+		if (this.friends.contains(friend)) {
+			throw new IllegalArgumentException("User is already a friendId");
 		}
-		this.addEvent(new UserFriendAddedEvent(this.id(), id));
+		this.addEvent(new UserFriendAddedEvent(this.id(), friend));
 		return this;
+	}
+
+	public UserAggregate removeFriend(UserId friend){
+		this.addEvent(new UserFriendRemovedEvent(this.id(), friend));
+		return this;
+
 	}
 
 	public UserAggregate close() {
@@ -69,7 +77,7 @@ public class UserAggregate extends AggregateRoot<UserAggregate, UserId> {
 	}
 
 
-	@AggregateEventHandler
+	@AggregateEventListener
 	public void on(UserCreatedEvent event) {
 		this.firstname = event.firstname();
 		this.lastname = event.lastname();
@@ -78,12 +86,17 @@ public class UserAggregate extends AggregateRoot<UserAggregate, UserId> {
 		this.currentState = State.ACTIVE;
 	}
 
-	@AggregateEventHandler
+	@AggregateEventListener
 	public void on(UserFriendAddedEvent event) {
-		this.friends.add(event.friend());
+		this.friends.add(event.friendId());
 	}
 
-	@AggregateEventHandler
+	@AggregateEventListener
+	public void on(UserFriendRemovedEvent event) {
+		this.friends.remove(event.friendId());
+	}
+
+	@AggregateEventListener
 	public void on(UserDeletedEvent event) {
 		this.currentState = State.CLOSE;
 	}

@@ -3,8 +3,8 @@ package org.pay_my_buddy.user_command.presentation;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.pay_my_buddy.api_command.CommandBus;
-import org.pay_my_buddy.shared.exchange.user.command.CreateUserCommand;
 import org.pay_my_buddy.shared.exchange.user.UserId;
+import org.pay_my_buddy.shared.exchange.user.command.CreateUserCommand;
 import org.pay_my_buddy.user_command.application.CreateUserPresenter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +43,7 @@ public class CreateUserEndpoint {
             String id) {
 
         CreateUserResponse(UserId id) {
-            this(id.toString());
+            this(id.value());
         }
     }
 

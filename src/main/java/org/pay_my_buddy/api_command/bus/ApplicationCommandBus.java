@@ -1,8 +1,8 @@
 package org.pay_my_buddy.api_command.bus;
 
+import org.pay_my_buddy.api_command.Command;
 import org.pay_my_buddy.api_command.CommandBus;
 import org.pay_my_buddy.api_command.CommandHandler;
-import org.pay_my_buddy.api_command.Command;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -17,7 +17,7 @@ public class ResourceNotFoundException extends GenericApiRequestException {
     }
 
     public ResourceNotFoundException(EntityId id) {
-        this("Resource with id %s not found", id);
+        this("Resource with userId %s not found", id);
     }
 
     /**

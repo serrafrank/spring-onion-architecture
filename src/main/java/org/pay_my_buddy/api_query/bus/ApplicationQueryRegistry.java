@@ -1,14 +1,13 @@
 package org.pay_my_buddy.api_query.bus;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Stream;
 import org.pay_my_buddy.api_query.Query;
 import org.pay_my_buddy.api_query.QueryHandler;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.GenericTypeResolver;
 import org.springframework.stereotype.Component;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Stream;
 
 @Component
 public class ApplicationQueryRegistry implements QueryRegistry {

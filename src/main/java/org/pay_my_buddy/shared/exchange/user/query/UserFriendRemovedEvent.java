@@ -1,4 +1,4 @@
-package org.pay_my_buddy.shared.exchange.user.command;
+package org.pay_my_buddy.shared.exchange.user.query;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -10,16 +10,16 @@ import org.pay_my_buddy.shared.exchange.user.UserId;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonSerialize
-public record UserDeletedEvent(EventId eventId, UserId userId) implements Event {
-
+public record UserFriendRemovedEvent(EventId eventId, UserId userId, UserId friendId) implements Event {
 
 	@JsonCreator
-	public UserDeletedEvent {
+	public UserFriendRemovedEvent {
 		Constraint.checkIf(userId).isNotNull("User id is required");
+		Constraint.checkIf(friendId).isNotNull("Friend id is required");
 	}
 
-	public UserDeletedEvent(UserId userId) {
-		this(new EventId(), userId);
+	public UserFriendRemovedEvent(UserId userId, UserId friendId) {
+		this(new EventId(), userId, friendId);
 	}
 
 }

@@ -1,15 +1,14 @@
 package org.pay_my_buddy.api_command.bus;
 
-import org.pay_my_buddy.api_command.CommandHandler;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Stream;
 import org.pay_my_buddy.api_command.Command;
+import org.pay_my_buddy.api_command.CommandHandler;
 import org.pay_my_buddy.shared.exception.InternalErrorException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.GenericTypeResolver;
 import org.springframework.stereotype.Component;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Stream;
 
 @Component
 public class ApplicationCommandRegistry implements CommandRegistry {
