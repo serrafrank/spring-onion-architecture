@@ -1,11 +1,12 @@
 package org.pay_my_buddy.user_query.presentation;
 
 import jakarta.validation.constraints.NotBlank;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.pay_my_buddy.api_query.QueryBus;
-import org.pay_my_buddy.shared.exchange.user.query.FindUserByIdQuery;
 import org.pay_my_buddy.shared.exchange.user.UserEntityProjection;
 import org.pay_my_buddy.shared.exchange.user.UserId;
+import org.pay_my_buddy.shared.exchange.user.query.FindUserByIdQuery;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,7 +23,7 @@ public class FindUserEndpoint {
 
     @GetMapping("{id}")
     ResponseEntity<?> findOne(@NotBlank @PathVariable String id) {
-        UserId userId = UserId.of(id);
+        UserId userId = new UserId(id);
 
         var query = new FindUserByIdQuery(userId);
         return queryBus.ask(query)
@@ -35,10 +36,18 @@ public class FindUserEndpoint {
             String id,
             String firstname,
             String lastname,
-            String email) {
+            String email,
+            List<String> friends) {
 
         GetUserResponse(UserEntityProjection projection) {
-            this(projection.id().toString(), projection.firstname(), projection.lastname(), projection.email());
+            this(projection.userId().value(),
+                    projection.firstname(),
+                    projection.lastname(),
+                    projection.email(),
+                    projection.friends().stream()
+                            .map(UserId::value)
+                            .toList()
+            );
         }
     }
 }

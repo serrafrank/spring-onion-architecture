@@ -1,89 +1,105 @@
 package org.pay_my_buddy.api_command;
 
+import lombok.Getter;
+import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
-import org.pay_my_buddy.api_command.event_storage.AggregateEventHandler;
+import org.pay_my_buddy.api_command.event_storage.AggregateEventListener;
 import org.pay_my_buddy.shared.EntityId;
+import org.pay_my_buddy.shared.ObjectConverter;
+import org.pay_my_buddy.shared.exception.InternalErrorException;
 
+import java.io.Serializable;
 import java.lang.reflect.Method;
-import java.util.*;
-import java.util.function.Consumer;
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 
 @Slf4j
-public abstract class AggregateRoot<AGGREGATE extends AggregateRoot<AGGREGATE, ID>, ID extends EntityId> {
-	private final ID id;
-	private int version = 0;
+public abstract class AggregateRoot<ID extends EntityId> implements Serializable {
 
-	private final List<Event> changes = new ArrayList<>();
+	@Getter
+	@Accessors(fluent = true)
+	protected final ID id;
 
-	private final Map<Class<? extends Event>, Consumer<? extends Event>> eventHandler = new HashMap<>();
+	private final List<EventWrapper> uncommitedChanges = new ArrayList<>();
+	private final List<EventWrapper> commitedChanges = new ArrayList<>();
 
 	protected AggregateRoot(ID id) {
 		this.id = id;
-		registerEventHandlers();
 	}
 
-	public ID id() {
-		return this.id;
-	}
 
 	public int version() {
-		return this.version;
-	}
-
-	public void version(int version) {
-		this.version = version;
-	}
-
-	public List<Event> uncommittedChanges() {
-		return this.changes;
+		return this.uncommitedChanges.size() + this.commitedChanges.size();
 	}
 
 	public void commitChanges() {
-		this.changes.clear();
+		commitedChanges.addAll(uncommitedChanges);
+		uncommitedChanges.clear();
 	}
 
-	public <EVENT extends Event> AGGREGATE addEvent(EVENT event) {
+	public void rollbackChanges() {
+		uncommitedChanges.clear();
+		commitedChanges.forEach(e -> applyChanges(e.event()));
+	}
+
+	public <EVENT extends Event>void addEvent(EVENT event) {
+        EventWrapper<EVENT> wrappedEvent = new EventWrapper<>(event, uncommitedChanges.size());
 		applyChanges(event);
-		changes.add(event);
-		return (AGGREGATE) this;
+		uncommitedChanges.add(wrappedEvent);
 	}
 
-	public void replayEvents(Iterable<Event> events) {
-		events.forEach(this::applyChanges);
+	public List<Event> commitedChanges() {
+		return commitedChanges.stream().map(EventWrapper::event).toList();
 	}
 
-	protected <EVENT extends Event> void applyChanges(EVENT event) {
-		final Consumer<EVENT> handler = (Consumer<EVENT>) eventHandler.get(event.getClass());
-		if (handler == null) {
-			throw new IllegalArgumentException("No handler registered for event type: " + event.getClass());
-		}
-		handler.accept(event);
+	public List<Event> uncommitedChanges() {
+		return uncommitedChanges.stream().map(EventWrapper::event).toList();
 	}
 
-	protected <EVENT extends Event> void registerEventHandler(Class<EVENT> eventType, Consumer<EVENT> handler) {
-		if (eventHandler.containsKey(eventType)) {
-			throw new IllegalArgumentException("Handler already registered for event type: " + eventType);
-		}
-		eventHandler.put(eventType, handler);
+	public void replayEvents() {
+		commitedChanges
+				.stream()
+				.sorted(Comparator.comparing(EventWrapper::index))
+				.forEach(e -> applyChanges(e.event()));
 	}
 
-	private void registerEventHandlers() {
+	private  <EVENT extends Event> void applyChanges(EVENT event) {
 		Arrays.stream(this.getClass().getDeclaredMethods())
-				.filter(method -> method.isAnnotationPresent(AggregateEventHandler.class))
-				.forEach(this::invokeEventMethodHandler);
-
-		log.info("{} event handlers registered for aggregate {}", eventHandler.size(), this.getClass().getSimpleName());
+				.filter(method -> method.isAnnotationPresent(AggregateEventListener.class))
+				.filter(method -> method.getParameterTypes()[0].isAssignableFrom(event.getClass()))
+				.reduce((a, b) -> { throw new InternalErrorException("Multiple event handlers found for event type: " + event.getClass());} )
+				.ifPresentOrElse(method -> invokeEventHandlerMethod(event, method), () -> {
+					throw new IllegalArgumentException("No handler registered for event type: " + event.getClass());
+				});
 	}
 
-	private void invokeEventMethodHandler(Method method) {
-		final Class<?> eventType = method.getParameterTypes()[0];
-		registerEventHandler((Class<Event>) eventType, event -> {
-			try {
-				method.invoke(this, event);
-			} catch (Exception e) {
-				log.error("Error applying event", e);
-			}
-		});
+	private <EVENT extends Event> void invokeEventHandlerMethod(EVENT event, Method method) {
+		try {
+			method.invoke(this, event);
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Error applying event", e);
+		}
+	}
+
+	record EventWrapper<EVENT extends Event>(
+			EventId eventId,
+			LocalDateTime timestamp,
+			int index,
+			String eventType,
+			String eventData) {
+
+
+		public EventWrapper(EVENT event, int index) {
+			this(event.eventId(), LocalDateTime.now(Clock.systemUTC()), index, event.getClass().getName(), ObjectConverter.toJson(event));
+		}
+
+		public EVENT event() {
+			return ObjectConverter.fromJson(eventData, eventType);
+		}
 	}
 }
 

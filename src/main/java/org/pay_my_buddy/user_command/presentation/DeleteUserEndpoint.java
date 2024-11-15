@@ -3,8 +3,8 @@ package org.pay_my_buddy.user_command.presentation;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.pay_my_buddy.api_command.CommandBus;
-import org.pay_my_buddy.shared.exchange.user.command.DeleteUserCommand;
 import org.pay_my_buddy.shared.exchange.user.UserId;
+import org.pay_my_buddy.shared.exchange.user.command.DeleteUserCommand;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,7 +23,7 @@ public class DeleteUserEndpoint {
 
     @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteUser(@Validated @NotBlank @PathVariable String id) {
-        UserId userId = UserId.of(id);
+        UserId userId = new UserId(id);
         try {
             publisher.execute(new DeleteUserCommand(userId));
         } catch (Exception ignore) {

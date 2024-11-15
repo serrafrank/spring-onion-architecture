@@ -1,16 +1,15 @@
 package org.pay_my_buddy.user_query.infrastructure;
 
 import jakarta.persistence.*;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import org.pay_my_buddy.shared.exchange.user.command.UserCreatedEvent;
 import org.pay_my_buddy.shared.exchange.user.UserEntityProjection;
 import org.pay_my_buddy.shared.exchange.user.UserId;
-
-import java.util.Set;
-import java.util.stream.Collectors;
+import org.pay_my_buddy.shared.exchange.user.command.UserCreatedEvent;
 
 @Table
 @Entity(name = "users")
@@ -21,7 +20,7 @@ import java.util.stream.Collectors;
 public class UserEntity implements UserEntityProjection {
 
     @Id
-    private UserId id;
+    private String id;
 
     private String firstname;
 
@@ -33,11 +32,11 @@ public class UserEntity implements UserEntityProjection {
 
     @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "friends", joinColumns = @JoinColumn(name = "users_id"))
-    @Column(name = "friend", nullable = false)
+    @Column(name = "friendId", nullable = false)
     private Set<String> friends;
 
     public UserEntity(UserCreatedEvent event) {
-        id = event.id();
+        id = event.id().value();
         firstname = event.firstname();
         lastname = event.lastname();
         email = event.email();
@@ -46,20 +45,23 @@ public class UserEntity implements UserEntityProjection {
 
 
     @Override
-    public UserId id() {
-        return UserId.of(id);
+    public UserId userId() {
+        return new UserId(id);
     }
 
 
     @Override
     public Set<UserId> friends() {
-        return friends.stream().map(UserId::of).collect(Collectors.toSet());
+        return friends.stream().map(UserId::new).collect(Collectors.toSet());
     }
 
     public UserEntity addFriend(UserId friend) {
-        friends.add(String.valueOf(friend));
+        friends.add(friend.value());
         return this;
     }
 
-
+    public UserEntity removeFriend(UserId friend) {
+        friends.remove(friend.value());
+        return this;
+    }
 }

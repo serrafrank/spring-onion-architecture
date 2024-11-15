@@ -1,5 +1,8 @@
 package org.pay_my_buddy.shared.configuration;
 
+import java.time.OffsetDateTime;
+import java.util.Collection;
+import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.pay_my_buddy.shared.exception.*;
 import org.springframework.context.MessageSourceResolvable;
@@ -13,10 +16,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
-import java.time.OffsetDateTime;
-import java.util.Collection;
-import java.util.Objects;
 
 
 /**
@@ -85,9 +84,9 @@ public class ApiExceptionInterceptor extends ResponseEntityExceptionHandler {
     @Override
     protected ProblemDetail createProblemDetail(Exception exception, HttpStatusCode status, String defaultDetail, @Nullable String detailMessageCode, @Nullable Object[] detailMessageArguments, WebRequest request) {
         if(status.is5xxServerError()) {
-            log.error("{} - {}", exception.getClass().getSimpleName(), exception.getMessage());
+            log.error("{} : {}", exception.getClass().getSimpleName(), exception.getMessage(), exception);
         } else {
-            log.warn("{} - {}", exception.getClass().getSimpleName(), exception.getMessage());
+            log.warn("{} : {}", exception.getClass().getSimpleName(), exception.getMessage());
         }
 
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(status, defaultDetail);

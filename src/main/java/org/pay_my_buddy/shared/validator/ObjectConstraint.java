@@ -1,10 +1,9 @@
 package org.pay_my_buddy.shared.validator;
 
-import org.pay_my_buddy.shared.exception.BadArgumentException;
-
 import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import org.pay_my_buddy.shared.exception.BadArgumentException;
 
 public class ObjectConstraint<V> {
 

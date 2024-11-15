@@ -10,11 +10,11 @@ public record AddFriendCommand(
 ) implements Command {
 
     public AddFriendCommand {
-        Constraint.checkIf(userId).isNotNull("User id can't be null");
-        Constraint.checkIf(friendId).isNotNull("Friend id can't be null");
+        Constraint.checkIf(userId).isNotNull("User userId can't be null");
+        Constraint.checkIf(friendId).isNotNull("Friend userId can't be null");
 
         if(userId.equals(friendId)) {
-            throw new IllegalArgumentException("User can't be friend with himself");
+            throw new IllegalArgumentException("User can't be friendId with himself");
         }
     }
 }
