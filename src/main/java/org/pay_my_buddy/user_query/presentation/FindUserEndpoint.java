@@ -18,36 +18,36 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class FindUserEndpoint {
 
-    private final QueryBus queryBus;
+	private final QueryBus queryBus;
 
 
-    @GetMapping("{id}")
-    ResponseEntity<?> findOne(@NotBlank @PathVariable String id) {
-        UserId userId = new UserId(id);
+	@GetMapping("{id}")
+	ResponseEntity<?> findOne(@NotBlank @PathVariable String id) {
+		UserId userId = new UserId(id);
 
-        var query = new FindUserByIdQuery(userId);
-        return queryBus.ask(query)
-                .map(GetUserResponse::new)
-                .map(ResponseEntity.ok()::body)
-                .orElseThrow(() -> new UserNotFoundException(userId));
-    }
+		var query = new FindUserByIdQuery(userId);
+		return queryBus.ask(query)
+				.map(GetUserResponse::new)
+				.map(ResponseEntity.ok()::body)
+				.orElseThrow(() -> new UserNotFoundException(userId));
+	}
 
-    public record GetUserResponse(
-            String id,
-            String firstname,
-            String lastname,
-            String email,
-            List<String> friends) {
+	public record GetUserResponse(
+			String id,
+			String firstname,
+			String lastname,
+			String email,
+			List<String> friends) {
 
-        GetUserResponse(UserEntityProjection projection) {
-            this(projection.userId().value(),
-                    projection.firstname(),
-                    projection.lastname(),
-                    projection.email(),
-                    projection.friends().stream()
-                            .map(UserId::value)
-                            .toList()
-            );
-        }
-    }
+		GetUserResponse(UserEntityProjection projection) {
+			this(projection.userId().value(),
+					projection.firstname(),
+					projection.lastname(),
+					projection.email(),
+					projection.friends().stream()
+							.map(UserId::value)
+							.toList()
+			);
+		}
+	}
 }

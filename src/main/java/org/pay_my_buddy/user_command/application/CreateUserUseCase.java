@@ -1,8 +1,8 @@
 package org.pay_my_buddy.user_command.application;
 
 import lombok.RequiredArgsConstructor;
-import org.pay_my_buddy.api_command.AggregateStorage;
 import org.pay_my_buddy.api_command.CommandHandler;
+import org.pay_my_buddy.api_command.EventSourcingStorage;
 import org.pay_my_buddy.api_query.QueryBus;
 import org.pay_my_buddy.shared.exception.BadArgumentException;
 import org.pay_my_buddy.shared.exchange.user.UserId;
@@ -15,22 +15,22 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CreateUserUseCase implements CommandHandler<CreateUserCommand> {
 
-    private final AggregateStorage<UserAggregate, UserId> aggregateStorage;
-    private final CreateUserPresenter presenter;
-    private final QueryBus queryBus;
+	private final EventSourcingStorage<UserAggregate, UserId> storage;
+	private final CreateUserPresenter presenter;
+	private final QueryBus queryBus;
 
 
-    @Override
-    public void handle(CreateUserCommand command) {
+	@Override
+	public void handle(CreateUserCommand command) {
 		final FindUserByEmailQuery query = new FindUserByEmailQuery(command.email());
-        if (queryBus.ask(query).isPresent()) {
-            throw new BadArgumentException("Email already exists");
-        }
+		if (queryBus.ask(query).isPresent()) {
+			throw new BadArgumentException("Email already exists");
+		}
 
-        UserAggregate userAggregate = UserAggregate.newInstance()
-                .create(command.firstname(), command.lastname(), command.email(), command.password());
-        aggregateStorage.save(userAggregate);
+		UserAggregate userAggregate = UserAggregate.newInstance()
+				.create(command.firstname(), command.lastname(), command.email(), command.password());
+		storage.save(userAggregate);
 
-        presenter.present(userAggregate.id());
-    }
+		presenter.present(userAggregate.id());
+	}
 }

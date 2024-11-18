@@ -13,26 +13,26 @@ import org.springframework.stereotype.Component;
 @Component
 public class ApplicationCommandRegistry implements CommandRegistry {
 
-    private final Map<Class<? extends Command>, CommandProvider<?>> providerMap = new HashMap<>();
+	private final Map<Class<? extends Command>, CommandProvider<?>> providerMap = new HashMap<>();
 
-    public ApplicationCommandRegistry(ApplicationContext applicationContext) {
-        Stream.of(applicationContext.getBeanNamesForType(CommandHandler.class))
-                .forEach(name -> register(applicationContext, name));
-    }
+	public ApplicationCommandRegistry(ApplicationContext applicationContext) {
+		Stream.of(applicationContext.getBeanNamesForType(CommandHandler.class))
+				.forEach(name -> register(applicationContext, name));
+	}
 
-    private void register(ApplicationContext applicationContext, String name) {
-        final Class<CommandHandler<?>> handlerClass = (Class<CommandHandler<?>>) applicationContext.getType(name);
-        final Class<?>[] generics = GenericTypeResolver.resolveTypeArguments(handlerClass, CommandHandler.class);
-        final Class<? extends Command> commandType = (Class<? extends Command>) generics[0];
-        if(providerMap.containsKey(commandType)) {
-            throw new InternalErrorException("Duplicate command handler for " + commandType + " found: " + handlerClass + " / added " + providerMap.get(commandType).get());
-        }
-        providerMap.put(commandType, new CommandProvider<>(applicationContext, handlerClass));
-    }
+	private void register(ApplicationContext applicationContext, String name) {
+		final Class<CommandHandler<?>> handlerClass = (Class<CommandHandler<?>>) applicationContext.getType(name);
+		final Class<?>[] generics = GenericTypeResolver.resolveTypeArguments(handlerClass, CommandHandler.class);
+		final Class<? extends Command> commandType = (Class<? extends Command>) generics[0];
+		if (providerMap.containsKey(commandType)) {
+			throw new InternalErrorException("Duplicate command handler for " + commandType + " found: " + handlerClass + " / added " + providerMap.get(commandType).get());
+		}
+		providerMap.put(commandType, new CommandProvider<>(applicationContext, handlerClass));
+	}
 
 
-    @Override
-    public <COMMAND extends Command> CommandHandler<COMMAND> get(Class<COMMAND> commandClass) {
-        return (CommandHandler<COMMAND>) providerMap.get(commandClass).get();
-    }
+	@Override
+	public <COMMAND extends Command> CommandHandler<COMMAND> get(Class<COMMAND> commandClass) {
+		return (CommandHandler<COMMAND>) providerMap.get(commandClass).get();
+	}
 }

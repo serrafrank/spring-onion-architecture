@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 public class FindUserByIdUseCase implements QueryHandler<FindUserByIdQuery, Optional<UserEntityProjection>> {
 
 	private final UserSpi userSpi;
+
 	@Override
 	public Optional<UserEntityProjection> handle(FindUserByIdQuery query) {
 		return userSpi.findUserById(query.id());

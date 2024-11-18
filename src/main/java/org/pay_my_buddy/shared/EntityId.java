@@ -2,8 +2,6 @@ package org.pay_my_buddy.shared;
 
 public interface EntityId extends ValueObject<String> {
 
-	String value();
-
 	static String generateId() {
 		return new Ulid().create();
 	}
@@ -19,4 +17,6 @@ public interface EntityId extends ValueObject<String> {
 	static EntityId of(String id) {
 		return () -> id;
 	}
+
+	String value();
 }

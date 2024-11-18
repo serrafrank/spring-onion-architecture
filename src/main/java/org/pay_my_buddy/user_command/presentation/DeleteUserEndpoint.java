@@ -18,17 +18,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class DeleteUserEndpoint {
 
 
-    private final CommandBus publisher;
+	private final CommandBus publisher;
 
 
-    @DeleteMapping("{id}")
-    public ResponseEntity<Void> deleteUser(@Validated @NotBlank @PathVariable String id) {
-        UserId userId = new UserId(id);
-        try {
-            publisher.execute(new DeleteUserCommand(userId));
-        } catch (Exception ignore) {
-        }
+	@DeleteMapping("{id}")
+	public ResponseEntity<Void> deleteUser(@Validated @NotBlank @PathVariable String id) {
+		UserId userId = new UserId(id);
+		try {
+			publisher.execute(new DeleteUserCommand(userId));
+		} catch (Exception ignore) {
+		}
 
-        return ResponseEntity.ok().build();
-    }
+		return ResponseEntity.ok().build();
+	}
 }

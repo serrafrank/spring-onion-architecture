@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 public class FindUserByEmailUseCase implements QueryHandler<FindUserByEmailQuery, Optional<UserEntityProjection>> {
 
 	private final UserSpi userSpi;
+
 	@Override
 	public Optional<UserEntityProjection> handle(FindUserByEmailQuery query) {
 		return userSpi.findUserByEmail(query.email());

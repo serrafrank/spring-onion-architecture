@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.pay_my_buddy.api_command.AggregateRoot;
+import org.pay_my_buddy.api_command.AbstractAggregateRoot;
 import org.pay_my_buddy.api_command.event_storage.AggregateEventListener;
 import org.pay_my_buddy.shared.exception.ConflictException;
 import org.pay_my_buddy.shared.exchange.user.UserId;
@@ -19,24 +19,23 @@ import org.pay_my_buddy.shared.exchange.user.query.UserFriendRemovedEvent;
 @Accessors(fluent = true)
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public class UserAggregate extends AggregateRoot<UserId> {
+public class UserAggregate extends AbstractAggregateRoot<UserId> {
+	private final Set<UserId> friends = new HashSet<>();
 	private String firstname;
 	private String lastname;
 	private String email;
 	private String password;
-
-	private final Set<UserId> friends = new HashSet<>();
-
 	private State currentState;
 
 	private UserAggregate(UserId id) {
 		super(id);
 	}
+
 	private UserAggregate() {
 		super(new UserId());
 	}
 
-    public static UserAggregate newInstance(UserId id) {
+	public static UserAggregate newInstance(UserId id) {
 		return new UserAggregate(id);
 	}
 
@@ -62,7 +61,7 @@ public class UserAggregate extends AggregateRoot<UserId> {
 		return this;
 	}
 
-	public UserAggregate removeFriend(UserId friend){
+	public UserAggregate removeFriend(UserId friend) {
 		this.addEvent(new UserFriendRemovedEvent(this.id(), friend));
 		return this;
 

@@ -28,77 +28,77 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class ApiExceptionInterceptor extends ResponseEntityExceptionHandler {
 
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException exception, WebRequest request) {
-        HttpHeaders headers = new HttpHeaders();
-        ProblemDetail body = createProblemDetail(exception, HttpStatus.BAD_REQUEST, exception.getMessage(), null, null, request);
-        return this.handleExceptionInternal(exception, body, headers, HttpStatus.BAD_REQUEST, request);
-    }
+	@ExceptionHandler(IllegalArgumentException.class)
+	public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException exception, WebRequest request) {
+		HttpHeaders headers = new HttpHeaders();
+		ProblemDetail body = createProblemDetail(exception, HttpStatus.BAD_REQUEST, exception.getMessage(), null, null, request);
+		return this.handleExceptionInternal(exception, body, headers, HttpStatus.BAD_REQUEST, request);
+	}
 
-    @ExceptionHandler(GenericApiRequestException.class)
-    public ResponseEntity<Object> handleGenericException(GenericApiRequestException exception, WebRequest request) {
-        HttpStatus status = switch (exception) {
-            case BadArgumentException __ -> HttpStatus.BAD_REQUEST;
-            case ConflictException __ -> HttpStatus.CONFLICT;
-            case ForbiddenException __ -> HttpStatus.FORBIDDEN;
-            case NotFoundException __ -> HttpStatus.NOT_FOUND;
-            case UnauthorizedException __ -> HttpStatus.UNAUTHORIZED;
-            default -> HttpStatus.INTERNAL_SERVER_ERROR;
-        };
+	@ExceptionHandler(GenericApiRequestException.class)
+	public ResponseEntity<Object> handleGenericException(GenericApiRequestException exception, WebRequest request) {
+		HttpStatus status = switch (exception) {
+			case BadArgumentException __ -> HttpStatus.BAD_REQUEST;
+			case ConflictException __ -> HttpStatus.CONFLICT;
+			case ForbiddenException __ -> HttpStatus.FORBIDDEN;
+			case NotFoundException __ -> HttpStatus.NOT_FOUND;
+			case UnauthorizedException __ -> HttpStatus.UNAUTHORIZED;
+			default -> HttpStatus.INTERNAL_SERVER_ERROR;
+		};
 
-        HttpHeaders headers = new HttpHeaders();
-        ProblemDetail body = createProblemDetail(exception, HttpStatusCode.valueOf(status.value()), exception.getMessage(), null, null, request);
-        return this.handleExceptionInternal(exception, body, headers, status, request);
-    }
-
-
-    @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException exception, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-        String[] args = exception.getBindingResult()
-                .getAllErrors()
-                .stream()
-                .map(msg -> "Field '" + ((DefaultMessageSourceResolvable) Objects.requireNonNull(msg.getArguments())[0]).getDefaultMessage() + "' : " + msg.getDefaultMessage())
-                .toArray(String[]::new);
+		HttpHeaders headers = new HttpHeaders();
+		ProblemDetail body = createProblemDetail(exception, HttpStatusCode.valueOf(status.value()), exception.getMessage(), null, null, request);
+		return this.handleExceptionInternal(exception, body, headers, status, request);
+	}
 
 
-        String defaultDetail = "Argument not valid";
-        ProblemDetail body = this.createProblemDetail(exception, status, defaultDetail, null, args, request);
-        return this.handleExceptionInternal(exception, body, headers, status, request);
-    }
+	@Override
+	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException exception, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+		String[] args = exception.getBindingResult()
+				.getAllErrors()
+				.stream()
+				.map(msg -> "Field '" + ((DefaultMessageSourceResolvable) Objects.requireNonNull(msg.getArguments())[0]).getDefaultMessage() + "' : " + msg.getDefaultMessage())
+				.toArray(String[]::new);
 
-    @Nullable
-    protected ResponseEntity<Object> handleHandlerMethodValidationException(HandlerMethodValidationException exception, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-        var errorList = exception.getAllValidationResults()
-                .stream()
-                .map(ParameterValidationResult::getResolvableErrors)
-                .flatMap(Collection::stream)
-                .map(MessageSourceResolvable::getDefaultMessage)
-                .toArray(String[]::new);
 
-        String defaultDetail = "Argument not valid";
+		String defaultDetail = "Argument not valid";
+		ProblemDetail body = this.createProblemDetail(exception, status, defaultDetail, null, args, request);
+		return this.handleExceptionInternal(exception, body, headers, status, request);
+	}
 
-        ProblemDetail body = this.createProblemDetail(exception, status, defaultDetail, null, errorList, request);
-        return this.handleExceptionInternal(exception, body, headers, status, request);
-    }
+	@Nullable
+	protected ResponseEntity<Object> handleHandlerMethodValidationException(HandlerMethodValidationException exception, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+		var errorList = exception.getAllValidationResults()
+				.stream()
+				.map(ParameterValidationResult::getResolvableErrors)
+				.flatMap(Collection::stream)
+				.map(MessageSourceResolvable::getDefaultMessage)
+				.toArray(String[]::new);
 
-    @Override
-    protected ProblemDetail createProblemDetail(Exception exception, HttpStatusCode status, String defaultDetail, @Nullable String detailMessageCode, @Nullable Object[] detailMessageArguments, WebRequest request) {
-        if(status.is5xxServerError()) {
-            log.error("{} : {}", exception.getClass().getSimpleName(), exception.getMessage(), exception);
-        } else {
-            log.warn("{} : {}", exception.getClass().getSimpleName(), exception.getMessage());
-        }
+		String defaultDetail = "Argument not valid";
 
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(status, defaultDetail);
-        problemDetail.setProperty("timestamp", OffsetDateTime.now());
-        if (detailMessageCode != null) {
-            problemDetail.setProperty("messageCode", detailMessageCode);
-        }
-        if (detailMessageArguments != null) {
-            problemDetail.setProperty("details", detailMessageArguments);
-        }
+		ProblemDetail body = this.createProblemDetail(exception, status, defaultDetail, null, errorList, request);
+		return this.handleExceptionInternal(exception, body, headers, status, request);
+	}
 
-        return problemDetail;
-    }
+	@Override
+	protected ProblemDetail createProblemDetail(Exception exception, HttpStatusCode status, String defaultDetail, @Nullable String detailMessageCode, @Nullable Object[] detailMessageArguments, WebRequest request) {
+		if (status.is5xxServerError()) {
+			log.error("{} : {}", exception.getClass().getSimpleName(), exception.getMessage(), exception);
+		} else {
+			log.warn("{} : {}", exception.getClass().getSimpleName(), exception.getMessage());
+		}
+
+		ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(status, defaultDetail);
+		problemDetail.setProperty("timestamp", OffsetDateTime.now());
+		if (detailMessageCode != null) {
+			problemDetail.setProperty("messageCode", detailMessageCode);
+		}
+		if (detailMessageArguments != null) {
+			problemDetail.setProperty("details", detailMessageArguments);
+		}
+
+		return problemDetail;
+	}
 
 }

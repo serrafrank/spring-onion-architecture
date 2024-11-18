@@ -41,7 +41,7 @@ public class UserEventHandler {
 		userRepository.save(user);
 	}
 
-	private UserEntity getById(UserId id){
+	private UserEntity getById(UserId id) {
 		return userRepository.findById(id.value())
 				.orElseThrow(() -> new NotFoundException("User not found"));
 	}

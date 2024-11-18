@@ -4,5 +4,5 @@ import org.pay_my_buddy.shared.Message;
 
 @FunctionalInterface
 public interface MessagePublisher {
-    void publish(Message message);
+	void publish(Message message);
 }

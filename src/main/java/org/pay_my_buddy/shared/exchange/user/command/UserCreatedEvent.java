@@ -7,6 +7,7 @@ import org.pay_my_buddy.api_command.Event;
 import org.pay_my_buddy.api_command.EventId;
 import org.pay_my_buddy.shared.Constraint;
 import org.pay_my_buddy.shared.exchange.user.UserId;
+
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonSerialize
 public record UserCreatedEvent(

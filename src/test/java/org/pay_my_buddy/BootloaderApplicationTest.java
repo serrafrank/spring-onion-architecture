@@ -7,18 +7,19 @@ import org.springframework.modulith.docs.Documenter;
 
 @SpringBootTest
 class BootloaderApplicationTest {
-private final ApplicationModules modules = ApplicationModules.of(BootloaderApplication.class);
-    @Test
-    void contextLoads() {
-        modules.verify();
-    }
+	private final ApplicationModules modules = ApplicationModules.of(BootloaderApplication.class);
 
-    @Test
-    void writeDocumentationSnippets() {
-        new Documenter(modules)
-                .writeModuleCanvases()
-                .writeModulesAsPlantUml()
-                .writeIndividualModulesAsPlantUml();
-    }
+	@Test
+	void contextLoads() {
+		modules.verify();
+	}
+
+	@Test
+	void writeDocumentationSnippets() {
+		new Documenter(modules)
+				.writeModuleCanvases()
+				.writeModulesAsPlantUml()
+				.writeIndividualModulesAsPlantUml();
+	}
 
 }

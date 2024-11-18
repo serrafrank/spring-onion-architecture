@@ -29,20 +29,18 @@ public final class Ulid {
 	private static final byte B = 0b01111111;
 	private static final byte C = (byte) 0b10111000;
 	private static final byte D = (byte) 0b11000001;
+	// Underlying PRNG
+	private final SecureRandom randomGenerator;
 	// SipHash state
 	private long v0 = 0;
 	private long v1 = 0;
 	private long v2 = 0;
 	private long v3 = 0;
-
 	private long lastUsedTimestamp;
 	private long randomMaxMsb;
 	private long randomMaxLsb;
 	private long randomMsb = 0;
 	private long randomLsb = 0;
-
-	// Underlying PRNG
-	private final SecureRandom randomGenerator;
 
 	public Ulid() {
 		this(new SecureRandom());
@@ -51,92 +49,6 @@ public final class Ulid {
 	public Ulid(SecureRandom random) {
 		this.randomGenerator = random;
 		reseed(); // do an initial seeding
-	}
-
-	/**
-	 * Returns a ULID string, encoded to Crockford's base32 notation.
-	 */
-	public String create() {
-		final long k0 = sipHash24(v0, v1, v2, v3, A);
-		final long k1 = sipHash24(v0, v1, v2, v3, B);
-		final long msb = (sipHash24(v0, v1, v2, v3, C) & ~0xF000L) | 0x4000L;
-		final long lsb = ((sipHash24(v0, v1, v2, v3, D) << 2) >>> 2) | 0x8000000000000000L;
-		reseed(k0, k1);
-
-		return asString(System.currentTimeMillis(), msb, lsb);
-	}
-
-	/**
-	 * Returns a monotonically increasing ULID string, encoded to Crockford's base32 notation.
-	 */
-	public String next() {
-		final long timestamp = getTimestamp();
-		final long msbRandom = randomMsb & HALF_RANDOM_COMPONENT;
-		final long lsbRandom = randomLsb & HALF_RANDOM_COMPONENT;
-		final long msb = (timestamp << 16) | (msbRandom >>> 24);
-		final long lsb = (msbRandom << 40) | lsbRandom;
-
-		return asString(msb, lsb);
-	}
-
-	public void reseed() {
-		byte[] seed = new byte[128];
-		randomGenerator.nextBytes(seed);
-		reseed(randomGenerator.nextLong(), randomGenerator.nextLong());
-	}
-
-	private void reseed(long k0, long k1) {
-		// SipHash magic constants
-		v0 = k0 ^ 0x736F6D6570736575L;
-		v1 = k1 ^ 0x646F72616E646F6DL;
-		v2 = k0 ^ 0x6C7967656E657261L;
-		v3 = k1 ^ 0x7465646279746573L;
-	}
-
-	/**
-	 * Return the current timestamp and resets or increments the random part.
-	 *
-	 * @return timestamp
-	 */
-	private long getTimestamp() {
-		final long timestamp = System.currentTimeMillis();
-		if (timestamp == lastUsedTimestamp) {
-			// if this is the same millisecond, just increment the random part
-			increment();
-		} else {
-			// millisecond changed, regenerate the random part
-			reset();
-		}
-		lastUsedTimestamp = timestamp;
-		return timestamp;
-	}
-
-	/**
-	 * Reset the random part of the GUID.
-	 */
-	private synchronized void reset() {
-		// Generate random values
-		final long k0 = sipHash24(v0, v1, v2, v3, A);
-		final long k1 = sipHash24(v0, v1, v2, v3, B);
-		randomMsb = (sipHash24(v0, v1, v2, v3, C) & ~0xF000L) | 0x4000L;
-		randomLsb = ((sipHash24(v0, v1, v2, v3, D) << 2) >>> 2) | 0x8000000000000000L;
-		reseed(k0, k1);
-
-		// Save the random values
-		randomMaxMsb = randomMsb | MAX_INCREMENT;
-		randomMaxLsb = randomLsb | MAX_INCREMENT;
-	}
-
-	/**
-	 * Increment the random part of the GUID.
-	 */
-	private synchronized void increment() {
-		if (++randomLsb >= randomMaxLsb) {
-			randomLsb = randomLsb & HALF_RANDOM_COMPONENT;
-			if (++randomMsb >= randomMaxMsb) {
-				reset();
-			}
-		}
 	}
 
 	private static String asString(long timestamp, long msb, long lsb) {
@@ -253,8 +165,6 @@ public final class Ulid {
 		return toLong(timestampComponent);
 	}
 
-	// Validate generated ULID Strings
-
 	/**
 	 * Checks if the string is a valid ULID.
 	 */
@@ -329,5 +239,93 @@ public final class Ulid {
 			output[i] = Character.toUpperCase(input[i]);
 		}
 		return output;
+	}
+
+	/**
+	 * Returns a ULID string, encoded to Crockford's base32 notation.
+	 */
+	public String create() {
+		final long k0 = sipHash24(v0, v1, v2, v3, A);
+		final long k1 = sipHash24(v0, v1, v2, v3, B);
+		final long msb = (sipHash24(v0, v1, v2, v3, C) & ~0xF000L) | 0x4000L;
+		final long lsb = ((sipHash24(v0, v1, v2, v3, D) << 2) >>> 2) | 0x8000000000000000L;
+		reseed(k0, k1);
+
+		return asString(System.currentTimeMillis(), msb, lsb);
+	}
+
+	// Validate generated ULID Strings
+
+	/**
+	 * Returns a monotonically increasing ULID string, encoded to Crockford's base32 notation.
+	 */
+	public String next() {
+		final long timestamp = getTimestamp();
+		final long msbRandom = randomMsb & HALF_RANDOM_COMPONENT;
+		final long lsbRandom = randomLsb & HALF_RANDOM_COMPONENT;
+		final long msb = (timestamp << 16) | (msbRandom >>> 24);
+		final long lsb = (msbRandom << 40) | lsbRandom;
+
+		return asString(msb, lsb);
+	}
+
+	public void reseed() {
+		byte[] seed = new byte[128];
+		randomGenerator.nextBytes(seed);
+		reseed(randomGenerator.nextLong(), randomGenerator.nextLong());
+	}
+
+	private void reseed(long k0, long k1) {
+		// SipHash magic constants
+		v0 = k0 ^ 0x736F6D6570736575L;
+		v1 = k1 ^ 0x646F72616E646F6DL;
+		v2 = k0 ^ 0x6C7967656E657261L;
+		v3 = k1 ^ 0x7465646279746573L;
+	}
+
+	/**
+	 * Return the current timestamp and resets or increments the random part.
+	 *
+	 * @return timestamp
+	 */
+	private long getTimestamp() {
+		final long timestamp = System.currentTimeMillis();
+		if (timestamp == lastUsedTimestamp) {
+			// if this is the same millisecond, just increment the random part
+			increment();
+		} else {
+			// millisecond changed, regenerate the random part
+			reset();
+		}
+		lastUsedTimestamp = timestamp;
+		return timestamp;
+	}
+
+	/**
+	 * Reset the random part of the GUID.
+	 */
+	private synchronized void reset() {
+		// Generate random values
+		final long k0 = sipHash24(v0, v1, v2, v3, A);
+		final long k1 = sipHash24(v0, v1, v2, v3, B);
+		randomMsb = (sipHash24(v0, v1, v2, v3, C) & ~0xF000L) | 0x4000L;
+		randomLsb = ((sipHash24(v0, v1, v2, v3, D) << 2) >>> 2) | 0x8000000000000000L;
+		reseed(k0, k1);
+
+		// Save the random values
+		randomMaxMsb = randomMsb | MAX_INCREMENT;
+		randomMaxLsb = randomLsb | MAX_INCREMENT;
+	}
+
+	/**
+	 * Increment the random part of the GUID.
+	 */
+	private synchronized void increment() {
+		if (++randomLsb >= randomMaxLsb) {
+			randomLsb = randomLsb & HALF_RANDOM_COMPONENT;
+			if (++randomMsb >= randomMaxMsb) {
+				reset();
+			}
+		}
 	}
 }

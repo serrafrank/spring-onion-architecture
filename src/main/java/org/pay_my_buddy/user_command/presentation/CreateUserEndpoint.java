@@ -19,32 +19,32 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class CreateUserEndpoint {
 
-    private final CommandBus publisher;
-    private final CreateUserPresenter presenter;
+	private final CommandBus publisher;
+	private final CreateUserPresenter presenter;
 
-    @PostMapping()
-    public ResponseEntity<?> createUser(@Validated @RequestBody CreateUserRequest request) {
-        CreateUserCommand command = new CreateUserCommand(request.firstname(), request.lastname(), request.email(), request.password());
-        publisher.execute(command);
-        final UserId id = presenter.view();
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(new CreateUserResponse(id));
-    }
+	@PostMapping()
+	public ResponseEntity<?> createUser(@Validated @RequestBody CreateUserRequest request) {
+		CreateUserCommand command = new CreateUserCommand(request.firstname(), request.lastname(), request.email(), request.password());
+		publisher.execute(command);
+		final UserId id = presenter.view();
+		return ResponseEntity
+				.status(HttpStatus.CREATED)
+				.body(new CreateUserResponse(id));
+	}
 
-    public record CreateUserRequest(
-            @NotBlank String firstname,
-            @NotBlank String lastname,
-            @NotBlank String email,
-            @NotBlank String password) {
-    }
+	public record CreateUserRequest(
+			@NotBlank String firstname,
+			@NotBlank String lastname,
+			@NotBlank String email,
+			@NotBlank String password) {
+	}
 
-    public record CreateUserResponse(
-            String id) {
+	public record CreateUserResponse(
+			String id) {
 
-        CreateUserResponse(UserId id) {
-            this(id.value());
-        }
-    }
+		CreateUserResponse(UserId id) {
+			this(id.value());
+		}
+	}
 
 }

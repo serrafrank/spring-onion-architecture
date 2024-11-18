@@ -6,10 +6,10 @@ import lombok.experimental.Accessors;
 @Getter
 @Accessors(fluent = true)
 public abstract class AbstractOutputPresenter<VIEW> implements Presenter<VIEW> {
-    private VIEW view;
+	private VIEW view;
 
-    public void present(VIEW view) {
-        this.view = view;
-    }
+	public void present(VIEW view) {
+		this.view = view;
+	}
 
 }

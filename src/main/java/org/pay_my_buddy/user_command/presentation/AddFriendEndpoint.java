@@ -15,18 +15,18 @@ import org.springframework.web.bind.annotation.*;
 public class AddFriendEndpoint {
 
 
-    private final CommandBus publisher;
+	private final CommandBus publisher;
 
-    @PostMapping("/{userId}/add-friend")
-    public ResponseEntity<?> AddFriend(
-            @Validated @NotBlank @PathVariable String userId,
-            @Validated @RequestBody AddFriendRequest request) {
-        AddFriendCommand command = new AddFriendCommand(new UserId(userId), new UserId(request.friendId()));
-        publisher.execute(command);
-        return ResponseEntity.ok().build();
-    }
+	@PostMapping("/{userId}/add-friend")
+	public ResponseEntity<?> AddFriend(
+			@Validated @NotBlank @PathVariable String userId,
+			@Validated @RequestBody AddFriendRequest request) {
+		AddFriendCommand command = new AddFriendCommand(new UserId(userId), new UserId(request.friendId()));
+		publisher.execute(command);
+		return ResponseEntity.ok().build();
+	}
 
-    public record AddFriendRequest(@NotBlank String friendId) {
-    }
+	public record AddFriendRequest(@NotBlank String friendId) {
+	}
 
 }
