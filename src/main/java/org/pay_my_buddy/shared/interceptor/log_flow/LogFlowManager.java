@@ -16,13 +16,13 @@ public class LogFlowManager {
     private LogFlowManager() {
     }
 
-    public static void startLogFlow(Thread thread, String requestId, MethodInvocation joinPoint) {
-        LogFlowManager.getThreadLogFlow(thread, requestId).startLogFlow(joinPoint);
+    public static ThreadLogFlow.LogFlow startLogFlow(Thread thread, String requestId, MethodInvocation joinPoint) {
+        return LogFlowManager.getThreadLogFlow(thread, requestId).startLogFlow(joinPoint);
     }
 
 
-    public static void stopLogFlow(Thread thread, String requestId, Object output) {
-        LogFlowManager.getThreadLogFlow(thread, requestId).stopLogFlow(output);
+    public static ThreadLogFlow.LogFlow stopLogFlow(Thread thread, String requestId, Object output) {
+       return LogFlowManager.getThreadLogFlow(thread, requestId).stopLogFlow(output);
     }
 
     private static ThreadLogFlow getThreadLogFlow(Thread thread, String requestId) {

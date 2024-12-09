@@ -41,12 +41,13 @@ public class ThreadLogFlow {
         return this.requestId.equals(requestId);
     }
 
-    public void startLogFlow(MethodInvocation methodInvocation) {
+    public LogFlow startLogFlow(MethodInvocation methodInvocation) {
         LogFlow logFlow = new LogFlow(methodInvocation);
         stack.push(logFlow);
+        return logFlow;
     }
 
-    public void stopLogFlow(Object output) {
+    public LogFlow stopLogFlow(Object output) {
         LogFlow childLog = stack.pop();
         childLog.stop(output);
 
@@ -57,6 +58,8 @@ public class ThreadLogFlow {
         } else {
             stack.peek().addChild(childLog);
         }
+
+        return childLog;
     }
 
     @Getter
@@ -70,7 +73,7 @@ public class ThreadLogFlow {
         private Object output;
 
         public LogFlow(MethodInvocation methodInvocation) {
-            this.methodName =  methodInvocation.getMethod().getName();
+            this.methodName =  methodInvocation.getMethod().getDeclaringClass().getName() + "." + methodInvocation.getMethod().getName() + "(" + Stream.of(methodInvocation.getMethod().getParameters()).map(parameter -> parameter.getType().getSimpleName()).reduce((a, b) -> a + ", " + b).orElse("") + ")";
             this.input = Stream.of(methodInvocation.getMethod().getParameters())
                     .map(this::copy)
                     .toList();
