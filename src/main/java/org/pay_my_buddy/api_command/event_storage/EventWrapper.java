@@ -6,18 +6,18 @@ import org.pay_my_buddy.api_command.EventId;
 import org.pay_my_buddy.shared.EntityId;
 
 public interface EventWrapper {
-	EventId eventId();
+    EventId eventId();
 
-	LocalDateTime timestamp();
+    LocalDateTime timestamp();
 
-	int index();
+    int index();
 
-	EntityId aggregateId();
+    EntityId aggregateId();
 
-	String aggregateType();
+    String aggregateType();
 
-	String eventType();
+    String eventType();
 
-	Event event();
+    Event event();
 
 }

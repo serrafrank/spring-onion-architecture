@@ -1,9 +1,9 @@
 package org.pay_my_buddy.api_command;
 
 public interface EventSourcingStorage<AGGREGATE, ID> {
-	void save(AbstractAggregateRoot<?> aggregate);
+    void save(AbstractAggregateRoot<?> aggregate);
 
-	AGGREGATE getById(ID aggregateId);
+    AGGREGATE getById(ID aggregateId);
 
-	void republishEvents();
+    void republishEvents();
 }

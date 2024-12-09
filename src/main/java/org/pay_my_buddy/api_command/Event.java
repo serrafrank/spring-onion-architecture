@@ -5,5 +5,5 @@ import org.pay_my_buddy.shared.Message;
 
 @JsonSerialize
 public interface Event extends Message {
-	EventId eventId();
+    EventId eventId();
 }

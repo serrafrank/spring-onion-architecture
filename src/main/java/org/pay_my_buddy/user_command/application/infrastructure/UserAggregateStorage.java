@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserAggregateStorage extends AbstractEventSourcingStorage<UserAggregate, UserId> {
 
-	public UserAggregateStorage(EventSourcingRepository repository, MessagePublisher eventProducer) {
-		super(repository, eventProducer);
-	}
+    public UserAggregateStorage(EventSourcingRepository repository, MessagePublisher eventProducer) {
+        super(repository, eventProducer);
+    }
 
 }

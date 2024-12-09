@@ -11,20 +11,19 @@ import org.springframework.stereotype.Component;
 @Component
 public class RepublishEventsRunnable {
 
-	@Value("${application.republishAfterStart:false}")
-	private boolean republishAfterStart;
+    private final List<EventSourcingStorage<?, ?>> eventSourcingStorageList;
+    @Value("${application.republishAfterStart:false}")
+    private boolean republishAfterStart;
 
-	private final List<EventSourcingStorage<?, ?>> eventSourcingStorageList;
-
-	public RepublishEventsRunnable(List<EventSourcingStorage<?, ?>> eventSourcingStorageList) {
-		this.eventSourcingStorageList = eventSourcingStorageList;
-	}
+    public RepublishEventsRunnable(List<EventSourcingStorage<?, ?>> eventSourcingStorageList) {
+        this.eventSourcingStorageList = eventSourcingStorageList;
+    }
 
 
-	@PostConstruct
-	public void republishEvents() {
-		if (republishAfterStart) {
-			eventSourcingStorageList.forEach(EventSourcingStorage::republishEvents);
-		}
-	}
+    @PostConstruct
+    public void republishEvents() {
+        if (republishAfterStart) {
+            eventSourcingStorageList.forEach(EventSourcingStorage::republishEvents);
+        }
+    }
 }

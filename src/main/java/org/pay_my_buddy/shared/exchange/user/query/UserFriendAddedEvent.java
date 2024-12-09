@@ -12,14 +12,14 @@ import org.pay_my_buddy.shared.exchange.user.UserId;
 @JsonSerialize
 public record UserFriendAddedEvent(EventId eventId, UserId userId, UserId friendId) implements Event {
 
-	@JsonCreator
-	public UserFriendAddedEvent {
-		Constraint.checkIf(userId).isNotNull("User id is required");
-		Constraint.checkIf(friendId).isNotNull("Friend id is required");
-	}
+    @JsonCreator
+    public UserFriendAddedEvent {
+        Constraint.checkIf(userId).isNotNull("User id is required");
+        Constraint.checkIf(friendId).isNotNull("Friend id is required");
+    }
 
-	public UserFriendAddedEvent(UserId userId, UserId friendId) {
-		this(new EventId(), userId, friendId);
-	}
+    public UserFriendAddedEvent(UserId userId, UserId friendId) {
+        this(new EventId(), userId, friendId);
+    }
 
 }

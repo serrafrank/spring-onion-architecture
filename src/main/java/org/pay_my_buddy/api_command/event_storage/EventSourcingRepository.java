@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EventSourcingRepository extends JpaRepository<EventWrapperEntity, String> {
-	List<EventWrapper> findAllByAggregateId(String aggregateId);
+    List<EventWrapper> findAllByAggregateId(String aggregateId);
 }

@@ -12,15 +12,15 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class JpaUserSpi implements UserSpi {
 
-	private final UserRepository userRepository;
+    private final UserRepository userRepository;
 
-	@Override
-	public Optional<UserEntityProjection> findUserByEmail(String email) {
-		return userRepository.findByEmail(email);
-	}
+    @Override
+    public Optional<UserEntityProjection> findUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
 
-	@Override
-	public Optional<UserEntityProjection> findUserById(UserId id) {
-		return userRepository.findUserById(id.value());
-	}
+    @Override
+    public Optional<UserEntityProjection> findUserById(UserId id) {
+        return userRepository.findUserById(id.value());
+    }
 }

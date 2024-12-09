@@ -13,13 +13,13 @@ import org.pay_my_buddy.shared.exchange.user.UserId;
 public record UserDeletedEvent(EventId eventId, UserId userId) implements Event {
 
 
-	@JsonCreator
-	public UserDeletedEvent {
-		Constraint.checkIf(userId).isNotNull("User id is required");
-	}
+    @JsonCreator
+    public UserDeletedEvent {
+        Constraint.checkIf(userId).isNotNull("User id is required");
+    }
 
-	public UserDeletedEvent(UserId userId) {
-		this(new EventId(), userId);
-	}
+    public UserDeletedEvent(UserId userId) {
+        this(new EventId(), userId);
+    }
 
 }

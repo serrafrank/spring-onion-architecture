@@ -12,21 +12,21 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class DeleteUserUseCase implements CommandHandler<DeleteUserCommand> {
 
-	private final EventSourcingStorage<UserAggregate, UserId> storage;
+    private final EventSourcingStorage<UserAggregate, UserId> storage;
 
 
-	@Override
-	public void handle(DeleteUserCommand command) {
-		var userId = command.id();
-		final UserAggregate userToClose = storage.getById(userId);
+    @Override
+    public void handle(DeleteUserCommand command) {
+        var userId = command.id();
+        final UserAggregate userToClose = storage.getById(userId);
 
-		userToClose.friends().forEach(friendId -> {
-			var friend = storage.getById(friendId).removeFriend(userId);
-			storage.save(friend);
-		});
+        userToClose.friends().forEach(friendId -> {
+            var friend = storage.getById(friendId).removeFriend(userId);
+            storage.save(friend);
+        });
 
-		userToClose.close();
-		storage.save(userToClose);
+        userToClose.close();
+        storage.save(userToClose);
 
-	}
+    }
 }

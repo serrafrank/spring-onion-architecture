@@ -10,64 +10,66 @@ import org.pay_my_buddy.api_command.AbstractAggregateRoot;
 import org.pay_my_buddy.api_command.EventSourcingStorage;
 import org.pay_my_buddy.api_command.MessagePublisher;
 import org.pay_my_buddy.shared.EntityId;
+import org.pay_my_buddy.shared.exception.BusinessException;
 import org.pay_my_buddy.shared.exception.InternalErrorException;
+import org.pay_my_buddy.shared.exception.SystemException;
 
 @RequiredArgsConstructor
 public abstract class AbstractEventSourcingStorage<AGGREGATE extends AbstractAggregateRoot<ID>, ID extends EntityId> implements EventSourcingStorage<AGGREGATE, ID> {
 
-	private final EventSourcingRepository repository;
-	private final MessagePublisher eventProducer;
+    private final EventSourcingRepository repository;
+    private final MessagePublisher eventProducer;
 
 
-	@Override
-	public void save(AbstractAggregateRoot<?> aggregate) {
-		aggregate.uncommitedChanges()
-				.stream()
-				.map(EventWrapper::event)
-				.forEach(eventProducer::publish);
-		aggregate.commitChanges();
-		var eventWrapperEntities = aggregate.commitedChanges().stream()
-				.map(EventWrapperEntity::new)
-				.toList();
-		repository.saveAll(eventWrapperEntities);
-	}
+    @Override
+    public void save(AbstractAggregateRoot<?> aggregate) {
+        aggregate.uncommitedChanges()
+                .stream()
+                .map(EventWrapper::event)
+                .forEach(eventProducer::publish);
+        aggregate.commitChanges();
+        var eventWrapperEntities = aggregate.commitedChanges().stream()
+                .map(EventWrapperEntity::new)
+                .toList();
+        repository.saveAll(eventWrapperEntities);
+    }
 
-	@Override
-	public AGGREGATE getById(ID aggregateId) {
-		final List<EventWrapper> events = repository.findAllByAggregateId(aggregateId.value());
-		if (events.isEmpty()) {
-			throw new AggregateNotFoundException("No aggregate found for id " + aggregateId);
-		}
-		final AGGREGATE aggregate = newInstance(aggregateId);
-		aggregate.recreateAggregate(events);
-		return aggregate;
-	}
+    @Override
+    public AGGREGATE getById(ID aggregateId) {
+        final List<EventWrapper> events = repository.findAllByAggregateId(aggregateId.value());
+        if (events.isEmpty()) {
+            throw BusinessException.wrap(new AggregateNotFoundException("No aggregate found for id " + aggregateId));
+        }
+        final AGGREGATE aggregate = newInstance(aggregateId);
+        aggregate.recreateAggregate(events);
+        return aggregate;
+    }
 
-	@Override
-	public void republishEvents() {
-		repository.findAll()
-				.stream()
-				.sorted(Comparator.comparing(EventWrapper::index))
-				.map(EventWrapperEntity::event)
-				.forEach(eventProducer::publish);
-	}
+    @Override
+    public void republishEvents() {
+        repository.findAll()
+                .stream()
+                .sorted(Comparator.comparing(EventWrapper::index))
+                .map(EventWrapperEntity::event)
+                .forEach(eventProducer::publish);
+    }
 
-	@SuppressWarnings("unchecked")
-	private AGGREGATE newInstance(ID aggregateId) {
-		try {
-			Class<AGGREGATE> aggregateClass = ((Class<AGGREGATE>) ((ParameterizedType) getClass().getGenericSuperclass())
-					.getActualTypeArguments()[0]);
+    @SuppressWarnings("unchecked")
+    private AGGREGATE newInstance(ID aggregateId) {
+        try {
+            Class<AGGREGATE> aggregateClass = ((Class<AGGREGATE>) ((ParameterizedType) getClass().getGenericSuperclass())
+                    .getActualTypeArguments()[0]);
 
-			Constructor<AGGREGATE> aggregateConstructor = (Constructor<AGGREGATE>) Stream.of(aggregateClass.getDeclaredConstructors())
-					.filter(constructor -> constructor.getParameterCount() == 1)
-					.filter(constructor -> constructor.getParameterTypes()[0].isAssignableFrom(aggregateId.getClass()))
-					.findFirst()
-					.orElseThrow(() -> new InternalErrorException("No constructor found for aggregate " + aggregateClass));
+            Constructor<AGGREGATE> aggregateConstructor = (Constructor<AGGREGATE>) Stream.of(aggregateClass.getDeclaredConstructors())
+                    .filter(constructor -> constructor.getParameterCount() == 1)
+                    .filter(constructor -> constructor.getParameterTypes()[0].isAssignableFrom(aggregateId.getClass()))
+                    .findFirst()
+                    .orElseThrow(() -> SystemException.wrap(new InternalErrorException("No constructor found for aggregate " + aggregateClass)));
 
-			aggregateConstructor.setAccessible(true);
-			return aggregateConstructor.newInstance(aggregateId);
-		} catch (Exception e) {
-			throw new InternalErrorException(e.getMessage(), e);
-		}
-	}
+            aggregateConstructor.setAccessible(true);
+            return aggregateConstructor.newInstance(aggregateId);
+        } catch (Exception e) {
+            throw SystemException.wrap(new InternalErrorException(e.getMessage(), e));
+        }
+    }
 }

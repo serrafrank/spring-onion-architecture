@@ -11,27 +11,27 @@ import org.pay_my_buddy.shared.exchange.user.UserId;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonSerialize
 public record UserCreatedEvent(
-		EventId eventId,
+        EventId eventId,
 
-		UserId id,
-		String firstname,
-		String lastname,
-		String email,
-		String password
+        UserId id,
+        String firstname,
+        String lastname,
+        String email,
+        String password
 ) implements Event {
 
-	@JsonCreator
-	public UserCreatedEvent {
-		Constraint.checkIf(id).isNotNull("User id is required");
-		Constraint.checkIf(firstname).notBlank("firstname can not be blank");
-		Constraint.checkIf(lastname).notBlank("lastname can not be blank");
-		Constraint.checkIf(email)
-				.notBlank("email can not be blank")
-				.email();
-		Constraint.checkIf(password).notBlank("password is required");
-	}
+    @JsonCreator
+    public UserCreatedEvent {
+        Constraint.checkIf(id).isNotNull("User id is required");
+        Constraint.checkIf(firstname).notBlank("firstname can not be blank");
+        Constraint.checkIf(lastname).notBlank("lastname can not be blank");
+        Constraint.checkIf(email)
+                .notBlank("email can not be blank")
+                .email();
+        Constraint.checkIf(password).notBlank("password is required");
+    }
 
-	public UserCreatedEvent(UserId id, String firstname, String lastname, String email, String password) {
-		this(new EventId(), id, firstname, lastname, email, password);
-	}
+    public UserCreatedEvent(UserId id, String firstname, String lastname, String email, String password) {
+        this(new EventId(), id, firstname, lastname, email, password);
+    }
 }

@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class FindUserByIdUseCase implements QueryHandler<FindUserByIdQuery, Optional<UserEntityProjection>> {
 
-	private final UserSpi userSpi;
+    private final UserSpi userSpi;
 
-	@Override
-	public Optional<UserEntityProjection> handle(FindUserByIdQuery query) {
-		return userSpi.findUserById(query.id());
-	}
+    @Override
+    public Optional<UserEntityProjection> handle(FindUserByIdQuery query) {
+        return userSpi.findUserById(query.id());
+    }
 }

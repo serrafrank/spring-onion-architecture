@@ -3,15 +3,15 @@ package org.pay_my_buddy.shared.exchange.user;
 import java.util.Set;
 
 public interface UserEntityProjection {
-	UserId userId();
+    UserId userId();
 
-	String firstname();
+    String firstname();
 
-	String lastname();
+    String lastname();
 
-	String email();
+    String email();
 
-	String password();
+    String password();
 
-	Set<UserId> friends();
+    Set<UserId> friends();
 }

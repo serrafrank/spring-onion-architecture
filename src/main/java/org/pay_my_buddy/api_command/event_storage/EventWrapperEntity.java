@@ -21,38 +21,38 @@ import org.pay_my_buddy.shared.EntityId;
 @Data
 @Accessors(fluent = true)
 public class EventWrapperEntity implements EventWrapper {
-	@Id
-	private String eventId;
-	private LocalDateTime timestamp;
-	private int index;
-	private String aggregateId;
-	private String aggregateType;
-	private String eventType;
-	@Lob
-	private String eventData;
+    @Id
+    private String eventId;
+    private LocalDateTime timestamp;
+    private int index;
+    private String aggregateId;
+    private String aggregateType;
+    private String eventType;
+    @Lob
+    private String eventData;
 
-	public EventWrapperEntity(EventWrapper eventWrapper) {
-		this.eventId = eventWrapper.eventId().value();
-		this.timestamp = eventWrapper.timestamp();
-		this.index = eventWrapper.index();
-		this.aggregateId = eventWrapper.aggregateId().value();
-		this.aggregateType = eventWrapper.aggregateType();
-		this.eventType = eventWrapper.eventType();
-		this.eventData = ObjectConverter.toJson(eventWrapper.event());
-	}
+    public EventWrapperEntity(EventWrapper eventWrapper) {
+        this.eventId = eventWrapper.eventId().value();
+        this.timestamp = eventWrapper.timestamp();
+        this.index = eventWrapper.index();
+        this.aggregateId = eventWrapper.aggregateId().value();
+        this.aggregateType = eventWrapper.aggregateType();
+        this.eventType = eventWrapper.eventType();
+        this.eventData = ObjectConverter.toJson(eventWrapper.event());
+    }
 
-	@Override
-	public EntityId aggregateId() {
-		return EntityId.of(aggregateId);
-	}
+    @Override
+    public EntityId aggregateId() {
+        return EntityId.of(aggregateId);
+    }
 
-	@Override
-	public EventId eventId() {
-		return new EventId(eventId);
-	}
+    @Override
+    public EventId eventId() {
+        return new EventId(eventId);
+    }
 
-	@Override
-	public Event event() {
-		return ObjectConverter.fromJson(eventData, eventType);
-	}
+    @Override
+    public Event event() {
+        return ObjectConverter.fromJson(eventData, eventType);
+    }
 }

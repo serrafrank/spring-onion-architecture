@@ -12,19 +12,19 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AddFriendUseCase implements CommandHandler<AddFriendCommand> {
 
-	private final EventSourcingStorage<UserAggregate, UserId> storage;
+    private final EventSourcingStorage<UserAggregate, UserId> storage;
 
 
-	@Override
-	public void handle(AddFriendCommand command) {
+    @Override
+    public void handle(AddFriendCommand command) {
 
-		final UserAggregate user = storage.getById(command.userId())
-				.addFriend(command.friendId());
+        final UserAggregate user = storage.getById(command.userId())
+                .addFriend(command.friendId());
 
-		final UserAggregate friend = storage.getById(command.friendId())
-				.addFriend(command.userId());
+        final UserAggregate friend = storage.getById(command.friendId())
+                .addFriend(command.userId());
 
-		storage.save(user);
-		storage.save(friend);
-	}
+        storage.save(user);
+        storage.save(friend);
+    }
 }

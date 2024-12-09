@@ -12,12 +12,12 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class ApplicationMessagePublisher implements MessagePublisher {
 
-	private final ApplicationEventPublisher applicationEventPublisher;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
 
-	@Override
-	public void publish(Message message) {
-		log.debug("Publishing message {} - {}", message.getClass(), message);
-		applicationEventPublisher.publishEvent(message);
-	}
+    @Override
+    public void publish(Message message) {
+        log.debug("Publishing message {} - {}", message.getClass(), message);
+        applicationEventPublisher.publishEvent(message);
+    }
 }
