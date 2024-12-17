@@ -4,16 +4,17 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import org.pay_my_buddy.core.command.domain.ObjectConverter;
 import org.pay_my_buddy.core.command.domain.event_storage.EventWrapper;
 import org.pay_my_buddy.core.framework.domain.message.Event;
 import org.pay_my_buddy.core.framework.domain.message.EventId;
-import org.pay_my_buddy.core.command.domain.ObjectConverter;
 import org.pay_my_buddy.core.framework.domain.value_object.EntityId;
+
+import java.time.LocalDateTime;
 
 @Table
 @Entity

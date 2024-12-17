@@ -17,7 +17,7 @@ public class ApplicationMessagePublisher implements MessagePublisher {
 
     @Override
     public void publish(Message message) {
-        log.debug("Publishing message {} - {}", message.getClass(), message);
+        log.trace("Publishing message {} - {}", message.getClass(), message);
         applicationEventPublisher.publishEvent(message);
     }
 }

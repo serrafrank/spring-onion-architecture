@@ -1,10 +1,5 @@
 package org.pay_my_buddy.core.framework.presentation;
 
-import java.time.OffsetDateTime;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.pay_my_buddy.core.framework.domain.exception.*;
 import org.springframework.context.MessageSourceResolvable;
@@ -15,9 +10,16 @@ import org.springframework.validation.method.ParameterValidationResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import java.time.OffsetDateTime;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -28,10 +30,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @Slf4j
 @ControllerAdvice
 public class ApiExceptionInterceptor extends ResponseEntityExceptionHandler {
-
-    private static final String CURRENT_PACKAGE = ApiExceptionInterceptor.class.getPackageName();
-    private static final String ROOT_PACKAGE = CURRENT_PACKAGE.split("\\.")[0] + "." + CURRENT_PACKAGE.split("\\.")[1];
-
 
     private static List<StackTraceElement> filterStackTrace(StackTraceElement[] stackTrace, String packageName) {
         return Arrays.stream(stackTrace)
@@ -134,21 +132,32 @@ public class ApiExceptionInterceptor extends ResponseEntityExceptionHandler {
 
     @Override
     protected ProblemDetail createProblemDetail(Exception exception, HttpStatusCode status, String defaultDetail, @Nullable String detailMessageCode, @Nullable Object[] detailMessageArguments, WebRequest request) {
+        ServletWebRequest servletWebRequest = (ServletWebRequest) request;
+        String uri = servletWebRequest.getRequest().getRequestURI();
+        var method = servletWebRequest.getHttpMethod().name();
 
-        String message = exception.getClass().getSimpleName() + ": " + exception.getMessage();
+        StringBuilder message = new StringBuilder();
+        message.append("Error occurred while processing request: [")
+                .append(method)
+                .append("] ")
+                .append(uri)
+                .append(" - ")
+                .append(exception.getClass().getSimpleName())
+                .append(" : ")
+                .append(exception.getMessage());
+
+        while (exception.getCause() != null) {
+            exception = (Exception) exception.getCause();
+            message.append("\t\nCaused by: ")
+                    .append(exception.getClass().getSimpleName())
+                    .append(" : ")
+                    .append(exception.getMessage());
+        }
 
         if (status.is5xxServerError()) {
-            log.error(message, exception);
+            log.error(message.toString(), exception);
         } else {
-
-
-            StringBuilder sb = new StringBuilder();
-            sb.append(message).append("\n");
-            filterStackTrace(exception, "org.pay_my_buddy").forEach(element -> sb.append("\tat ").append(element).append("\n"));
-            sb.append("\t...");
-
-
-            log.warn(sb.toString());
+            log.warn(message.toString());
         }
 
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(status, defaultDetail);

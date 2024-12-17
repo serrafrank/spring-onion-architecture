@@ -2,10 +2,9 @@ package org.pay_my_buddy.modules.user.command.presentation;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
-import org.pay_my_buddy.core.framework.application.CommandBus;
 import org.pay_my_buddy.modules.user.shared.UserId;
-
 import org.pay_my_buddy.modules.user.shared.command.AddFriendCommand;
+import org.pay_my_buddy.modules.user.shared.command.UserCommandGateway;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -15,15 +14,14 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AddFriendEndpoint {
 
-
-    private final CommandBus publisher;
+    private final UserCommandGateway gateway;
 
     @PostMapping("/{userId}/add-friend")
     public ResponseEntity<?> AddFriend(
             @Validated @NotBlank @PathVariable String userId,
             @Validated @RequestBody AddFriendRequest request) {
         AddFriendCommand command = new AddFriendCommand(new UserId(userId), new UserId(request.friendId()));
-        publisher.execute(command);
+        gateway.handle(command);
         return ResponseEntity.ok().build();
     }
 

@@ -1,12 +1,13 @@
 package org.pay_my_buddy.core.framework.infrastructure.log_flow;
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import org.aopalliance.intercept.MethodInvocation;
 import org.pay_my_buddy.core.framework.domain.log_flow.LogFlowExclusion;
 import org.pay_my_buddy.core.framework.domain.log_flow.ThreadLogFlow;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @LogFlowExclusion
 public class LogFlowManager {
@@ -16,32 +17,31 @@ public class LogFlowManager {
     private LogFlowManager() {
     }
 
-    public static ThreadLogFlow.LogFlow startLogFlow(Thread thread, String requestId, MethodInvocation joinPoint) {
-        return LogFlowManager.getThreadLogFlow(thread, requestId).startLogFlow(joinPoint);
+    public static ThreadLogFlow.LogFlow startLogFlow(Thread thread, String requestId, MethodInvocation methodInvocation) {
+        return LogFlowManager.getThreadLogFlow(requestId).startLogFlow(thread, methodInvocation);
     }
 
 
     public static ThreadLogFlow.LogFlow stopLogFlow(Thread thread, String requestId, Object output) {
-       return LogFlowManager.getThreadLogFlow(thread, requestId).stopLogFlow(output);
+        return LogFlowManager.getThreadLogFlow(requestId).stopLogFlow(thread, output);
     }
 
-    private static ThreadLogFlow getThreadLogFlow(Thread thread, String requestId) {
-        if (findThreadLogFlow(thread, requestId).isEmpty()) {
-            createThreadLogFlow(thread, requestId);
+    private static ThreadLogFlow getThreadLogFlow(String requestId) {
+        if (findThreadLogFlow(requestId).isEmpty()) {
+            createThreadLogFlow(requestId);
         }
-        return findThreadLogFlow(thread, requestId).get();
+        return findThreadLogFlow(requestId).get();
     }
 
-    private static Optional<ThreadLogFlow> findThreadLogFlow(Thread thread, String requestId) {
+    private static Optional<ThreadLogFlow> findThreadLogFlow(String requestId) {
         return threadFlow.stream()
-                .filter(threadLogFlow -> threadLogFlow.isThread(thread))
                 .filter(threadLogFlow -> threadLogFlow.isRequestId(requestId))
                 .findFirst();
     }
 
-    private static void createThreadLogFlow(Thread thread, String requestId) {
-        if (findThreadLogFlow(thread, requestId).isEmpty()) {
-            threadFlow.add(new ThreadLogFlow(thread, requestId));
+    private static void createThreadLogFlow(String requestId) {
+        if (findThreadLogFlow(requestId).isEmpty()) {
+            threadFlow.add(new ThreadLogFlow(requestId));
         }
     }
 
@@ -50,4 +50,11 @@ public class LogFlowManager {
         return threadFlow;
     }
 
+    public static Optional<ThreadLogFlow> getThreadLocal(String requestId) {
+        return findThreadLogFlow(requestId);
+    }
+
+    public static void clearThreadLocal() {
+        threadFlow.clear();
+    }
 }

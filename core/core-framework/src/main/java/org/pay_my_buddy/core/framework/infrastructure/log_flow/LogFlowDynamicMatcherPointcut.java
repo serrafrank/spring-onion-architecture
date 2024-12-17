@@ -1,19 +1,19 @@
 package org.pay_my_buddy.core.framework.infrastructure.log_flow;
 
-import java.lang.reflect.Method;
-import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import org.pay_my_buddy.core.framework.domain.log_flow.LogFlowExclusion;
 import org.springframework.aop.support.DynamicMethodMatcherPointcut;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Method;
+import java.util.stream.Stream;
+
 @Component
 @RequiredArgsConstructor
 public class LogFlowDynamicMatcherPointcut extends DynamicMethodMatcherPointcut {
 
-    private final LogFlowProperties logFlowProperties;
-
     private final static String LOG_FLOW_EXCLUSION_PACKAGE = LogFlowDynamicMatcherPointcut.class.getPackageName();
+    private final ApplicationLogFlowProperties properties;
 
     @Override
     public boolean matches(Method method, Class<?> targetClass) {
@@ -28,7 +28,7 @@ public class LogFlowDynamicMatcherPointcut extends DynamicMethodMatcherPointcut 
 
     private boolean classMatched(Class<?> targetClass) {
 
-        if (!logFlowProperties.isEnabled()) {
+        if (!properties.isEnabled()) {
             return false;
         }
 
@@ -42,11 +42,11 @@ public class LogFlowDynamicMatcherPointcut extends DynamicMethodMatcherPointcut 
             return false;
         }
 
-        if(logFlowProperties.getExcludePackages().stream().anyMatch(targetPackageName::startsWith)){
+        if (properties.getExcludePackages().stream().anyMatch(targetPackageName::startsWith)) {
             return false;
         }
 
-        return logFlowProperties.getIncludePackages().isEmpty() || logFlowProperties.getIncludePackages().stream().anyMatch(targetPackageName::startsWith);
+        return properties.getIncludePackages().isEmpty() || properties.getIncludePackages().stream().anyMatch(targetPackageName::startsWith);
     }
 
 

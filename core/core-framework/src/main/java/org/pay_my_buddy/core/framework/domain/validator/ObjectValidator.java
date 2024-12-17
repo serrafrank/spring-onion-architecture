@@ -1,10 +1,11 @@
 package org.pay_my_buddy.core.framework.domain.validator;
 
+import org.pay_my_buddy.core.framework.domain.exception.BadArgumentException;
+import org.pay_my_buddy.core.framework.domain.exception.BusinessException;
+
 import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-import org.pay_my_buddy.core.framework.domain.exception.BadArgumentException;
-import org.pay_my_buddy.core.framework.domain.exception.BusinessException;
 
 public class ObjectValidator<V> {
 

@@ -1,7 +1,8 @@
 package org.pay_my_buddy.core.framework.domain.value_object;
 
-import java.security.SecureRandom;
 import org.pay_my_buddy.core.framework.domain.exception.BusinessException;
+
+import java.security.SecureRandom;
 
 /**
  * @author shamil

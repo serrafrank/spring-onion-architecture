@@ -1,7 +1,5 @@
 package org.pay_my_buddy.modules.user.command.domain;
 
-import java.util.HashSet;
-import java.util.Set;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -16,11 +14,14 @@ import org.pay_my_buddy.modules.user.shared.command.UserDeletedEvent;
 import org.pay_my_buddy.modules.user.shared.query.UserFriendAddedEvent;
 import org.pay_my_buddy.modules.user.shared.query.UserFriendRemovedEvent;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Getter
 @Accessors(fluent = true)
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public class UserAggregate extends AbstractAggregateRoot<UserId> {
+public class UserAggregate extends AbstractAggregateRoot<UserAggregate, UserId> {
     private final Set<UserId> friends = new HashSet<>();
     private String firstname;
     private String lastname;
@@ -101,10 +102,42 @@ public class UserAggregate extends AbstractAggregateRoot<UserId> {
         this.currentState = State.CLOSE;
     }
 
+    @AggregateEventListener
+    @Override
+    public void on(CreateSnapshotAggregateEvent<UserAggregate> event) {
+        this.friends.clear();
+        this.friends.addAll(event.aggregate().friends);
+        this.firstname = event.aggregate().firstname;
+        this.lastname = event.aggregate().lastname;
+        this.email = event.aggregate().email;
+        this.password = event.aggregate().password;
+        this.currentState = event.aggregate().currentState;
+    }
+
+    @Override
+    protected void resetAggregate() {
+        this.friends.clear();
+        this.firstname = null;
+        this.lastname = null;
+        this.email = null;
+        this.password = null;
+        this.currentState = null;
+    }
+
+    @Override
+    protected UserAggregate clone() {
+        final UserAggregate clone = newInstance(id());
+        clone.friends.addAll(this.friends);
+        clone.firstname = this.firstname;
+        clone.lastname = this.lastname;
+        clone.email = this.email;
+        clone.password = this.password;
+        clone.currentState = this.currentState;
+        return clone;
+    }
 
     public enum State {
         ACTIVE,
         CLOSE
     }
-
 }

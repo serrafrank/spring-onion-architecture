@@ -2,10 +2,9 @@ package org.pay_my_buddy.modules.user.command.presentation;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
-import org.pay_my_buddy.core.framework.application.CommandBus;
 import org.pay_my_buddy.modules.user.shared.UserId;
-import org.pay_my_buddy.modules.user.command.application.CreateUserPresenter;
 import org.pay_my_buddy.modules.user.shared.command.CreateUserCommand;
+import org.pay_my_buddy.modules.user.shared.command.UserCommandGateway;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -19,17 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class CreateUserEndpoint {
 
-    private final CommandBus publisher;
-    private final CreateUserPresenter presenter;
+    private final UserCommandGateway gateway;
 
     @PostMapping()
     public ResponseEntity<?> createUser(@Validated @RequestBody CreateUserRequest request) {
         CreateUserCommand command = new CreateUserCommand(request.firstname(), request.lastname(), request.email(), request.password());
-        publisher.execute(command);
-        final UserId id = presenter.view();
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(new CreateUserResponse(id));
+        final UserId userId = gateway.handle(command);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new CreateUserResponse(userId));
     }
 
     public record CreateUserRequest(
@@ -42,9 +37,11 @@ public class CreateUserEndpoint {
     public record CreateUserResponse(
             String id) {
 
-        CreateUserResponse(UserId id) {
+        public CreateUserResponse(UserId id) {
             this(id.value());
         }
+
     }
+
 
 }

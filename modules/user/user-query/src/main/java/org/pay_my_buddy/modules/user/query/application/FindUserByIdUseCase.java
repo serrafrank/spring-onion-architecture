@@ -1,13 +1,14 @@
 package org.pay_my_buddy.modules.user.query.application;
 
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.pay_my_buddy.core.framework.domain.DomainService;
 import org.pay_my_buddy.core.query.application.QueryHandler;
 import org.pay_my_buddy.modules.user.shared.UserEntityProjection;
 import org.pay_my_buddy.modules.user.shared.query.FindUserByIdQuery;
-import org.springframework.stereotype.Service;
 
-@Service
+import java.util.Optional;
+
+@DomainService
 @RequiredArgsConstructor
 public class FindUserByIdUseCase implements QueryHandler<FindUserByIdQuery, Optional<UserEntityProjection>> {
 

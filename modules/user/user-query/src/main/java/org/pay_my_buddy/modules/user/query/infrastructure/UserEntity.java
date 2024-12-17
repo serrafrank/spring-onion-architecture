@@ -1,8 +1,6 @@
 package org.pay_my_buddy.modules.user.query.infrastructure;
 
 import jakarta.persistence.*;
-import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +8,9 @@ import lombok.experimental.Accessors;
 import org.pay_my_buddy.modules.user.shared.UserEntityProjection;
 import org.pay_my_buddy.modules.user.shared.UserId;
 import org.pay_my_buddy.modules.user.shared.command.UserCreatedEvent;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Table
 @Entity(name = "users")

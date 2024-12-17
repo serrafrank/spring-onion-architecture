@@ -1,11 +1,12 @@
 package org.pay_my_buddy.modules.user.query.infrastructure;
 
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.pay_my_buddy.modules.user.query.application.UserSpi;
 import org.pay_my_buddy.modules.user.shared.UserEntityProjection;
 import org.pay_my_buddy.modules.user.shared.UserId;
-import org.pay_my_buddy.modules.user.query.application.UserSpi;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 
 @Component

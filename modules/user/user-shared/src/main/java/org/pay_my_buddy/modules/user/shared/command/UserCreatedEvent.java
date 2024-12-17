@@ -1,16 +1,11 @@
 package org.pay_my_buddy.modules.user.shared.command;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
 import org.pay_my_buddy.core.framework.domain.message.Event;
 import org.pay_my_buddy.core.framework.domain.message.EventId;
 import org.pay_my_buddy.core.framework.domain.validator.Validate;
 import org.pay_my_buddy.modules.user.shared.UserId;
 
-@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-@JsonSerialize
+
 public record UserCreatedEvent(
         EventId eventId,
 
@@ -21,7 +16,7 @@ public record UserCreatedEvent(
         String password
 ) implements Event {
 
-    @JsonCreator
+
     public UserCreatedEvent {
         Validate.checkIf(id).isNotNull("User id is required");
         Validate.checkIf(firstname).notBlank("firstname can not be blank");

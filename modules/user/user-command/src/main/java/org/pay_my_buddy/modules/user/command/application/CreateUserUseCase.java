@@ -3,35 +3,37 @@ package org.pay_my_buddy.modules.user.command.application;
 import lombok.RequiredArgsConstructor;
 import org.pay_my_buddy.core.command.application.CommandHandler;
 import org.pay_my_buddy.core.command.domain.event_storage.EventSourcingStorage;
-import org.pay_my_buddy.core.framework.application.QueryBus;
+import org.pay_my_buddy.core.framework.domain.DomainService;
 import org.pay_my_buddy.core.framework.domain.exception.BadArgumentException;
 import org.pay_my_buddy.core.framework.domain.exception.BusinessException;
 import org.pay_my_buddy.modules.user.command.domain.UserAggregate;
 import org.pay_my_buddy.modules.user.shared.UserId;
 import org.pay_my_buddy.modules.user.shared.command.CreateUserCommand;
 import org.pay_my_buddy.modules.user.shared.query.FindUserByEmailQuery;
-import org.springframework.stereotype.Service;
+import org.pay_my_buddy.modules.user.shared.query.UserQueryGateway;
 
-@Service
+@DomainService
 @RequiredArgsConstructor
-public class CreateUserUseCase implements CommandHandler<CreateUserCommand> {
+public class CreateUserUseCase implements CommandHandler<CreateUserCommand, UserId> {
 
     private final EventSourcingStorage<UserAggregate, UserId> storage;
-    private final CreateUserPresenter presenter;
-    private final QueryBus queryBus;
+    private final UserQueryGateway userQueryGateway;
 
 
     @Override
-    public void handle(CreateUserCommand command) {
-        final FindUserByEmailQuery query = new FindUserByEmailQuery(command.email());
-        if (queryBus.ask(query).isPresent()) {
+    public UserId handle(CreateUserCommand command) {
+        if (isEmailAlreadyExists(command.email())) {
             throw BusinessException.wrap(new BadArgumentException("Email already exists"));
         }
 
-        UserAggregate userAggregate = UserAggregate.newInstance()
-                .create(command.firstname(), command.lastname(), command.email(), command.password());
+        UserAggregate userAggregate = UserAggregate.newInstance().create(command.firstname(), command.lastname(), command.email(), command.password());
         storage.save(userAggregate);
 
-        presenter.present(userAggregate.id());
+        return userAggregate.id();
+    }
+
+    private boolean isEmailAlreadyExists(String email) {
+        final FindUserByEmailQuery query = new FindUserByEmailQuery(email);
+        return userQueryGateway.handle(query).isPresent();
     }
 }

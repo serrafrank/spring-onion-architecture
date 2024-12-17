@@ -1,30 +1,29 @@
 package org.pay_my_buddy.core.command.domain;
 
-import java.io.Serializable;
-import java.lang.reflect.Method;
-import java.time.Clock;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import org.pay_my_buddy.core.command.domain.event_storage.AggregateEventListener;
 import org.pay_my_buddy.core.command.domain.event_storage.EventWrapper;
-import org.pay_my_buddy.core.framework.domain.value_object.EntityId;
-import org.pay_my_buddy.core.framework.domain.message.Event;
-import org.pay_my_buddy.core.framework.domain.message.EventId;
 import org.pay_my_buddy.core.framework.domain.exception.BusinessException;
 import org.pay_my_buddy.core.framework.domain.exception.InternalErrorException;
+import org.pay_my_buddy.core.framework.domain.exception.SystemException;
+import org.pay_my_buddy.core.framework.domain.message.Event;
+import org.pay_my_buddy.core.framework.domain.message.EventId;
+import org.pay_my_buddy.core.framework.domain.value_object.EntityId;
 
-public abstract class AbstractAggregateRoot<ID extends EntityId> implements Serializable {
+import java.io.Serializable;
+import java.lang.reflect.Method;
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.util.*;
 
-    private static final List<EventWrapper> uncommitedChanges = new ArrayList<>();
-    private static final List<EventWrapper> commitedChanges = new ArrayList<>();
+public abstract class AbstractAggregateRoot<AGGREGATE extends AbstractAggregateRoot<AGGREGATE, ID>, ID extends EntityId> implements Serializable, Cloneable {
+
     @Getter
     @Accessors(fluent = true)
     protected final ID id;
+    private final List<EventWrapper> uncommitedChanges = new ArrayList<>();
+    private final List<EventWrapper> commitedChanges = new ArrayList<>();
 
     protected AbstractAggregateRoot(ID id) {
         this.id = id;
@@ -42,18 +41,26 @@ public abstract class AbstractAggregateRoot<ID extends EntityId> implements Seri
 
     public void rollbackChanges() {
         uncommitedChanges.clear();
+        resetAggregate();
         replayEvents();
     }
 
     public void addEvent(Event event) {
-        var wrappedEvent = new AggregateEventWrapper(event, this.id, this.getClass().getName());
+        final AggregateEventWrapper wrappedEvent = new AggregateEventWrapper(event, this.id, this.getClass().getName(), uncommitedChanges.size());
         applyChanges(event);
         uncommitedChanges.add(wrappedEvent);
     }
 
-    public void recreateAggregate(List<EventWrapper> events) {
+    public void recreateAggregate(List<EventWrapper> eventWrappers) {
+        List<EventWrapper> events = new ArrayList<>(eventWrappers);
         events.sort(Comparator.comparing(EventWrapper::index));
-        commitedChanges.addAll(events);
+        final Optional<EventWrapper> lastSnapshot = events.stream()
+                .filter(e -> e.aggregateType().equals(CreateSnapshotAggregateEvent.class.getName()))
+                .reduce((a, b) -> b);
+        final List<EventWrapper> subList = lastSnapshot.map(eventWrapper -> events.subList(eventWrapper.index(), events.size())).orElse(events);
+
+        commitedChanges.clear();
+        commitedChanges.addAll(subList);
         rollbackChanges();
     }
 
@@ -72,8 +79,39 @@ public abstract class AbstractAggregateRoot<ID extends EntityId> implements Seri
                 .forEach(e -> applyChanges(e.event()));
     }
 
+    public void createSnapshot() {
+        try {
+            addEvent(new CreateSnapshotAggregateEvent<>(this.clone()));
+        } catch (Exception e) {
+            throw new InternalErrorException(e.getMessage(), e);
+        }
+    }
+
+    public abstract void on(CreateSnapshotAggregateEvent<AGGREGATE> event);
+
+    protected abstract void resetAggregate();
+
+    protected abstract AGGREGATE clone();
+
+    protected record AggregateEventWrapper(
+            EventId eventId,
+            LocalDateTime timestamp,
+            int index,
+            EntityId aggregateId,
+            String aggregateType,
+            String eventType,
+            Event event) implements EventWrapper {
+
+        public AggregateEventWrapper(Event event, EntityId aggregateId, String aggregateType, int index) {
+            this(event.eventId(), LocalDateTime.now(Clock.systemUTC()), index,
+                    aggregateId,
+                    aggregateType,
+                    event.getClass().getName(), event);
+        }
+    }
+
     private <EVENT extends Event> void applyChanges(EVENT event) {
-        Arrays.stream(this.getClass().getDeclaredMethods())
+        Arrays.stream(this.getClass().getMethods())
                 .filter(method -> method.isAnnotationPresent(AggregateEventListener.class))
                 .filter(method -> method.getParameterTypes()[0].isAssignableFrom(event.getClass()))
                 .reduce((a, b) -> {
@@ -88,24 +126,19 @@ public abstract class AbstractAggregateRoot<ID extends EntityId> implements Seri
         try {
             method.invoke(this, event);
         } catch (Exception e) {
-            throw BusinessException.wrap(new IllegalArgumentException("Error applying event", e));
+            throw SystemException.wrap(new IllegalArgumentException("Error applying event", e));
         }
     }
 
-    protected record AggregateEventWrapper(
+
+    public record CreateSnapshotAggregateEvent<AGGREGATE>(
             EventId eventId,
-            LocalDateTime timestamp,
-            int index,
-            EntityId aggregateId,
-            String aggregateType,
-            String eventType,
-            Event event) implements EventWrapper {
-        public AggregateEventWrapper(Event event, EntityId aggregateId, String aggregateType) {
-            this(event.eventId(), LocalDateTime.now(Clock.systemUTC()), uncommitedChanges.size(),
-                    aggregateId,
-                    aggregateType,
-                    event.getClass().getName(), event);
+            AGGREGATE aggregate) implements Event {
+
+        public CreateSnapshotAggregateEvent(AGGREGATE aggregate) {
+            this(new EventId(), aggregate);
         }
     }
+
 }
 
