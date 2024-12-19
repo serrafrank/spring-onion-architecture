@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.pay_my_buddy.modules.user.shared.UserId;
-import org.pay_my_buddy.modules.user.shared.command.DeleteUserCommand;
+import org.pay_my_buddy.modules.user.shared.command.CloseUserAccountCommand;
 import org.pay_my_buddy.modules.user.shared.command.UserCommandGateway;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -17,20 +17,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
-public class DeleteUserEndpoint {
+public class CloseUserAccountEndpoint {
 
 
     private final UserCommandGateway gateway;
 
     @DeleteMapping("{id}")
-    public ResponseEntity<?> deleteUser(@Validated @NotBlank @PathVariable String id) {
+    public ResponseEntity<?> closeUserAccount(@Validated @NotBlank @PathVariable String id) {
         UserId userId = new UserId(id);
-        final DeleteUserCommand command = new DeleteUserCommand(userId);
-        try {
-            gateway.handle(command);
-        } catch (Exception ignore) {
-            log.warn("Failed to delete user with id {}", id);
-        }
+        final CloseUserAccountCommand command = new CloseUserAccountCommand(userId);
+        gateway.handle(command);
 
         return ResponseEntity.ok().build();
     }

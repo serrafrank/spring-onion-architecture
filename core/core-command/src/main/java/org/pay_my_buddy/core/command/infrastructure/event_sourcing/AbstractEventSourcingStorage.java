@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 @RequiredArgsConstructor
-public abstract class AbstractEventSourcingStorage<AGGREGATE extends AbstractAggregateRoot<AGGREGATE, ID>, ID extends EntityId> implements EventSourcingStorage<AGGREGATE, ID> {
+public abstract class AbstractEventSourcingStorage<AGGREGATE extends AbstractAggregateRoot<?, ID>, ID extends EntityId> implements EventSourcingStorage<AGGREGATE, ID> {
 
     private final EventSourcingRepository repository;
     private final MessagePublisher eventProducer;

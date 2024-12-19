@@ -62,7 +62,7 @@ public class InMemoryEventSourcingStorage implements EventSourcingStorage<UserAg
                 .distinct()
                 .filter(id -> {
                     UserAggregate agg = getById((UserId) id);
-                    return email.equalsIgnoreCase(agg.email());
+                    return email.equalsIgnoreCase(agg.data().email());
                 })
                 .map(id -> (UserId) id)
                 .findFirst()

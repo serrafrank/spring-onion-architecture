@@ -1,8 +1,6 @@
 package org.pay_my_buddy.modules.user.command.domain;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.Accessors;
 import org.pay_my_buddy.core.command.domain.AbstractAggregateRoot;
 import org.pay_my_buddy.core.command.domain.event_storage.AggregateEventListener;
@@ -21,20 +19,60 @@ import java.util.Set;
 @Accessors(fluent = true)
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public class UserAggregate extends AbstractAggregateRoot<UserAggregate, UserId> {
-    private final Set<UserId> friends = new HashSet<>();
-    private String firstname;
-    private String lastname;
-    private String email;
-    private String password;
-    private State currentState;
+public class UserAggregate extends AbstractAggregateRoot<UserAggregate.UserAggregateData, UserId> {
+
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Getter
+    @Accessors(fluent = true)
+    public static class UserAggregateData {
+
+        private final Set<UserId> friends = new HashSet<>();
+        private String firstname;
+        private String lastname;
+        private String email;
+        private String password;
+        private State currentState;
+
+
+        public void initAggregate(String firstname, String lastname, String email, String password, State currentState) {
+            this.firstname = firstname;
+            this.lastname = lastname;
+            this.email = email;
+            this.password = password;
+            this.currentState = currentState;
+        }
+
+        public void resetAggregate() {
+            this.firstname = null;
+            this.lastname = null;
+            this.email = null;
+            this.password = null;
+            this.currentState = null;
+            this.friends.clear();
+        }
+
+        public void resetAggregate(UserAggregateData aggregate) {
+            this.firstname = aggregate.firstname;
+            this.lastname = aggregate.lastname;
+            this.email = aggregate.email;
+            this.password = aggregate.password;
+            this.currentState = aggregate.currentState;
+            this.friends.clear();
+            this.friends.addAll(aggregate.friends);
+        }
+
+        public boolean isClose() {
+            return currentState == State.CLOSE;
+        }
+    }
 
     private UserAggregate(UserId id) {
-        super(id);
+        super(id, new UserAggregateData());
     }
 
     private UserAggregate() {
-        super(new UserId());
+        super(new UserId(), new UserAggregateData());
     }
 
     public static UserAggregate newInstance(UserId id) {
@@ -52,11 +90,11 @@ public class UserAggregate extends AbstractAggregateRoot<UserAggregate, UserId> 
     }
 
     public UserAggregate addFriend(UserId friend) {
-        if (this.currentState == State.CLOSE) {
+        if (this.data().isClose()) {
             throw BusinessException.wrap(new ConflictException("User is close"));
         }
 
-        if (this.friends.contains(friend)) {
+        if (this.data().friends.contains(friend)) {
             throw BusinessException.wrap(new IllegalArgumentException("User is already a friendId"));
         }
         this.addEvent(new UserFriendAddedEvent(this.id(), friend));
@@ -70,7 +108,7 @@ public class UserAggregate extends AbstractAggregateRoot<UserAggregate, UserId> 
     }
 
     public UserAggregate close() {
-        if (this.currentState == State.CLOSE) {
+        if (this.data().isClose()) {
             throw BusinessException.wrap(new ConflictException("User is already close"));
         }
         this.addEvent(new UserDeletedEvent(this.id()));
@@ -80,61 +118,35 @@ public class UserAggregate extends AbstractAggregateRoot<UserAggregate, UserId> 
 
     @AggregateEventListener
     public void on(UserCreatedEvent event) {
-        this.firstname = event.firstname();
-        this.lastname = event.lastname();
-        this.email = event.email();
-        this.password = event.password();
-        this.currentState = State.ACTIVE;
+        this.data().initAggregate(event.firstname(), event.lastname(), event.email(), event.password(), State.ACTIVE);
     }
 
     @AggregateEventListener
     public void on(UserFriendAddedEvent event) {
-        this.friends.add(event.friendId());
+        this.data().friends.add(event.friendId());
     }
 
     @AggregateEventListener
     public void on(UserFriendRemovedEvent event) {
-        this.friends.remove(event.friendId());
+        this.data().friends.remove(event.friendId());
     }
 
     @AggregateEventListener
     public void on(UserDeletedEvent event) {
-        this.currentState = State.CLOSE;
+        this.data().currentState = State.CLOSE;
     }
 
     @AggregateEventListener
     @Override
-    public void on(CreateSnapshotAggregateEvent<UserAggregate> event) {
-        this.friends.clear();
-        this.friends.addAll(event.aggregate().friends);
-        this.firstname = event.aggregate().firstname;
-        this.lastname = event.aggregate().lastname;
-        this.email = event.aggregate().email;
-        this.password = event.aggregate().password;
-        this.currentState = event.aggregate().currentState;
+    public void on(CreateSnapshotAggregateEvent<UserAggregateData> event) {
+        this.data().resetAggregate(event.aggregate());
     }
 
     @Override
     protected void resetAggregate() {
-        this.friends.clear();
-        this.firstname = null;
-        this.lastname = null;
-        this.email = null;
-        this.password = null;
-        this.currentState = null;
+        this.data().resetAggregate();
     }
 
-    @Override
-    protected UserAggregate clone() {
-        final UserAggregate clone = newInstance(id());
-        clone.friends.addAll(this.friends);
-        clone.firstname = this.firstname;
-        clone.lastname = this.lastname;
-        clone.email = this.email;
-        clone.password = this.password;
-        clone.currentState = this.currentState;
-        return clone;
-    }
 
     public enum State {
         ACTIVE,

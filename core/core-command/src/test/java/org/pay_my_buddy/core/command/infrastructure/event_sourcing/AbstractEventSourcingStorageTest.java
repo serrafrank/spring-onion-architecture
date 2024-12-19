@@ -129,12 +129,14 @@ class AbstractEventSourcingStorageTest {
      * A test aggregate extending AbstractAggregateRoot, for testing purposes.
      * It has a constructor accepting an ID, which matches the pattern expected by newInstance().
      */
-    public static class TestAggregate extends AbstractAggregateRoot<TestAggregate, TestEntityId> {
+    public static class TestAggregate extends AbstractAggregateRoot<TestAggregate.TestAggregateData, TestEntityId> {
 
-        private String state = "initial";
+        static class TestAggregateData{
+            private String state = "initial";
+        }
 
         protected TestAggregate(TestEntityId id) {
-            super(id);
+            super(id, new TestAggregateData());
         }
 
         public void applyChange(String newState) {
@@ -142,31 +144,25 @@ class AbstractEventSourcingStorageTest {
         }
 
         @AggregateEventListener
-        public void on(CreateSnapshotAggregateEvent<TestAggregate> event) {
+        public void on(CreateSnapshotAggregateEvent<TestAggregateData> event) {
             // Implement snapshot logic if needed. Here we just copy the state.
-            this.state = event.aggregate().state;
+            this.data().state = event.aggregate().state;
         }
 
         @Override
         protected void resetAggregate() {
             // Reset all fields to their initial state here
-            this.state = "initial";
+            this.data().state = "initial";
         }
 
-        @Override
-        protected TestAggregate clone() {
-            var clone = new TestAggregate(id());
-            clone.state = this.state;
-            return clone;
-        }
 
         @AggregateEventListener
         public void on(TestEvent event) {
-            this.state = event.data();
+            this.data().state = event.data();
         }
 
         public String getState() {
-            return state;
+            return this.data().state;
         }
     }
 
@@ -302,24 +298,23 @@ class AbstractEventSourcingStorageTest {
         void testNoSuitableConstructor() {
             // GIVEN
             // We create a test storage that tries to instantiate a type without suitable constructor
-            class NoConstructorAggregate extends AbstractAggregateRoot<NoConstructorAggregate, TestEntityId> {
+            class NoConstructorAggregate extends AbstractAggregateRoot<NoConstructorAggregate.NoConstructorAggregateData, TestEntityId> {
+
+                static class NoConstructorAggregateData {
+                }
+
                 protected NoConstructorAggregate() {
-                    super(new TestEntityId());
+                    super(new TestEntityId(), new NoConstructorAggregateData());
                 }
 
                 @AggregateEventListener
-                public void on(CreateSnapshotAggregateEvent<NoConstructorAggregate> event) {
+                public void on(CreateSnapshotAggregateEvent<NoConstructorAggregateData> event) {
                     // no-op
                 }
 
                 @Override
                 protected void resetAggregate() {
                     // no-op
-                }
-
-                @Override
-                protected NoConstructorAggregate clone() {
-                    return new NoConstructorAggregate();
                 }
             }
 

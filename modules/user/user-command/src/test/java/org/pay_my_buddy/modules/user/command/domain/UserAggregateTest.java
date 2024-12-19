@@ -28,11 +28,11 @@ class UserAggregateTest {
         user.create(firstname, lastname, email, password);
 
         // THEN
-        assertEquals(firstname, user.firstname());
-        assertEquals(lastname, user.lastname());
-        assertEquals(email, user.email());
-        assertEquals(password, user.password());
-        assertEquals(UserAggregate.State.ACTIVE, user.currentState());
+        assertEquals(firstname, user.data().firstname());
+        assertEquals(lastname, user.data().lastname());
+        assertEquals(email, user.data().email());
+        assertEquals(password, user.data().password());
+        assertEquals(UserAggregate.State.ACTIVE, user.data().currentState());
         assertTrue(user.uncommitedChanges().stream().anyMatch(event -> event.event() instanceof UserCreatedEvent));
     }
 
@@ -48,7 +48,7 @@ class UserAggregateTest {
         user.addFriend(friendId);
 
         // THEN
-        assertTrue(user.friends().contains(friendId));
+        assertTrue(user.data().friends().contains(friendId));
         assertTrue(user.uncommitedChanges().stream().anyMatch(event -> event.event() instanceof UserFriendAddedEvent));
     }
 
@@ -65,7 +65,7 @@ class UserAggregateTest {
         user.removeFriend(friendId);
 
         // THEN
-        assertFalse(user.friends().contains(friendId));
+        assertFalse(user.data().friends().contains(friendId));
         assertTrue(user.uncommitedChanges().stream().anyMatch(event -> event.event() instanceof UserFriendRemovedEvent));
     }
 
@@ -81,7 +81,7 @@ class UserAggregateTest {
         user.close();
 
         // THEN
-        assertEquals(UserAggregate.State.CLOSE, user.currentState());
+        assertEquals(UserAggregate.State.CLOSE, user.data().currentState());
         assertTrue(user.uncommitedChanges().stream().anyMatch(event -> event.event() instanceof UserDeletedEvent));
     }
 
@@ -138,11 +138,11 @@ class UserAggregateTest {
         user.on(event);
 
         // THEN
-        assertEquals("John", user.firstname());
-        assertEquals("Doe", user.lastname());
-        assertEquals("john.doe@example.com", user.email());
-        assertEquals("password123", user.password());
-        assertEquals(UserAggregate.State.ACTIVE, user.currentState());
+        assertEquals("John", user.data().firstname());
+        assertEquals("Doe", user.data().lastname());
+        assertEquals("john.doe@example.com", user.data().email());
+        assertEquals("password123", user.data().password());
+        assertEquals(UserAggregate.State.ACTIVE, user.data().currentState());
     }
 
     @Test
@@ -158,7 +158,7 @@ class UserAggregateTest {
         user.on(event);
 
         // THEN
-        assertTrue(user.friends().contains(friendId));
+        assertTrue(user.data().friends().contains(friendId));
     }
 
     @Test
@@ -175,7 +175,7 @@ class UserAggregateTest {
         user.on(event);
 
         // THEN
-        assertFalse(user.friends().contains(friendId));
+        assertFalse(user.data().friends().contains(friendId));
     }
 
     @Test
@@ -191,6 +191,6 @@ class UserAggregateTest {
         user.on(event);
 
         // THEN
-        assertEquals(UserAggregate.State.CLOSE, user.currentState());
+        assertEquals(UserAggregate.State.CLOSE, user.data().currentState());
     }
 }

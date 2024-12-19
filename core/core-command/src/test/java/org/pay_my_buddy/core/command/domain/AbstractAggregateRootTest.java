@@ -1,5 +1,6 @@
 package org.pay_my_buddy.core.command.domain;
 
+import lombok.Data;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -120,13 +121,15 @@ class AbstractAggregateRootTest {
     /**
      * TestAggregate that extends AbstractAggregateRoot for testing purposes.
      */
-    static class TestAggregate extends AbstractAggregateRoot<TestAggregate, TestEntityId> {
+    static class TestAggregate extends AbstractAggregateRoot<TestAggregate.TestAggregateData, TestEntityId> {
 
-        private String data;
-        private boolean snapshotCreated;
+        static class TestAggregateData {
+            private String content;
+            private boolean snapshotCreated;
+        }
 
         protected TestAggregate(TestEntityId id) {
-            super(id);
+            super(id, new TestAggregateData());
         }
 
         public static TestAggregate newInstance() {
@@ -147,12 +150,12 @@ class AbstractAggregateRootTest {
 
         @AggregateEventListener
         public void on(TestCreatedEvent event) {
-            this.data = event.data();
+            this.data().content = event.data();
         }
 
         @AggregateEventListener
         public void on(TestUpdatedEvent event) {
-            this.data = event.newData();
+            this.data().content = event.newData();
         }
 
         @AggregateEventListener
@@ -161,27 +164,20 @@ class AbstractAggregateRootTest {
         }
 
         @AggregateEventListener
-        public void on(CreateSnapshotAggregateEvent<TestAggregate> event) {
-            this.snapshotCreated = true;
-            this.data = event.aggregate().data;
+        public void on(CreateSnapshotAggregateEvent<TestAggregate.TestAggregateData> event) {
+            this.data().snapshotCreated = true;
+            this.data().content = event.aggregate().content;
         }
 
         public boolean isSnapshotCreated() {
-            return snapshotCreated;
+            return this.data().snapshotCreated;
         }
 
         @Override
         protected void resetAggregate() {
-            this.data = null;
+            this.data().content = null;
         }
-
-        @Override
-        protected TestAggregate clone() {
-            var clone = new TestAggregate(id());
-            clone.data = this.data;
-            clone.snapshotCreated = this.snapshotCreated;
-            return clone;
-        }
+        
     }
 
     @Nested
@@ -242,7 +238,7 @@ class AbstractAggregateRootTest {
             // GIVEN
             final String givenData = "initialData";
             aggregate.create(givenData);
-            assertThat(aggregate.data).isEqualTo(givenData);
+            assertThat(aggregate.data().content).isEqualTo(givenData);
 
             // WHEN
             aggregate.rollbackChanges();
@@ -251,7 +247,7 @@ class AbstractAggregateRootTest {
             assertThat(aggregate.uncommitedChanges()).isEmpty();
             assertThat(aggregate.commitedChanges()).isEmpty();
             // State should return to initial
-            assertThat(aggregate.data).isNull();
+            assertThat(aggregate.data().content).isNull();
         }
 
         @Test
@@ -263,7 +259,7 @@ class AbstractAggregateRootTest {
             aggregate.commitChanges();
             final String secondData = "updatedData";
             aggregate.update(secondData);
-            assertThat(aggregate.data).isEqualTo(secondData);
+            assertThat(aggregate.data().content).isEqualTo(secondData);
 
             // WHEN
             aggregate.rollbackChanges();
@@ -272,7 +268,7 @@ class AbstractAggregateRootTest {
             // Only the committed event (TestCreatedEvent) is replayed
             assertThat(aggregate.uncommitedChanges()).isEmpty();
             assertThat(aggregate.commitedChanges()).hasSize(1);
-            assertThat(aggregate.data).isEqualTo(givenData);
+            assertThat(aggregate.data().content).isEqualTo(givenData);
         }
 
         @Test
@@ -309,7 +305,7 @@ class AbstractAggregateRootTest {
             newAggregate.recreateAggregate(givenEvents);
 
             // THEN
-            assertThat(newAggregate.data).isEqualTo(updatedData);
+            assertThat(newAggregate.data().content).isEqualTo(updatedData);
             assertThat(newAggregate.version()).isEqualTo(2);
         }
 
@@ -322,15 +318,15 @@ class AbstractAggregateRootTest {
             aggregate.commitChanges();
 
             // Manually altering data without an event
-            aggregate.data = "wrongData";
-            assertThat(aggregate.data).isEqualTo("wrongData");
+            aggregate.data().content = "wrongData";
+            assertThat(aggregate.data().content).isEqualTo("wrongData");
 
             // WHEN
             aggregate.replayEvents();
 
             // THEN
             // After replay, it should return to initialData
-            assertThat(aggregate.data).isEqualTo(givenData);
+            assertThat(aggregate.data().content).isEqualTo(givenData);
         }
     }
 
@@ -384,9 +380,13 @@ class AbstractAggregateRootTest {
         @DisplayName("WHEN a handler throws an exception THEN it is wrapped in a BusinessException")
         void testHandlerThrowsException() {
             // GIVEN
-            class ExceptionThrowingAggregate extends AbstractAggregateRoot<ExceptionThrowingAggregate, TestEntityId> {
+            class ExceptionThrowingAggregate extends AbstractAggregateRoot<ExceptionThrowingAggregate.ExceptionThrowingAggregateData, TestEntityId> {
                 protected ExceptionThrowingAggregate(TestEntityId id) {
-                    super(id);
+                    super(id, new ExceptionThrowingAggregateData());
+                }
+
+                @Data
+                static class ExceptionThrowingAggregateData {
                 }
 
                 @AggregateEventListener
@@ -395,18 +395,13 @@ class AbstractAggregateRootTest {
                 }
 
                 @Override
-                public void on(CreateSnapshotAggregateEvent<ExceptionThrowingAggregate> event) {
-                    // no-op
+                public void on(CreateSnapshotAggregateEvent<ExceptionThrowingAggregateData> event) {
+
                 }
 
                 @Override
                 protected void resetAggregate() {
                     // no-op
-                }
-
-                @Override
-                protected ExceptionThrowingAggregate clone() {
-                    return new ExceptionThrowingAggregate(id());
                 }
             }
 
@@ -460,7 +455,7 @@ class AbstractAggregateRootTest {
 
             // THEN
             // The aggregate should have the state after snapshot plus the subsequent updates
-            assertThat(newAggregate.data).isEqualTo(updatedDataAfterSnapshot);
+            assertThat(newAggregate.data().content).isEqualTo(updatedDataAfterSnapshot);
             assertThat(newAggregate.version()).isEqualTo(givenEvents.size());
             assertThat(newAggregate.isSnapshotCreated()).isTrue();
         }
@@ -495,7 +490,7 @@ class AbstractAggregateRootTest {
 
             // THEN
             assertThat(givenAggregate.version()).isZero();
-            assertThat(givenAggregate.data).isNull();
+            assertThat(givenAggregate.data().content).isNull();
         }
 
         @Test
@@ -527,7 +522,7 @@ class AbstractAggregateRootTest {
             givenAggregate.addEvent(givenEvent);
 
             // THEN
-            assertThat(givenAggregate.data).isEqualTo(dataGiven);
+            assertThat(givenAggregate.data().content).isEqualTo(dataGiven);
             assertThat(givenAggregate.uncommitedChanges()).hasSize(1);
         }
     }

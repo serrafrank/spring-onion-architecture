@@ -9,6 +9,7 @@ public interface UserCommandGateway extends Gateway {
 
     UserId handle(CreateUserCommand command);
 
-    void handle(DeleteUserCommand command);
+    void handle(CloseUserAccountCommand command);
 
+    void handle(RemoveFriendCommand command);
 }

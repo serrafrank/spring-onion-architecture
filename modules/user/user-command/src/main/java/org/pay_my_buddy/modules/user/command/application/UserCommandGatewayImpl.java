@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.pay_my_buddy.core.framework.domain.DomainService;
 import org.pay_my_buddy.modules.user.shared.UserId;
-import org.pay_my_buddy.modules.user.shared.command.AddFriendCommand;
-import org.pay_my_buddy.modules.user.shared.command.CreateUserCommand;
-import org.pay_my_buddy.modules.user.shared.command.DeleteUserCommand;
-import org.pay_my_buddy.modules.user.shared.command.UserCommandGateway;
+import org.pay_my_buddy.modules.user.shared.command.*;
 
 @DomainService
 @RequiredArgsConstructor
@@ -16,7 +13,8 @@ public class UserCommandGatewayImpl implements UserCommandGateway {
 
     private final AddFriendUseCase addFriendUseCase;
     private final CreateUserUseCase createUserUseCase;
-    private final DeleteUserUseCase deleteUserUseCase;
+    private final CloseUserAccountUseCase closeUserAccountUseCase;
+    private final RemoveFriendUseCase removeFriendUseCase;
 
     @Override
     public void handle(AddFriendCommand command) {
@@ -29,7 +27,12 @@ public class UserCommandGatewayImpl implements UserCommandGateway {
     }
 
     @Override
-    public void handle(DeleteUserCommand command) {
-        deleteUserUseCase.handle(command);
+    public void handle(CloseUserAccountCommand command) {
+        closeUserAccountUseCase.handle(command);
+    }
+
+    @Override
+    public void handle(RemoveFriendCommand command) {
+        removeFriendUseCase.handle(command);
     }
 }

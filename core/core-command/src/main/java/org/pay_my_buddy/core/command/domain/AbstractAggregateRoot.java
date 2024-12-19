@@ -17,18 +17,24 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.*;
 
-public abstract class AbstractAggregateRoot<AGGREGATE extends AbstractAggregateRoot<AGGREGATE, ID>, ID extends EntityId> implements Serializable, Cloneable {
+public abstract class AbstractAggregateRoot<AGGREGATE, ID extends EntityId> implements Aggregate<AGGREGATE>, Serializable, Cloneable {
 
     @Getter
     @Accessors(fluent = true)
     protected final ID id;
+    private final AGGREGATE data;
     private final List<EventWrapper> uncommitedChanges = new ArrayList<>();
     private final List<EventWrapper> commitedChanges = new ArrayList<>();
 
-    protected AbstractAggregateRoot(ID id) {
+    protected AbstractAggregateRoot(ID id, AGGREGATE data) {
         this.id = id;
+        this.data = data;
     }
 
+
+    public AGGREGATE data(){
+        return data;
+    }
 
     public int version() {
         return uncommitedChanges.size() + commitedChanges.size();
@@ -81,7 +87,7 @@ public abstract class AbstractAggregateRoot<AGGREGATE extends AbstractAggregateR
 
     public void createSnapshot() {
         try {
-            addEvent(new CreateSnapshotAggregateEvent<>(this.clone()));
+            addEvent(new CreateSnapshotAggregateEvent<>(this.data()));
         } catch (Exception e) {
             throw new InternalErrorException(e.getMessage(), e);
         }
@@ -90,8 +96,6 @@ public abstract class AbstractAggregateRoot<AGGREGATE extends AbstractAggregateR
     public abstract void on(CreateSnapshotAggregateEvent<AGGREGATE> event);
 
     protected abstract void resetAggregate();
-
-    protected abstract AGGREGATE clone();
 
     protected record AggregateEventWrapper(
             EventId eventId,

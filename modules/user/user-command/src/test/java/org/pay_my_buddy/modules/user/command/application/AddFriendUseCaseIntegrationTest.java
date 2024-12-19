@@ -53,8 +53,8 @@ class AddFriendUseCaseIntegrationTest {
         final UserAggregate updatedFriend = storage.getById(givenFriendId);
 
         // Verify that each user has the other in their friend set
-        assertThat(updatedUser.friends()).contains(givenFriendId);
-        assertThat(updatedFriend.friends()).contains(givenUserId);
+        assertThat(updatedUser.data().friends()).contains(givenFriendId);
+        assertThat(updatedFriend.data().friends()).contains(givenUserId);
     }
 }
 
