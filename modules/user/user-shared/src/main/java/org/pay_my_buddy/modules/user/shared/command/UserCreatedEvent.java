@@ -4,16 +4,17 @@ import org.pay_my_buddy.core.framework.domain.message.Event;
 import org.pay_my_buddy.core.framework.domain.message.EventId;
 import org.pay_my_buddy.core.framework.domain.validator.Validate;
 import org.pay_my_buddy.modules.user.shared.UserId;
+import org.pay_my_buddy.modules.user.shared.UserState;
 
 
 public record UserCreatedEvent(
         EventId eventId,
-
         UserId id,
         String firstname,
         String lastname,
         String email,
-        String password
+        String password,
+        UserState currentState
 ) implements Event {
 
 
@@ -27,7 +28,7 @@ public record UserCreatedEvent(
         Validate.checkIf(password).notBlank("password is required");
     }
 
-    public UserCreatedEvent(UserId id, String firstname, String lastname, String email, String password) {
-        this(new EventId(), id, firstname, lastname, email, password);
+    public UserCreatedEvent(UserId id, String firstname, String lastname, String email, String password, UserState currentState) {
+        this(new EventId(), id, firstname, lastname, email, password, currentState);
     }
 }

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.pay_my_buddy.core.framework.domain.exception.BusinessException;
 import org.pay_my_buddy.modules.user.shared.UserId;
+import org.pay_my_buddy.modules.user.shared.UserState;
 import org.pay_my_buddy.modules.user.shared.command.UserCreatedEvent;
 import org.pay_my_buddy.modules.user.shared.command.UserDeletedEvent;
 import org.pay_my_buddy.modules.user.shared.query.UserFriendAddedEvent;
@@ -32,7 +33,7 @@ class UserAggregateTest {
         assertEquals(lastname, user.data().lastname());
         assertEquals(email, user.data().email());
         assertEquals(password, user.data().password());
-        assertEquals(UserAggregate.State.ACTIVE, user.data().currentState());
+        assertEquals(UserState.ACTIVE, user.data().currentState());
         assertTrue(user.uncommitedChanges().stream().anyMatch(event -> event.event() instanceof UserCreatedEvent));
     }
 
@@ -81,7 +82,7 @@ class UserAggregateTest {
         user.close();
 
         // THEN
-        assertEquals(UserAggregate.State.CLOSE, user.data().currentState());
+        assertEquals(UserState.CLOSE, user.data().currentState());
         assertTrue(user.uncommitedChanges().stream().anyMatch(event -> event.event() instanceof UserDeletedEvent));
     }
 
@@ -132,7 +133,7 @@ class UserAggregateTest {
         // GIVEN
         final UserId userId = new UserId();
         final UserAggregate user = UserAggregate.newInstance(userId);
-        final UserCreatedEvent event = new UserCreatedEvent(userId, "John", "Doe", "john.doe@example.com", "password123");
+        final UserCreatedEvent event = new UserCreatedEvent(userId, "John", "Doe", "john.doe@example.com", "password123", UserState.ACTIVE);
 
         // WHEN
         user.on(event);
@@ -142,7 +143,7 @@ class UserAggregateTest {
         assertEquals("Doe", user.data().lastname());
         assertEquals("john.doe@example.com", user.data().email());
         assertEquals("password123", user.data().password());
-        assertEquals(UserAggregate.State.ACTIVE, user.data().currentState());
+        assertEquals(UserState.ACTIVE, user.data().currentState());
     }
 
     @Test
@@ -191,6 +192,6 @@ class UserAggregateTest {
         user.on(event);
 
         // THEN
-        assertEquals(UserAggregate.State.CLOSE, user.data().currentState());
+        assertEquals(UserState.CLOSE, user.data().currentState());
     }
 }

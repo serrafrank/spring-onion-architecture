@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.pay_my_buddy.modules.user.shared.UserEntityProjection;
 import org.pay_my_buddy.modules.user.shared.UserId;
+import org.pay_my_buddy.modules.user.shared.UserState;
 import org.pay_my_buddy.modules.user.shared.command.UserCreatedEvent;
 
 import java.util.Set;
@@ -31,6 +32,9 @@ public class UserEntity implements UserEntityProjection {
 
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    private UserState currentState;
+
     @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "friends", joinColumns = @JoinColumn(name = "users_id"))
     @Column(name = "friendId", nullable = false)
@@ -42,6 +46,7 @@ public class UserEntity implements UserEntityProjection {
         lastname = event.lastname();
         email = event.email();
         password = event.password();
+        currentState = event.currentState();
     }
 
 

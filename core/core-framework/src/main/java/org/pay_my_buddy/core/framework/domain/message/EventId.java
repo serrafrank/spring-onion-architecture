@@ -8,8 +8,7 @@ public record EventId(String value) implements EntityId {
     private final static String PREFIX = "EVENT_";
 
     public EventId {
-        Validate.checkIf(value).isNotNull("EventId is required")
-                .predicate(v -> EntityId.isValid(v, PREFIX), "EventId not valid with value = " + value);
+        validate(value);
     }
 
     public EventId() {
@@ -18,5 +17,10 @@ public record EventId(String value) implements EntityId {
 
     public EventId(EntityId value) {
         this(value.value());
+    }
+
+    @Override
+    public String prefix() {
+        return PREFIX;
     }
 }

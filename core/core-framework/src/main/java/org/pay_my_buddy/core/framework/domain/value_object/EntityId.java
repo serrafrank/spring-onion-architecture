@@ -4,26 +4,38 @@ import org.pay_my_buddy.core.framework.domain.validator.Validate;
 
 public interface EntityId extends ValueObject<String> {
 
+    static EntityId of(String id) {
+        return new EntityId() {
+            @Override
+            public String prefix() {
+                return "";
+            }
+
+            @Override
+            public String value() {
+                return id;
+            }
+        };
+    }
+
     static String generateId() {
         return new Ulid().create();
     }
 
-    static void validate(String id, String prefix) {
+    default void validate(String id) {
         Validate.checkIf(id).isNotNull("Id is required")
-                .predicate(v -> EntityId.isValid(v, prefix), "Id format not valid : " + id);
+                .predicate(this::isValid, "Id format not valid : " + id);
     }
 
-    static boolean isValid(String id, String prefix) {
-        if (id == null || prefix == null || id.length() < prefix.length() || !id.startsWith(prefix)) {
+    default boolean isValid(String id) {
+        if (id == null || prefix() == null || id.length() < prefix().length() || !id.startsWith(prefix())) {
             return false;
         }
-        String value = id.substring(prefix.length());
+        String value = id.substring(prefix().length());
         return Ulid.isValid(value);
     }
 
-    static EntityId of(String id) {
-        return () -> id;
-    }
+    String prefix();
 
     String value();
 }

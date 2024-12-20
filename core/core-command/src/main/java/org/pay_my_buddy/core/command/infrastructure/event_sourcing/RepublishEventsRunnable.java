@@ -1,6 +1,7 @@
 package org.pay_my_buddy.core.command.infrastructure.event_sourcing;
 
 import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.pay_my_buddy.core.command.domain.event_storage.EventSourcingStorage;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,6 +12,7 @@ import java.util.List;
 @Slf4j
 @Component
 public class RepublishEventsRunnable {
+
 
     private final List<EventSourcingStorage<?, ?>> eventSourcingStorageList;
     @Value("${application.republishAfterStart:false}")
@@ -23,6 +25,7 @@ public class RepublishEventsRunnable {
 
     @PostConstruct
     public void republishEvents() {
+        log.info("Event storage list: {}", eventSourcingStorageList);
         if (republishAfterStart) {
             eventSourcingStorageList.forEach(EventSourcingStorage::republishEvents);
         }

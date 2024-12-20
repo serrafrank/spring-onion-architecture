@@ -14,8 +14,9 @@
 
     <modules>
         <module>user</module>
+        <module>money-account</module>
+
         <module>module-starter</module>
-        <module>user/user-shared</module>
     </modules>
 
 </project>

@@ -10,6 +10,7 @@ public interface UserQueryGateway extends Gateway {
     Optional<UserEntityProjection> handle(FindUserByEmailQuery query);
 
     Optional<UserEntityProjection> handle(FindUserByIdQuery query);
+    boolean handle(UserIsActiveQuery query);
 
 
 }

@@ -7,6 +7,7 @@ import org.pay_my_buddy.core.command.domain.event_storage.AggregateEventListener
 import org.pay_my_buddy.core.framework.domain.exception.BusinessException;
 import org.pay_my_buddy.core.framework.domain.exception.ConflictException;
 import org.pay_my_buddy.modules.user.shared.UserId;
+import org.pay_my_buddy.modules.user.shared.UserState;
 import org.pay_my_buddy.modules.user.shared.command.UserCreatedEvent;
 import org.pay_my_buddy.modules.user.shared.command.UserDeletedEvent;
 import org.pay_my_buddy.modules.user.shared.query.UserFriendAddedEvent;
@@ -32,10 +33,10 @@ public class UserAggregate extends AbstractAggregateRoot<UserAggregate.UserAggre
         private String lastname;
         private String email;
         private String password;
-        private State currentState;
+        private UserState currentState;
 
 
-        public void initAggregate(String firstname, String lastname, String email, String password, State currentState) {
+        public void initAggregate(String firstname, String lastname, String email, String password, UserState currentState) {
             this.firstname = firstname;
             this.lastname = lastname;
             this.email = email;
@@ -63,7 +64,7 @@ public class UserAggregate extends AbstractAggregateRoot<UserAggregate.UserAggre
         }
 
         public boolean isClose() {
-            return currentState == State.CLOSE;
+            return currentState == UserState.CLOSE;
         }
     }
 
@@ -84,7 +85,7 @@ public class UserAggregate extends AbstractAggregateRoot<UserAggregate.UserAggre
     }
 
     public UserAggregate create(String firstname, String lastname, String email, String password) {
-        final var event = new UserCreatedEvent(id(), firstname, lastname, email, password);
+        final var event = new UserCreatedEvent(id(), firstname, lastname, email, password, UserState.ACTIVE);
         addEvent(event);
         return this;
     }
@@ -118,7 +119,7 @@ public class UserAggregate extends AbstractAggregateRoot<UserAggregate.UserAggre
 
     @AggregateEventListener
     public void on(UserCreatedEvent event) {
-        this.data().initAggregate(event.firstname(), event.lastname(), event.email(), event.password(), State.ACTIVE);
+        this.data().initAggregate(event.firstname(), event.lastname(), event.email(), event.password(), UserState.ACTIVE);
     }
 
     @AggregateEventListener
@@ -133,7 +134,7 @@ public class UserAggregate extends AbstractAggregateRoot<UserAggregate.UserAggre
 
     @AggregateEventListener
     public void on(UserDeletedEvent event) {
-        this.data().currentState = State.CLOSE;
+        this.data().currentState = UserState.CLOSE;
     }
 
     @AggregateEventListener
@@ -148,8 +149,4 @@ public class UserAggregate extends AbstractAggregateRoot<UserAggregate.UserAggre
     }
 
 
-    public enum State {
-        ACTIVE,
-        CLOSE
-    }
 }

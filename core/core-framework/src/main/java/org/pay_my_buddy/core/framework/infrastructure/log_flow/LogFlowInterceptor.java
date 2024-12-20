@@ -6,7 +6,6 @@ import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.pay_my_buddy.core.framework.domain.log_flow.ThreadLogFlow;
 import org.slf4j.MDC;
-import org.springframework.boot.autoconfigure.context.LifecycleAutoConfiguration;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;

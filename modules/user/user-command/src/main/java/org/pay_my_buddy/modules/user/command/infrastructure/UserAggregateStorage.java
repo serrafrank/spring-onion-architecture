@@ -1,6 +1,6 @@
 package org.pay_my_buddy.modules.user.command.infrastructure;
 
-import org.pay_my_buddy.core.command.domain.event_storage.MessagePublisher;
+import org.pay_my_buddy.core.framework.domain.MessagePublisher;
 import org.pay_my_buddy.core.command.infrastructure.event_sourcing.AbstractEventSourcingStorage;
 import org.pay_my_buddy.core.command.infrastructure.event_sourcing.EventSourcingRepository;
 import org.pay_my_buddy.modules.user.command.domain.UserAggregate;

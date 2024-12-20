@@ -1,8 +1,8 @@
-package org.pay_my_buddy.core.command.infrastructure;
+package org.pay_my_buddy.core.framework.infrastructure;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.pay_my_buddy.core.command.domain.event_storage.MessagePublisher;
+import org.pay_my_buddy.core.framework.domain.MessagePublisher;
 import org.pay_my_buddy.core.framework.domain.message.Message;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
@@ -17,7 +17,7 @@ public class ApplicationMessagePublisher implements MessagePublisher {
 
     @Override
     public void publish(Message message) {
-        log.trace("Publishing message {} - {}", message.getClass(), message);
+        log.info("Publishing message {} - {}", message.getClass(), message);
         applicationEventPublisher.publishEvent(message);
     }
 }

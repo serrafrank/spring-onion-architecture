@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.pay_my_buddy.core.command.domain.AbstractAggregateRoot;
 import org.pay_my_buddy.core.command.domain.event_storage.*;
+import org.pay_my_buddy.core.framework.domain.MessagePublisher;
 import org.pay_my_buddy.core.framework.domain.exception.BusinessException;
 import org.pay_my_buddy.core.framework.domain.exception.InternalErrorException;
 import org.pay_my_buddy.core.framework.domain.exception.SystemException;
@@ -108,11 +109,15 @@ class AbstractEventSourcingStorageTest {
         private final static String PREFIX = "TEST_ENTITY_";
 
         public TestEntityId {
-            EntityId.validate(value, PREFIX);
+            validate(value);
         }
 
         public TestEntityId() {
             this(PREFIX + EntityId.generateId());
+        }
+
+        public String prefix() {
+            return PREFIX;
         }
     }
 

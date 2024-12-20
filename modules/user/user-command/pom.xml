@@ -15,19 +15,12 @@
         <dependency>
             <groupId>org.pay_my_buddy</groupId>
             <artifactId>core-command</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${parent.version}</version>
         </dependency>
         <dependency>
             <groupId>org.pay_my_buddy</groupId>
             <artifactId>user-shared</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>provided</scope>
+            <version>${parent.version}</version>
         </dependency>
     </dependencies>
 </project>

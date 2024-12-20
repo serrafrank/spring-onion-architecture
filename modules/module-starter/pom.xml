@@ -11,12 +11,10 @@
 
     <artifactId>module-starter</artifactId>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.pay_my_buddy</groupId>
-            <artifactId>user-starter</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-    </dependencies>
+    <packaging>pom</packaging>
+    <modules>
+        <module>user-starter</module>
+        <module>money-account-starter</module>
+    </modules>
 
 </project>

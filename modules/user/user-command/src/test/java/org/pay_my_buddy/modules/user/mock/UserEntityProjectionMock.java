@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 import org.pay_my_buddy.modules.user.shared.UserEntityProjection;
 import org.pay_my_buddy.modules.user.shared.UserId;
+import org.pay_my_buddy.modules.user.shared.UserState;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -17,6 +18,5 @@ public class UserEntityProjectionMock implements UserEntityProjection {
     private String email = "john.doe@example.com";
     private String password = "password123";
     private Set<UserId> friends = new HashSet<>();
-
-
+    private UserState currentState = UserState.ACTIVE;
 }

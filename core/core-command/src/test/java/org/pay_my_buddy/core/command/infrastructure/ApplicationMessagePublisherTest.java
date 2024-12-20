@@ -4,8 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.pay_my_buddy.core.command.domain.event_storage.MessagePublisher;
+import org.pay_my_buddy.core.framework.domain.MessagePublisher;
 import org.pay_my_buddy.core.framework.domain.message.Message;
+import org.pay_my_buddy.core.framework.infrastructure.ApplicationMessagePublisher;
 import org.springframework.context.ApplicationEventPublisher;
 
 import static org.assertj.core.api.Assertions.assertThat;

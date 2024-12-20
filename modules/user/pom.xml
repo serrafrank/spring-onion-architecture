@@ -13,10 +13,9 @@
     <packaging>pom</packaging>
 
     <modules>
-
+        <module>user-shared</module>
         <module>user-command</module>
         <module>user-query</module>
-        <module>user-starter</module>
     </modules>
 
 

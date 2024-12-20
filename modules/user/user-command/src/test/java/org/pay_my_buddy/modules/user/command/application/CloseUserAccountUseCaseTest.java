@@ -8,13 +8,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.pay_my_buddy.core.command.domain.event_storage.EventSourcingStorage;
+import org.pay_my_buddy.core.framework.domain.MessagePublisher;
 import org.pay_my_buddy.core.framework.domain.exception.BusinessException;
 import org.pay_my_buddy.core.framework.domain.exception.NotFoundException;
 import org.pay_my_buddy.modules.user.command.domain.UserAggregate;
 import org.pay_my_buddy.modules.user.shared.UserId;
 import org.pay_my_buddy.modules.user.shared.command.CloseUserAccountCommand;
 import org.pay_my_buddy.modules.user.shared.command.RemoveFriendCommand;
-import org.pay_my_buddy.modules.user.shared.command.UserCommandGateway;
 
 import java.util.Collections;
 import java.util.Set;
@@ -30,7 +30,7 @@ class CloseUserAccountUseCaseTest {
     @Mock
     private EventSourcingStorage<UserAggregate, UserId> storage;
     @Mock
-    private UserCommandGateway commandGateway;
+    private MessagePublisher messagePublisher;
     @InjectMocks
     private CloseUserAccountUseCase useCase;
 
@@ -53,7 +53,7 @@ class CloseUserAccountUseCaseTest {
 
         // THEN
         // Verify that no remove friend command was sent
-        then(commandGateway).should(never()).handle(any(RemoveFriendCommand.class));
+        then(messagePublisher).should(never()).publish(any(RemoveFriendCommand.class));
 
         // Verify user was closed and saved
         then(givenUserAggregate).should(times(1)).close();
@@ -86,7 +86,7 @@ class CloseUserAccountUseCaseTest {
         // THEN
         // Check that remove friend commands were sent for each friend
         ArgumentCaptor<RemoveFriendCommand> captor = ArgumentCaptor.forClass(RemoveFriendCommand.class);
-        then(commandGateway).should(times(2)).handle(captor.capture());
+        then(messagePublisher).should(times(2)).publish(captor.capture());
         final var sentCommands = captor.getAllValues();
         assertThat(sentCommands).extracting(RemoveFriendCommand::userId).containsExactlyInAnyOrder(friendId1, friendId2);
         assertThat(sentCommands).extracting(RemoveFriendCommand::friendId).allMatch(id -> id.equals(givenUserId));
@@ -115,7 +115,7 @@ class CloseUserAccountUseCaseTest {
                 .hasMessageContaining("User not found");
 
         // Verify that no commands were sent and user was not saved
-        then(commandGateway).shouldHaveNoInteractions();
+        then(messagePublisher).shouldHaveNoInteractions();
         then(storage).should(never()).save(any(UserAggregate.class));
     }
 
@@ -133,7 +133,7 @@ class CloseUserAccountUseCaseTest {
 
         // Simulate an exception when removing friend
         doThrow(new RuntimeException("Failed to remove friend"))
-                .when(commandGateway).handle(new RemoveFriendCommand(friendId, givenUserId));
+                .when(messagePublisher).publish(new RemoveFriendCommand(friendId, givenUserId));
 
         // WHEN/THEN
         assertThatThrownBy(() -> useCase.handle(givenCommand))
@@ -164,7 +164,7 @@ class CloseUserAccountUseCaseTest {
         then(storage).should(times(1)).save(userAggregate1);
 
         // Reset mocks for second scenario
-        reset(storage, commandGateway, userAggregate1);
+        reset(storage, messagePublisher, userAggregate1);
 
         // GIVEN - second scenario: user with a friend
         final UserId userId2 = new UserId();
@@ -179,7 +179,7 @@ class CloseUserAccountUseCaseTest {
 
         // THEN - second call
         ArgumentCaptor<RemoveFriendCommand> captor = ArgumentCaptor.forClass(RemoveFriendCommand.class);
-        then(commandGateway).should(times(1)).handle(captor.capture());
+        then(messagePublisher).should(times(1)).publish(captor.capture());
         RemoveFriendCommand sentCommand = captor.getValue();
         assertThat(sentCommand.friendId()).isEqualTo(userId2);
         assertThat(sentCommand.userId()).isEqualTo(friendId2);

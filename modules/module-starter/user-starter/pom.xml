@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.pay_my_buddy</groupId>
-        <artifactId>user</artifactId>
+        <artifactId>module-starter</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
@@ -15,12 +15,12 @@
         <dependency>
             <groupId>org.pay_my_buddy</groupId>
             <artifactId>user-command</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${parent.version}</version>
         </dependency>
         <dependency>
             <groupId>org.pay_my_buddy</groupId>
             <artifactId>user-query</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${parent.version}</version>
         </dependency>
     </dependencies>
 

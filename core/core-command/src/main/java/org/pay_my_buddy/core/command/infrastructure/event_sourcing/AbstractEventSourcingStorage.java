@@ -5,7 +5,7 @@ import org.pay_my_buddy.core.command.domain.AbstractAggregateRoot;
 import org.pay_my_buddy.core.command.domain.event_storage.AggregateNotFoundException;
 import org.pay_my_buddy.core.command.domain.event_storage.EventSourcingStorage;
 import org.pay_my_buddy.core.command.domain.event_storage.EventWrapper;
-import org.pay_my_buddy.core.command.domain.event_storage.MessagePublisher;
+import org.pay_my_buddy.core.framework.domain.MessagePublisher;
 import org.pay_my_buddy.core.framework.domain.exception.BusinessException;
 import org.pay_my_buddy.core.framework.domain.exception.InternalErrorException;
 import org.pay_my_buddy.core.framework.domain.exception.SystemException;

@@ -1,4 +1,4 @@
-package org.pay_my_buddy.core.command.domain.event_storage;
+package org.pay_my_buddy.core.framework.domain;
 
 import org.pay_my_buddy.core.framework.domain.message.Message;
 

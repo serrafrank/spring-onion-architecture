@@ -32,11 +32,15 @@ class AbstractAggregateRootTest {
         private final static String PREFIX = "TEST_ENTITY_";
 
         public TestEntityId {
-            EntityId.validate(value, PREFIX);
+            validate(value);
         }
 
         public TestEntityId() {
             this(PREFIX + EntityId.generateId());
+        }
+
+        public String prefix() {
+            return PREFIX;
         }
     }
 

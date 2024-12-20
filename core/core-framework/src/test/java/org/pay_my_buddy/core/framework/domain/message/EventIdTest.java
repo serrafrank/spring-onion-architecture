@@ -59,14 +59,24 @@ class EventIdTest {
         // THEN
         assertThat(eventId).isNotNull();
         assertThat(eventId.value()).startsWith("EVENT_");
-        assertThat(EntityId.isValid(eventId.value(), "EVENT_")).isTrue();
+        assertThat(eventId.isValid(eventId.value())).isTrue();
     }
 
     @Test
     @DisplayName("GIVEN a valid EntityId WHEN EventId is created from it THEN it should succeed")
     void testEventIdFromEntityId() {
         // GIVEN
-        final EntityId entityId = () -> validValue;
+        final EntityId entityId =  new EntityId() {
+            @Override
+            public String prefix() {
+                return "";
+            }
+
+            @Override
+            public String value() {
+                return validValue;
+            }
+        };
 
         // WHEN
         final EventId eventId = new EventId(entityId);
@@ -80,7 +90,17 @@ class EventIdTest {
     @DisplayName("GIVEN an invalid EntityId WHEN EventId is created from it THEN it should throw an exception")
     void testEventIdFromInvalidEntityId() {
         // GIVEN
-        final EntityId invalidEntityId = () -> invalidValue;
+        final EntityId invalidEntityId =  new EntityId() {
+            @Override
+            public String prefix() {
+                return "";
+            }
+
+            @Override
+            public String value() {
+                return invalidValue;
+            }
+        };
 
         // WHEN/THEN
         assertThatThrownBy(() -> new EventId(invalidEntityId))

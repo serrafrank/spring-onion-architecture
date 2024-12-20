@@ -14,4 +14,6 @@ public interface UserEntityProjection {
     String password();
 
     Set<UserId> friends();
+
+    UserState currentState();
 }

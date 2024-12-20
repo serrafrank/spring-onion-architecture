@@ -7,7 +7,6 @@ import org.pay_my_buddy.core.command.domain.event_storage.EventSourcingStorage;
 import org.pay_my_buddy.core.framework.domain.DomainService;
 import org.pay_my_buddy.modules.user.command.domain.UserAggregate;
 import org.pay_my_buddy.modules.user.shared.UserId;
-import org.pay_my_buddy.modules.user.shared.command.AddFriendCommand;
 import org.pay_my_buddy.modules.user.shared.command.RemoveFriendCommand;
 
 @DomainService
